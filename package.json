@@ -3,9 +3,6 @@
   "version": "2.0.0",
   "description": "Lemonldap::NG handler for Node.js",
   "main": "handler.js",
-  "scripts": {
-    "test": "test.js"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/guimard/node-lemonldap-ng-handler.git"
@@ -20,5 +17,12 @@
   "license": "GPL-2",
   "bugs": {
     "url": "https://github.com/guimard/node-lemonldap-ng-handler/issues"
+  },
+  "devDependencies": {
+    "coffee": "x"
+  },
+  "scripts": {
+    "compile": "coffee -c handler.coffee",
+    "test": "test.js"
   }
 }
