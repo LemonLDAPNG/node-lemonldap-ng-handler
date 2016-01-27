@@ -1,0 +1,24 @@
+{
+  "name": "node-lemonldap-ng-handler",
+  "version": "2.0.0",
+  "description": "Lemonldap::NG handler for Node.js",
+  "main": "handler.js",
+  "scripts": {
+    "test": "test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/guimard/node-lemonldap-ng-handler.git"
+  },
+  "keywords": [
+    "Lemonldap::NG",
+    "SSO",
+    "SAML",
+    "OpenID-Connect"
+  ],
+  "author": "Xavier Guimard <x.guimard@free.fr>",
+  "license": "GPL-2",
+  "bugs": {
+    "url": "https://github.com/guimard/node-lemonldap-ng-handler/issues"
+  }
+}
