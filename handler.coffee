@@ -2,8 +2,8 @@ http  = require 'http'
 https = require 'https'
 require 'llngconf'
 
-class llngHandler
-	constructor: ->
-		@confObj = new LemonldapConf
+class LLNGHandler
+	constructor: (arg) ->
+		@confObj = args.conf ? new LemonldapConf()
 
-exports.handler = new llngHandler
+exports.llnghandler = new LLNGHandler
