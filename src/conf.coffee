@@ -20,7 +20,7 @@ class LlngConf
 			@msg += "Get configuration #{args.cfgNum} failed\n"
 			return null
 		unless args.raw
-			r.cipher = new LlngCrypto r.key
+			r.cipher = new exports.LlngCrypto r.key
 		r
 
 	getLocalConf: (section,file,loadDefault=true) ->
@@ -36,7 +36,6 @@ class LlngConf
 		for k,v  of iniparser.param section
 			res[k] = v
 		res
-
 
 	saveConf: (conf, args) ->
 		last = @module.lastCfg()
@@ -54,5 +53,29 @@ class LlngConf
 		@msg += "Configuration #{conf.cfgNum} stored\n"
 		@module.unlock() ? tmp : -2
 
+	available: ->
+		@module.available()
+
+	lastCfg: ->
+		@module.lastCfg()
+
+	lock: ->
+		@module.lock()
+
+	isLocked: ->
+		@module.isLocked()
+
+	unlock: ->
+		@module.unlock()
+
+	store: (conf) ->
+		@module.store conf
+
+	load: (cfgNum) ->
+		@module.load cfgNum
+
+	delete: (cfgNum) ->
+		@module.delete cfgNum
+
 a = new LlngConf
-console.log a
+console.log a.lastCfg
