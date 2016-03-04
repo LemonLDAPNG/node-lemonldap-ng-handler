@@ -6,8 +6,8 @@ class LlngConf
 		this[k] = lc[k] for k of lc
 		unless @type.match /^[\w:]+$/
 			@msg += "Error: configStorage: type is not well formed.\n"
-		@module = @loadModule @type
-		return 0 unless @.module.prereq()
+		@module = new exports["#{@type}Conf"](this,this)
+		return 0 unless @module
 		@msg = @type + ' module loaded'
 
 	getConf: (args) ->
@@ -24,17 +24,17 @@ class LlngConf
 		r
 
 	getLocalConf: (section,file,loadDefault=true) ->
-		file = file ? (process.env.LLNG_DEFAULTCONFFILE ? '/etc/lemonldap-ng/lemoldap-ng.ini')
+		file = file ? (process.env.LLNG_DEFAULTCONFFILE ? '/etc/lemonldap-ng/lemonldap-ng.ini')
 		iniparser = require('inireader').IniReader()
-		localConf = iniparser.load file
+		iniparser.load file
 		res = {}
-		if loadDefaut
-			for k of localConf.param 'all'
-				res[k] = localConf.param 'all.' + k
+		if loadDefault
+			for k,v of iniparser.param 'all'
+				res[k] = v
 		return res if section == 'all'
 
-		for k of localConf.param section
-			res[k] = localConf.param section + '.' + k
+		for k,v  of iniparser.param section
+			res[k] = v
 		res
 
 
@@ -54,3 +54,5 @@ class LlngConf
 		@msg += "Configuration #{conf.cfgNum} stored\n"
 		@module.unlock() ? tmp : -2
 
+a = new LlngConf
+console.log a
