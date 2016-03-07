@@ -1,4 +1,4 @@
-class LlngConf
+class exports.LlngConf
 	msg: ''
 	constructor: (args) ->
 		this[k] = args[k] for k of args
