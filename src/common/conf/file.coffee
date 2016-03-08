@@ -1,12 +1,11 @@
-class exports.FileConf
+class FileConf
 	fs: require 'fs'
-	constructor: (args,ref) ->
-		@ref = ref
+	constructor: (args) ->
 		unless @dirName = args.dirName
-			ref.msg += "'dirName' is required in 'File' configuration type ! \n"
+			console.log "'dirName' is required in 'File' configuration type ! \n"
 			return null
 		unless @fs.lstatSync(@dirName).isDirectory()
-			ref.msg += "Directory #{@dirName} doesn't exist\n"
+			console.log "Directory #{@dirName} doesn't exist\n"
 			return null
 
 	available: ->
@@ -35,20 +34,22 @@ class exports.FileConf
 		try
 			@fs.accessSync "#{@dirName}/lmConf-#{cfgNum}.js", @fs.R_OK
 		catch error
-			@ref.msg += "Unable to read #{@dirName}/lmConf-#{cfgNum}.js (#{error})"
+			console.log "Unable to read #{@dirName}/lmConf-#{cfgNum}.js (#{error})"
 			return null
 		data = @fs.readFileSync "#{@dirName}/lmConf-#{cfgNum}.js"
 		try
 			return JSON.parse data
 		catch error
-			@ref.msg += "JSON parsing error: #{error}"
+			console.log "JSON parsing error: #{error}"
 			return null
 
 	delete: (cfgNum) ->
 		try
 			@fs.accessSync "#{@dirName}/lmConf-#{cfgNum}.js", @fs.W_OK
 		catch error
-			@ref.msg += "Unable to access #{@dirName}/lmConf-#{cfgNum}.js (#{error})"
+			console.log "Unable to access #{@dirName}/lmConf-#{cfgNum}.js (#{error})"
 			return null
 		@fs.unlink "#{@dirName}/lmConf-#{fields.cfgNum}.js"
 		1
+
+exports.FileConf = FileConf

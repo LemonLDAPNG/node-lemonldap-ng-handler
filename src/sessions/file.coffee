@@ -22,4 +22,4 @@ class FileSession
 				d.reject()
 		return d
 
-
+exports.FileSession = FileSession

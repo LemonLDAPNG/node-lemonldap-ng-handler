@@ -1,4 +1,6 @@
-class exports.LlngHandlerConf
+# TODO Reload mechanism, needed for cluster only:
+# see file:///usr/share/doc/nodejs/api/cluster.html "Event 'message'"
+class LlngHandlerConf
 	tsv: {}
 	cfgNum: 0
 	lmConf: {}
@@ -18,15 +20,14 @@ class exports.LlngHandlerConf
 	datasUpdate: 0
 
 	init: (args) ->
-		# TODO: local cache ?
-		#args.configStorage[i] or= args[i] for i in ['localStorage', 'localStorageOptions']
 		@lmConf = new LlngConf(args.configStorage)
 		unless @lmConf
 			# TODO: change msg in LlngConf
-			console.log "Unable to build configuration: #{LlngConf.msg}"
+			console.log "Unable to build configuration: #{LlngConfmsg}"
+			return null
 
 		@localConfig = @lmConf.getLocalConf 'handler'
-		@localConfig[i] = args[i] for i in args
+		@localConfig[i] = args[i] for i of args
 
 		@checkTime = @localConfig.checkTime if @localConfig.checkTime
 
@@ -140,7 +141,6 @@ class exports.LlngHandlerConf
 					exports._logout = @tsv.portal()
 					0
 		cond = @substitute(cond)
-		# TODO: interpolate cond
 		sub = reval "function() {return {#{cond}};}"
 		return [sub, 0]
 
@@ -159,3 +159,6 @@ class exports.LlngHandlerConf
 
 	remote_ip: ->
 		# TODO
+
+exports.LlngHandlerConf = LlngHandlerConf 
+

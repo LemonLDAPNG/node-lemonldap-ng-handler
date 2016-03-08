@@ -1,4 +1,4 @@
-class exports.LlngCrypto
+class LlngCrypto
 	constructor: (@key, @mode) ->
 
 	encrypt: (s) ->
@@ -9,3 +9,4 @@ class exports.LlngCrypto
 		console.log 'TODO'
 		s
 
+exports.LlngCrypto = LlngCrypto

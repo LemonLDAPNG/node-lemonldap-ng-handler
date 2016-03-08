@@ -1,30 +1,30 @@
-class exports.LlngConf
-	msg: ''
+class LlngConf
 	constructor: (args) ->
 		this[k] = args[k] for k of args
 		lc = @getLocalConf 'configuration', @confFile, 0
 		this[k] = lc[k] for k of lc
 		unless @type.match /^[\w:]+$/
-			@msg += "Error: configStorage: type is not well formed.\n"
-		@module = new exports["#{@type}Conf"](this,this)
-		return 0 unless @module
-		@msg = @type + ' module loaded'
+			console.log "Error: configStorage: type is not well formed.\n"
+			return null
+		@module = new exports["#{@type}Conf"](this)
+		return null unless @module
+		console.log @type + ' module loaded'
 
 	getConf: (args) ->
 		args.cfgNum or= @module.lastCfg
 		unless args.cfgNum
-			@msg += "No configuration available in backend.\n"
+			console.log "No configuration available in backend.\n"
 			return null
 		r = @module.load args.cfgNum
 		unless r
-			@msg += "Get configuration #{args.cfgNum} failed\n"
+			console.log "Get configuration #{args.cfgNum} failed\n"
 			return null
 		unless args.raw
 			r.cipher = new exports.LlngCrypto r.key
 		r
 
 	getLocalConf: (section,file,loadDefault=true) ->
-		file = file ? (process.env.LLNG_DEFAULTCONFFILE ? '/etc/lemonldap-ng/lemonldap-ng.ini')
+		file = file or @confFile or process.env.LLNG_DEFAULTCONFFILE or '/etc/lemonldap-ng/lemonldap-ng.ini'
 		iniparser = require('inireader').IniReader()
 		iniparser.load file
 		res = {}
@@ -47,10 +47,10 @@ class exports.LlngConf
 
 		tmp = @module.store conf
 		unless tmp > 0
-			@msg += "Configuration #{conf.cfgNum} not stored\n"
+			console.log "Configuration #{conf.cfgNum} not stored\n"
 			@module.unlock()
 			return if tmp? then tmp else -2
-		@msg += "Configuration #{conf.cfgNum} stored\n"
+		console.log "Configuration #{conf.cfgNum} stored\n"
 		@module.unlock() ? tmp : -2
 
 	available: ->
@@ -77,5 +77,10 @@ class exports.LlngConf
 	delete: (cfgNum) ->
 		@module.delete cfgNum
 
+exports.LlngConf = LlngConf
+
 a = new LlngConf
-console.log a.lastCfg
+
+console.log a.lastCfg()
+console.log a.getConf
+	cfgNum: a.lastCfg()
