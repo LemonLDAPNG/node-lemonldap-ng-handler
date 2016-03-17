@@ -1,7 +1,22 @@
 # TODO Reload mechanism, needed for cluster only:
 # see file:///usr/share/doc/nodejs/api/cluster.html "Event 'message'"
 class LlngHandlerConf
-	tsv: {}
+	tsv:
+		defaultCondition: {}
+		defaultProtection: {}
+		forgeHeaders: {}
+		headerList: {}
+		https: {}
+		locationCondition: {}
+		#locationConditionText: {}
+		locationCount: {}
+		locationProtection: {}
+		locationRegexp: {}
+		maintenance: {}
+		port: {}
+		portal: ''
+		vhostAlias: {}
+		vhostOptions: {}
 	cfgNum: 0
 	lmConf: {}
 	localConfig: {}
@@ -15,11 +30,12 @@ class LlngHandlerConf
 		notice: 2
 		info: 1
 		debug:0
+	sa: {}
 	session: {}
 	datas: {}
 	datasUpdate: 0
 
-	init: (args) ->
+	constructor: (args={}) ->
 		@lmConf = new LlngConf(args.configStorage)
 		unless @lmConf
 			# TODO: change msg in LlngConf
@@ -33,7 +49,7 @@ class LlngHandlerConf
 
 		# logLevel
 		if @localConfig.logLevel
-			if@logLevels[@localConfig.logLevel]
+			if @logLevels[@localConfig.logLevel]?
 				@localConfig.logLevel = @logLevels[@localConfig.logLevel]
 			else
 				console.log "Unknown log level '#{@localConfig.logLevel}'"
@@ -49,7 +65,9 @@ class LlngHandlerConf
 
 	reload: ->
 		conf = @lmConf.getConf()
-		@configReload conf
+		unless conf?
+			console.log "Die"
+			1/0
 
 		# Default values initialization
 		for w in ['cda', 'cookieExpiration', 'cookieName', 'customFunctions', 'httpOnly', 'securedCookie', 'timeoutActivity', 'useRedirectOnError', 'useRedirectOnForbidden', 'whatToTrace']
@@ -58,7 +76,7 @@ class LlngHandlerConf
 		@tsv.cipher = new LlngCrypto(conf.key)
 
 		for w in ['https', 'port', 'maintenance']
-			if @conf[w]?
+			if conf[w]?
 				@tsv[w] = {_: conf[w]}
 				if conf.vhostOptions
 					name = "vhost#{w.unFirst()}"
@@ -71,8 +89,8 @@ class LlngHandlerConf
 		unless conf.portal
 			# TODO die
 			1/0
-		if @conf.portal.match(/[\$\(&\|"']/)
-			@tsv.portal = @conditionSub @conf.portal
+		if conf.portal.match(/[\$\(&\|"']/)
+			@tsv.portal = @conditionSub conf.portal
 		else
 			@tsv.portal = ->
 				conf.portal
@@ -86,30 +104,33 @@ class LlngHandlerConf
 					@tsv.defaultCondition[vhost] = cond
 					@tsv.defaultProtection[vhost] = prot
 				else
+					@tsv.locationCondition[vhost] = [] unless @tsv.locationCondition[vhost]?
 					@tsv.locationCondition[vhost].push cond
+					@tsv.locationProtection[vhost] = [] unless @tsv.locationProtection[vhost]?
 					@tsv.locationProtection[vhost].push prot
-					@tsv.locationRegexp[vhost].push(new RegExp(url))
-					@tsv.locationConditionText[vhost].push(if cond.match(/^\(\?#(.*?)\)/) then RegExp.$1 else if cond.match(/^(.*?)##(.+)$/) then RegExp.$2 else url)
+					@tsv.locationRegexp[vhost] = [] unless @tsv.locationRegexp[vhost]?
+					@tsv.locationRegexp[vhost].push(new RegExp url.replace /\(\?#.*?\)/,'')
 					@tsv.locationCount[vhost]++
 			unless @tsv.defaultCondition[vhost]
 				@tsv.defaultCondition[vhost] = () -> 1
 				@tsv.defaultProtection = 0
 
 		# Sessions storage initialization
-		unless @tsv.sessionStorageModule = conf.globalStorage
+		unless sessionStorageModule = conf.globalStorage.replace /^Apache::Session::/, ''
 			#TODO: die "globalStorage required"
 			1/0
-		@tsv.sessionStorageOptions = @conf.globalStorageOptions
+		@sa = new exports["#{sessionStorageModule}SessionReader"](conf.globalStorageOptions)
 
 		# Headers initialization
 		for vhost, headers of conf.exportedHeaders
+			@tsv.headerList[vhost] = [] unless @tsv.headerList[vhost]?
 			@tsv.headerList[vhost].push(a) for a of headers
 			sub = ''
 			for h,v of headers
 				val = @substitute v
-				sub += "'#{k}': #{val},"
+				sub += "'#{h}': #{val},"
 			sub = sub.replace /,$/, ''
-			@tsv.forgeHeaders[vhost] = reval "function() {return {#{sub}};}"
+			eval "this.tsv.forgeHeaders['#{vhost}'] = function() {return {#{sub}};}"
 
 		# TODO: post url initialization
 
@@ -141,7 +162,7 @@ class LlngHandlerConf
 					exports._logout = @tsv.portal()
 					0
 		cond = @substitute(cond)
-		sub = reval "function() {return {#{cond}};}"
+		eval "sub = function() {return (#{cond});}"
 		return [sub, 0]
 
 	substitute: (expr) ->
@@ -160,5 +181,8 @@ class LlngHandlerConf
 	remote_ip: ->
 		# TODO
 
-exports.LlngHandlerConf = LlngHandlerConf 
+exports.LlngHandlerConf = LlngHandlerConf
 
+a = new LlngHandlerConf()
+
+console.log a.tsv

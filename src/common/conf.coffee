@@ -1,5 +1,5 @@
 class LlngConf
-	constructor: (args) ->
+	constructor: (args={}) ->
 		this[k] = args[k] for k of args
 		lc = @getLocalConf 'configuration', @confFile, 0
 		this[k] = lc[k] for k of lc
@@ -10,8 +10,8 @@ class LlngConf
 		return null unless @module
 		console.log @type + ' module loaded'
 
-	getConf: (args) ->
-		args.cfgNum or= @module.lastCfg
+	getConf: (args={}) ->
+		args.cfgNum or= @module.lastCfg()
 		unless args.cfgNum
 			console.log "No configuration available in backend.\n"
 			return null
@@ -79,8 +79,3 @@ class LlngConf
 
 exports.LlngConf = LlngConf
 
-a = new LlngConf
-
-console.log a.lastCfg()
-console.log a.getConf
-	cfgNum: a.lastCfg()

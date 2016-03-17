@@ -1,25 +1,23 @@
-class FileSession
-	q: require 'Q'
+class FileSessionReader
 	fs: require 'fs'
-	datas: {}
-	filename: ''
+	directory: '/tmp'
 
-	constructor: (id, opts) ->
-		opts.Directory = '/tmp' unless opts.Directory
-		d = @q.defer()
-		if id
-			try
-				@fs.readFile "#{opts.Directory}/#{id}", (data) ->
-					@datas = JSON.parse data
-					d.resolve()
-			catch error
-				d.reject()
-		else
-			id = @generate()
-			try @fs.writeFile "#{opts.Directory}/#{id}", ->
-				d.resolve()
-			catch error
-				d.reject()
-		return d
+	constructor: (opts) ->
+		@directory = opts.Directory if opts.Directory
 
-exports.FileSession = FileSession
+	get: (id) ->
+		datas = {}
+		try
+			return JSON.parse @fs.readFileSync "#{@directory}/#{id}"
+		catch error
+			console.log error
+			return null
+
+	update: (id, data) ->
+		try
+			return @fs.writeFileSync "#{@directory}/#{id}", JSON.stringify data
+		catch error
+			console.log error
+			return 0
+
+exports.FileSessionReader = FileSessionReader

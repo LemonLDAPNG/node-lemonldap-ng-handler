@@ -129,10 +129,10 @@
   },
   "locationRules": {
     "manager.example.com": {
-      "(?#Configuration)^/(manager\\.html|conf/)": "$uid eq \"dwho\"",
-      "(?#Notifications)^/notifications": "$uid eq \"dwho\" or $uid eq \"rtyler\"",
-      "(?#Sessions)^/sessions": "$uid eq \"dwho\" or $uid eq \"rtyler\"",
-      "default": "$uid eq \"dwho\""
+      "(?#Configuration)^/(manager\\.html|conf/)": "$uid === \"dwho\"",
+      "(?#Notifications)^/notifications": "$uid === \"dwho\" || $uid === \"rtyler\"",
+      "(?#Sessions)^/sessions": "$uid === \"dwho\" || $uid === \"rtyler\"",
+      "default": "$uid === \"dwho\""
     },
     "test1.example.com": {
       "^/logout": "logout_sso",
@@ -145,7 +145,7 @@
   },
   "loginHistoryEnabled": 1,
   "macros": {
-    "_whatToTrace": "$_auth eq 'SAML' ? \"$_user\\@$_idpConfKey\" : \"$_user\""
+    "_whatToTrace": "$_auth === 'SAML' ? \"$_user\\@$_idpConfKey\" : \"$_user\""
   },
   "notification": 1,
   "notificationStorage": "File",
