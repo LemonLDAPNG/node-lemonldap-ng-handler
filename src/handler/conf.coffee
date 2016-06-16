@@ -182,7 +182,3 @@ class LlngHandlerConf
 		# TODO
 
 exports.LlngHandlerConf = LlngHandlerConf
-
-a = new LlngHandlerConf()
-
-console.log a.tsv
