@@ -19,7 +19,9 @@
     "url": "https://github.com/guimard/node-lemonldap-ng-handler/issues"
   },
   "devDependencies": {
-    "coffee": "x"
+    "coffee": "x",
+    "grunt": "^1.0.1",
+    "grunt-contrib-coffee": "^1.0.0"
   },
   "scripts": {
     "compile": "coffee -c handler.coffee",
