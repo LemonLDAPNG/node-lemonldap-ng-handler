@@ -26,5 +26,8 @@
   "scripts": {
     "compile": "coffee -c handler.coffee",
     "test": "test.js"
+  },
+  "dependencies": {
+    "inireader": "^1.0.0"
   }
 }
