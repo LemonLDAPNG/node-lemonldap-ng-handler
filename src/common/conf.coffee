@@ -1,81 +1,86 @@
-class LlngConf
-	constructor: (args={}) ->
-		this[k] = args[k] for k of args
-		lc = @getLocalConf 'configuration', @confFile, 0
-		this[k] = lc[k] for k of lc
-		unless @type.match /^[\w:]+$/
-			console.log "Error: configStorage: type is not well formed.\n"
-			return null
-		@module = new exports["#{@type}Conf"](this)
-		return null unless @module
-		console.log @type + ' module loaded'
+exports.module = null
+exports.confFile = process.env.LLNG_DEFAULTCONFFILE or '/etc/lemonldap-ng/lemonldap-ng.ini'
+exports.type = null
 
-	getConf: (args={}) ->
-		args.cfgNum or= @module.lastCfg()
-		unless args.cfgNum
-			console.log "No configuration available in backend.\n"
-			return null
-		r = @module.load args.cfgNum
-		unless r
-			console.log "Get configuration #{args.cfgNum} failed\n"
-			return null
-		unless args.raw
-			r.cipher = new exports.LlngCrypto r.key
-		r
+exports.init = (args={}) ->
+	exports[k] = args[k] for k of args
+	lc = exports.getLocalConf 'configuration', exports.confFile, 0
+	exports[k] = lc[k] for k of lc
+	unless exports.type.match /^[\w:]+$/
+		console.log "Error: configStorage: type is not well formed.\n"
+		return null
+	try
+		exports.module = require "lib/#{exports.type}Conf"
+		exports.module.init exports
+	catch e
+		console.log e
+		return null
+	console.log exports.type + ' module loaded'
 
-	getLocalConf: (section,file,loadDefault=true) ->
-		file = file or @confFile or process.env.LLNG_DEFAULTCONFFILE or '/etc/lemonldap-ng/lemonldap-ng.ini'
-		iniparser = require('inireader').IniReader()
-		iniparser.load file
-		res = {}
-		if loadDefault
-			for k,v of iniparser.param 'all'
-				res[k] = v
-		return res if section == 'all'
+exports.getConf = (args={}) ->
+	args.cfgNum or= exports.module.lastCfg()
+	unless args.cfgNum
+		console.log "No configuration available in backend.\n"
+		return null
+	r = exports.module.load args.cfgNum
+	unless r
+		console.log "Get configuration #{args.cfgNum} failed\n"
+		return null
+	unless args.raw
+		r.cipher = require("lib/crypto")
+	r
 
-		for k,v  of iniparser.param section
+exports.getLocalConf = (section,file,loadDefault=true) ->
+	file = file or exports.confFile
+	iniparser = require('inireader').IniReader()
+	iniparser.load file
+	res = {}
+	if loadDefault
+		for k,v of iniparser.param 'all'
 			res[k] = v
-		res
+	return res if section == 'all'
 
-	saveConf: (conf, args) ->
-		last = @module.lastCfg()
-		unless args.force
-			return -1 if conf.cfgNum != last
-			return -3 if @module.isLocked() or not @module.lock()
-		conf.cfgNum = last + 1 unless args.cfgNumFixed
-		delete conf.cipher
+	for k,v  of iniparser.param section
+		res[k] = v
+	res
 
-		tmp = @module.store conf
-		unless tmp > 0
-			console.log "Configuration #{conf.cfgNum} not stored\n"
-			@module.unlock()
-			return if tmp? then tmp else -2
-		console.log "Configuration #{conf.cfgNum} stored\n"
-		@module.unlock() ? tmp : -2
+exports.saveConf = (conf, args={}) ->
+	last = exports.module.lastCfg()
+	unless args.force
+		return -1 if conf.cfgNum != last
+		return -3 if exports.module.isLocked() or not exports.module.lock()
+	conf.cfgNum = last + 1 unless args.cfgNumFixed
+	delete conf.cipher
 
-	available: ->
-		@module.available()
+	tmp = exports.module.store conf
+	unless tmp > 0
+		console.log "Configuration #{conf.cfgNum} not stored\n"
+		exports.module.unlock()
+		return if tmp? then tmp else -2
+	console.log "Configuration #{conf.cfgNum} stored\n"
+	return if exports.module.unlock() then tmp else -2
 
-	lastCfg: ->
-		@module.lastCfg()
+exports.available = ->
+	exports.module.available()
 
-	lock: ->
-		@module.lock()
+exports.lastCfg = ->
+	exports.module.lastCfg()
 
-	isLocked: ->
-		@module.isLocked()
+exports.lock = ->
+	exports.module.lock()
 
-	unlock: ->
-		@module.unlock()
+exports.isLocked = ->
+	exports.module.isLocked()
 
-	store: (conf) ->
-		@module.store conf
+exports.unlock = ->
+	exports.module.unlock()
 
-	load: (cfgNum) ->
-		@module.load cfgNum
+exports.store = (conf) ->
+	exports.module.store conf
 
-	delete: (cfgNum) ->
-		@module.delete cfgNum
+exports.load = (cfgNum) ->
+	exports.module.load cfgNum
 
-exports.LlngConf = LlngConf
+exports.delete = (cfgNum) ->
+	exports.module.delete cfgNum
 
