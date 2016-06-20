@@ -10,12 +10,12 @@ exports.init = (args={}) ->
 		console.log "Error: configStorage: type is not well formed.\n"
 		return null
 	try
-		exports.module = require "lib/#{exports.type}Conf"
-		exports.module.init exports
+		exports.module = require("./#{exports.type}Conf").init(exports)
 	catch e
 		console.log e
 		return null
 	console.log exports.type + ' module loaded'
+	exports
 
 exports.getConf = (args={}) ->
 	args.cfgNum or= exports.module.lastCfg()
@@ -27,7 +27,7 @@ exports.getConf = (args={}) ->
 		console.log "Get configuration #{args.cfgNum} failed\n"
 		return null
 	unless args.raw
-		r.cipher = require("lib/crypto")
+		r.cipher = require("./crypto").init(r.key)
 	r
 
 exports.getLocalConf = (section,file,loadDefault=true) ->
@@ -60,27 +60,5 @@ exports.saveConf = (conf, args={}) ->
 	console.log "Configuration #{conf.cfgNum} stored\n"
 	return if exports.module.unlock() then tmp else -2
 
-exports.available = ->
-	exports.module.available()
-
-exports.lastCfg = ->
-	exports.module.lastCfg()
-
-exports.lock = ->
-	exports.module.lock()
-
-exports.isLocked = ->
-	exports.module.isLocked()
-
-exports.unlock = ->
-	exports.module.unlock()
-
-exports.store = (conf) ->
-	exports.module.store conf
-
-exports.load = (cfgNum) ->
-	exports.module.load cfgNum
-
-exports.delete = (cfgNum) ->
-	exports.module.delete cfgNum
-
+for k in ['available','lastCfg','lock','isLocked','unlock','store','load','delete']
+	exports[k] = exports.module[k]

@@ -1,12 +1,10 @@
-class LlngCrypto
-	constructor: (@key, @mode) ->
+exports.init = (@key, @mode) ->
+	exports
 
-	encrypt: (s) ->
-		console.log 'TODO'
-		s
+exports.encrypt = (s) ->
+	console.log 'TODO'
+	s
 
-	decrypt: (s) ->
-		console.log 'TODO'
-		s
-
-exports.LlngCrypto = LlngCrypto
+exports.decrypt = (s) ->
+	console.log 'TODO'
+	s
