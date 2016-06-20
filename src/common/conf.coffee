@@ -10,11 +10,13 @@ exports.init = (args={}) ->
 		console.log "Error: configStorage: type is not well formed.\n"
 		return null
 	try
-		exports.module = require("./#{exports.type}Conf").init(exports)
+		exports.module = require("./#{exports.type.toLowerCase()}Conf").init(exports)
 	catch e
 		console.log e
 		return null
 	console.log exports.type + ' module loaded'
+	for k in ['available','lastCfg','lock','isLocked','unlock','store','load','delete']
+		exports[k] = exports.module[k]
 	exports
 
 exports.getConf = (args={}) ->
@@ -60,5 +62,3 @@ exports.saveConf = (conf, args={}) ->
 	console.log "Configuration #{conf.cfgNum} stored\n"
 	return if exports.module.unlock() then tmp else -2
 
-for k in ['available','lastCfg','lock','isLocked','unlock','store','load','delete']
-	exports[k] = exports.module[k]

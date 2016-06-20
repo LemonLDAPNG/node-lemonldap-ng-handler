@@ -114,8 +114,8 @@
   },
   "globalStorage": "Apache::Session::File",
   "globalStorageOptions": {
-    "Directory": "__pwd__/e2e-tests/conf/sessions",
-    "LockDirectory": "__pwd__/e2e-tests/conf/sessions/lock",
+    "Directory": "test/sessions",
+    "LockDirectory": "test/sessions/lock",
     "generateModule": "Lemonldap::NG::Common::Apache::Session::Generate::SHA256"
   },
   "groups": {},

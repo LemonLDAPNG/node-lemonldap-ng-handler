@@ -34,99 +34,98 @@ exports.session = {}
 exports.datas = {}
 exports.datasUpdate = 0
 
-exports.constructor = (args={}) ->
-	@lmConf = new LlngConf(args.configStorage)
-	unless @lmConf
+exports.init = (args={}) ->
+	exports.lmConf = require('./conf').init(args.configStorage)
+	unless exports.lmConf
 		# TODO: change msg in LlngConf
-		console.log "Unable to build configuration: #{LlngConfmsg}"
+		console.log "Unable to build configuration"
 		return null
 
-	@localConfig = @lmConf.getLocalConf 'handler'
-	@localConfig[i] = args[i] for i of args
+	exports.localConfig = exports.lmConf.getLocalConf 'handler'
+	exports.localConfig[i] = args[i] for i of args
 
-	@checkTime = @localConfig.checkTime if @localConfig.checkTime
+	exports.checkTime = exports.localConfig.checkTime if exports.localConfig.checkTime
 
 	# logLevel
-	if @localConfig.logLevel
-		if @logLevels[@localConfig.logLevel]?
-			@localConfig.logLevel = @logLevels[@localConfig.logLevel]
+	if exports.localConfig.logLevel
+		if exports.logLevels[exports.localConfig.logLevel]?
+			exports.localConfig.logLevel = exports.logLevels[exports.localConfig.logLevel]
 		else
-			console.log "Unknown log level '#{@localConfig.logLevel}'"
+			console.log "Unknown log level '#{exports.localConfig.logLevel}'"
 
 	# TODO: status
 
 	# Load initial configuration
-	@reload()
+	exports.reload()
+	exports
 
 # Note that checkConf isn't needed: no shared cache with node.js
 exports.checkConf = ->
 	console.log "checkConf() must not be called"
 
 exports.reload = ->
-	conf = @lmConf.getConf()
+	conf = exports.lmConf.getConf()
 	unless conf?
 		console.log "Die"
 		1/0
 
 	# Default values initialization
-	for w in ['cda', 'cookieExpiration', 'cookieName', 'customFunctions', 'httpOnly', 'securedCookie', 'timeoutActivity', 'useRedirectOnError', 'useRedirectOnForbidden', 'whatToTrace']
-		@tsv[w] = conf[w]
-
-	@tsv.cipher = new LlngCrypto(conf.key)
+	for w in ['cda', 'cookieExpiration', 'cipher', 'cookieName', 'customFunctions', 'httpOnly', 'securedCookie', 'timeoutActivity', 'useRedirectOnError', 'useRedirectOnForbidden', 'whatToTrace']
+		exports.tsv[w] = conf[w]
 
 	for w in ['https', 'port', 'maintenance']
 		if conf[w]?
-			@tsv[w] = {_: conf[w]}
+			exports.tsv[w] = {_: conf[w]}
 			if conf.vhostOptions
 				name = "vhost#{w.unFirst()}"
 				for vhost, vConf of conf.vhostOptions
 					val = vConf[name]
 					# TODO: log
-					@tsv[w][vhost] = val if val>0
+					exports.tsv[w][vhost] = val if val>0
 
 	# Portal initialization
 	unless conf.portal
 		# TODO die
 		1/0
 	if conf.portal.match(/[\$\(&\|"']/)
-		@tsv.portal = @conditionSub conf.portal
+		exports.tsv.portal = exports.conditionSub conf.portal
 	else
-		@tsv.portal = ->
+		exports.tsv.portal = ->
 			conf.portal
 
 	# Location rules initialization
 	for vhost, rules of conf.locationRules
-		@tsv.locationCount[vhost] = 0
+		exports.tsv.locationCount[vhost] = 0
 		for url, rule of rules
-			[cond, prot] = @conditionSub rule
+			[cond, prot] = exports.conditionSub rule
 			if url == 'default'
-				@tsv.defaultCondition[vhost] = cond
-				@tsv.defaultProtection[vhost] = prot
+				exports.tsv.defaultCondition[vhost] = cond
+				exports.tsv.defaultProtection[vhost] = prot
 			else
-				@tsv.locationCondition[vhost] = [] unless @tsv.locationCondition[vhost]?
-				@tsv.locationCondition[vhost].push cond
-				@tsv.locationProtection[vhost] = [] unless @tsv.locationProtection[vhost]?
-				@tsv.locationProtection[vhost].push prot
-				@tsv.locationRegexp[vhost] = [] unless @tsv.locationRegexp[vhost]?
-				@tsv.locationRegexp[vhost].push(new RegExp url.replace /\(\?#.*?\)/,'')
-				@tsv.locationCount[vhost]++
-		unless @tsv.defaultCondition[vhost]
-			@tsv.defaultCondition[vhost] = () -> 1
-			@tsv.defaultProtection = 0
+				exports.tsv.locationCondition[vhost] = [] unless exports.tsv.locationCondition[vhost]?
+				exports.tsv.locationCondition[vhost].push cond
+				exports.tsv.locationProtection[vhost] = [] unless exports.tsv.locationProtection[vhost]?
+				exports.tsv.locationProtection[vhost].push prot
+				exports.tsv.locationRegexp[vhost] = [] unless exports.tsv.locationRegexp[vhost]?
+				exports.tsv.locationRegexp[vhost].push(new RegExp url.replace /\(\?#.*?\)/,'')
+				exports.tsv.locationCount[vhost]++
+		unless exports.tsv.defaultCondition[vhost]
+			exports.tsv.defaultCondition[vhost] = () -> 1
+			exports.tsv.defaultProtection = 0
 
 	# Sessions storage initialization
 	unless sessionStorageModule = conf.globalStorage.replace /^Apache::Session::/, ''
 		#TODO: die "globalStorage required"
 		1/0
-	@sa = new exports["#{sessionStorageModule}SessionReader"](conf.globalStorageOptions)
+	exports.sa = require("./#{sessionStorageModule.toLowerCase()}Session").init(conf.globalStorageOptions);
 
 	# Headers initialization
 	for vhost, headers of conf.exportedHeaders
-		@tsv.headerList[vhost] = [] unless @tsv.headerList[vhost]?
-		@tsv.headerList[vhost].push(a) for a of headers
+		exports.tsv.headerList[vhost] = [] unless exports.tsv.headerList[vhost]?
+		exports.tsv.headerList[vhost].push(a) for a of headers
 		sub = ''
 		for h,v of headers
-			val = @substitute v
+			val = exports.substitute v
 			sub += "'#{h}': #{val},"
 		sub = sub.replace /,$/, ''
 		eval "this.tsv.forgeHeaders['#{vhost}'] = function() {return {#{sub}};}"
@@ -138,7 +137,7 @@ exports.reload = ->
 		if aliases
 			t = aliases.split /\s+/
 			for a in t
-				@tsv.vhostAlias[a] = vhost
+				exports.tsv.vhostAlias[a] = vhost
 	1
 
 exports.conditionSub = (cond) ->
@@ -158,9 +157,9 @@ exports.conditionSub = (cond) ->
 				0
 		else
 			return ->
-				exports._logout = @tsv.portal()
+				exports._logout = exports.tsv.portal()
 				0
-	cond = @substitute(cond)
+	cond = exports.substitute(cond)
 	eval "sub = function() {return (#{cond});}"
 	return [sub, 0]
 

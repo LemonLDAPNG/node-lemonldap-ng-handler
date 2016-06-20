@@ -1,8 +1,9 @@
 exports.fs = require 'fs'
 exports.directory = '/tmp'
 
-exports.constructor = (opts) ->
-	@directory = opts.Directory if opts.Directory
+exports.init = (opts={}) ->
+	exports.directory = opts.Directory if opts.Directory
+	exports
 
 exports.get = (id) ->
 	datas = {}

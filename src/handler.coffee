@@ -1,7 +1,7 @@
 conf = null
 
 exports.init = (args) ->
-	conf = new LlngHandlerConf(args)
+	conf = require('./handlerConf').init(args)
 	exports
 
 exports.run = (req, res, next) ->
