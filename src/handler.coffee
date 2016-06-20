@@ -7,7 +7,8 @@ exports.init = (args) ->
 exports.run = (req, res, next) ->
 	# TODO
 	vhost = req.hostname
-	uri = req.uri
+	# TODO: detect https
+	uri = 'http://' + req.headers.host + req.url
 	if conf.tsv.maintenance[vhost]
 		# TODO
 		console.log 'TODO'
@@ -34,10 +35,10 @@ exports.run = (req, res, next) ->
 		return next
 
 	else
-		return goToPortal uri
+		return goToPortal res, uri
 
 grant = (req) ->
-	vhost = @resolveAlias()
+	vhost = resolveAlias()
 	unless conf.tsv.defaultCondition[vhost]?
 		console.log "No configuration found for #{vhost}"
 		return false
@@ -48,15 +49,21 @@ grant = (req) ->
 
 forbidden = (req) ->
 	uri = req.uri
-	# TODO: @datas must not be declared in LlngHandlerConf
-	if u = @datas._logout
-		return @goToPortal u, 'logout=1'
+	if u = conf.datas._logout
+		return goToPortal res, u, 'logout=1'
 	# TODO
 	return 403
 
-sendHeaders = (res,req,next) ->
+sendHeaders = (req, res, next) ->
 
-goToPortal = (uri, args) ->
+goToPortal = (res, uri, args) ->
+	urlc = conf.tsv.portal()
+	if uri
+		urlc += '?url=' + new Buffer(uri).toString('base64')
+	if args
+		urlc += if uri then '&' else '?'
+		urlc += args
+	res.redirect urlc
 
 resolveAlias = ->
 

@@ -159,7 +159,7 @@
     "LockDirectory": "__pwd__/e2e-tests/conf/persistents/lock",
     "generateModule": "Lemonldap::NG::Common::Apache::Session::Generate::SHA256"
   },
-  "portal": "http://auth.example.com:__port__/",
+  "portal": "http://auth.example.com:19876/",
   "post": {
     "test2.example.com": {},
     "manager.example.com": {},
