@@ -1,3 +1,8 @@
+###
+# LemonLDAP::NG handler for Node.js/express
+#
+# See README.md for license and copyright
+###
 conf          = null
 cookieDetect  = null
 
@@ -7,7 +12,6 @@ exports.init = (args) ->
 	exports
 
 exports.run = (req, res, next) ->
-	# TODO
 	vhost = req.headers.host
 	# TODO: detect https
 	uri = decodeURI req.url
@@ -55,7 +59,6 @@ forbidden = (req, res, session) ->
 	uri = req.uri
 	if u = conf.datas._logout
 		return goToPortal res, u, 'logout=1'
-	# TODO
 	res.status(403).send('Forbidden')
 
 sendHeaders = (res, session) ->

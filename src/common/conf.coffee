@@ -1,3 +1,8 @@
+###
+# LemonLDAP::NG configuration accessor for Node.js/express
+#
+# See README.md for license and copyright
+###
 exports.module = null
 exports.confFile = process.env.LLNG_DEFAULTCONFFILE or '/etc/lemonldap-ng/lemonldap-ng.ini'
 exports.type = null

@@ -1,3 +1,9 @@
+###
+# LemonLDAP::NG handler initialization module for Node.js/express
+#
+# See README.md for license and copyright
+###
+
 # TODO Reload mechanism, needed for cluster only:
 # see file:///usr/share/doc/nodejs/api/cluster.html "Event 'message'"
 exports.tsv =
@@ -34,6 +40,7 @@ exports.session = {}
 exports.datas = {}
 exports.datasUpdate = 0
 
+# Initialization
 exports.init = (args={}) ->
 	exports.lmConf = require('./conf').init(args.configStorage)
 	unless exports.lmConf

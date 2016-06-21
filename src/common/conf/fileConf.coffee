@@ -1,3 +1,8 @@
+###
+# LemonLDAP::NG file configuration accessor for Node.js/express
+#
+# See README.md for license and copyright
+###
 exports.fs = require 'fs'
 exports.init = (args) ->
 	unless exports.dirName = args.dirName

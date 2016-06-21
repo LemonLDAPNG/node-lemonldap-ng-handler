@@ -1,3 +1,8 @@
+###
+# LemonLDAP::NG crypto module for Node.js/express
+#
+# See README.md for license and copyright
+###
 exports.init = (@key, @mode) ->
 	exports
 
