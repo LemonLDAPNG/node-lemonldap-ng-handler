@@ -23,7 +23,7 @@ If the job runs well, it will be integrated to version 2.0.0 of Lemonldap::NG.
     #
     # Then simply use your express app
     app.get('/', function(req, res) {
-      return res.send('Hello World!');
+      return res.send('Hello ' + req.headers['Auth-User'] + ' !');
     });
     app.listen(3000, function() {
       return console.log('Example app listening on port 3000!');

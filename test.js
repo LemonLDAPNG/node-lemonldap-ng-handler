@@ -2,14 +2,18 @@ var express = require('express');
 var app = express();
 var handler = require('./lib/handler');
 
-handler.init({configStorage:{"confFile":"test/lemonldap-ng.ini"}});
+handler.init({
+  configStorage: {
+    "confFile": "test/lemonldap-ng.ini"
+  }
+});
 
 console.log(handler);
 
 app.use(handler.run);
 
 app.get('/', function(req, res) {
-  return res.send('Hello World!');
+  return res.send('Hello ' + req.headers['Auth-User'] + ' !');
 });
 
 app.listen(3000, function() {

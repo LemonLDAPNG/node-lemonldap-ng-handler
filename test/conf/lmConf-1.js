@@ -100,10 +100,7 @@
   "exportedHeaders": {
     "test1.example.com": {
       "Auth-User": "$uid",
-      "Ip-Addr": "$ipAddr",
-      "Hello": "hello()",
-      "Uri": "get_uri()",
-      "Additional-Arg": "get_additional_arg('header-added')"
+      "Ip-Addr": "$ipAddr"
     },
     "test2.example.com": {
       "Auth-User": "$uid"

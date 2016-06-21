@@ -24,7 +24,7 @@ exports.run = (req, res, next) ->
 		str = RegExp.$1
 		# TODO redirect with cookie
 
-	protection = isUnprotected(uri)
+	protection = isUnprotected req, uri
 
 	if protection == 'skip'
 		# TODO: verify this
@@ -36,7 +36,7 @@ exports.run = (req, res, next) ->
 		if session
 			unless grant req, uri, session
 				return forbidden req, res, session
-			sendHeaders res, session
+			sendHeaders req, session
 			return next()
 
 	if protection == 'unprotect'
@@ -61,7 +61,15 @@ forbidden = (req, res, session) ->
 		return goToPortal res, u, 'logout=1'
 	res.status(403).send('Forbidden')
 
-sendHeaders = (res, session) ->
+sendHeaders = (req, session) ->
+	vhost = resolveAlias req
+	try
+		for k,v of conf.tsv.forgeHeaders[vhost](session)
+			req.headers[k] = v
+			req.rawHeaders.push k, v
+	catch err
+		console.log "No headers configuration found for #{vhost}"
+	true
 
 goToPortal = (res, uri, args) ->
 	urlc = conf.tsv.portal()
@@ -91,4 +99,11 @@ retrieveSession = (id) ->
 		return null
 	return session
 
-isUnprotected = (uri) ->
+isUnprotected = (req, uri) ->
+	vhost = resolveAlias req
+	unless conf.tsv.defaultCondition[vhost]?
+		return false
+	for rule,i in conf.tsv.locationRegexp[vhost]
+		if uri.match rule
+			return conf.tsv.locationProtection[vhost][i]
+	return conf.tsv.defaultProtection[vhost]

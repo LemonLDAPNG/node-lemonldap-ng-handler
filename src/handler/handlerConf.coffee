@@ -118,7 +118,7 @@ exports.reload = ->
 				exports.tsv.locationCount[vhost]++
 		unless exports.tsv.defaultCondition[vhost]
 			exports.tsv.defaultCondition[vhost] = () -> 1
-			exports.tsv.defaultProtection = 0
+			exports.tsv.defaultProtection = false
 
 	# Sessions storage initialization
 	unless sessionStorageModule = conf.globalStorage.replace /^Apache::Session::/, ''
@@ -167,7 +167,6 @@ exports.conditionSub = (cond) ->
 				exports._logout = exports.tsv.portal()
 				0
 	cond = exports.substitute(cond)
-	console.log("sub = function(session) {return (#{cond});}")
 	eval "sub = function(session) {return (#{cond});}"
 	return [sub, 0]
 
