@@ -128,7 +128,7 @@ exports.reload = ->
 			val = exports.substitute v
 			sub += "'#{h}': #{val},"
 		sub = sub.replace /,$/, ''
-		eval "this.tsv.forgeHeaders['#{vhost}'] = function() {return {#{sub}};}"
+		eval "exports.tsv.forgeHeaders['#{vhost}'] = function(session) {return {#{sub}};}"
 
 	# TODO: post url initialization
 
@@ -160,15 +160,16 @@ exports.conditionSub = (cond) ->
 				exports._logout = exports.tsv.portal()
 				0
 	cond = exports.substitute(cond)
-	eval "sub = function() {return (#{cond});}"
+	console.log("sub = function(session) {return (#{cond});}")
+	eval "sub = function(session) {return (#{cond});}"
 	return [sub, 0]
 
 exports.substitute = (expr) ->
 	expr
-	.replace /\$date\b/, 'this.date()'
-	.replace /\$vhost\b/, 'this.hostname()'
-	.replace /\$ip\b/, 'this.remote_ip()'
-	.replace /\$(_*[a-zA-Z]\w*)/g, 'this.datas.$1'
+	.replace /\$date\b/, 'exports.date()'
+	.replace /\$vhost\b/, 'exports.hostname()'
+	.replace /\$ip\b/, 'exports.remote_ip()'
+	.replace /\$(_*[a-zA-Z]\w*)/g, 'session.$1'
 
 exports.date = ->
 	# TODO
@@ -176,6 +177,6 @@ exports.date = ->
 exports.hostname = ->
 	# TODO
 
-remote_ip: ->
+exports.remote_ip = ->
 	# TODO
 

@@ -48,8 +48,8 @@ grant = (req, uri, session) ->
 		return false
 	for rule,i in conf.tsv.locationRegexp[vhost]
 		if uri.match rule
-			return conf.tsv.locationCondition[vhost][i]()
-	return conf.tsv.defaultCondition[vhost]
+			return conf.tsv.locationCondition[vhost][i](session)
+	return conf.tsv.defaultCondition[vhost](session)
 
 forbidden = (req, res, session) ->
 	uri = req.uri
@@ -76,7 +76,8 @@ resolveAlias = (req) ->
 fetchId = (req) ->
 	if req.headers.cookie
 		cor = cookieDetect.exec req.headers.cookie
-		if cor then return cor[1]
+		if cor and cor[1]
+			return cor[1]
 	else
 		return false
 

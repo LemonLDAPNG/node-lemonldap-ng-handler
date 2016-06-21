@@ -136,6 +136,9 @@
     },
     "test1.example.com": {
       "^/logout": "logout_sso",
+      "^/deny": "deny",
+      "^/rtyler": "$uid === 'rtyler'",
+      "^/dwho": "$uid === 'dwho'",
       "default": "accept"
     },
     "test2.example.com": {
