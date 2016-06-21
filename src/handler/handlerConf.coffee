@@ -117,7 +117,7 @@ exports.reload = ->
 	unless sessionStorageModule = conf.globalStorage.replace /^Apache::Session::/, ''
 		#TODO: die "globalStorage required"
 		1/0
-	exports.sa = require("./#{sessionStorageModule.toLowerCase()}Session").init(conf.globalStorageOptions);
+	exports.sa = require("./#{sessionStorageModule.toLowerCase()}Session").init(conf.globalStorageOptions)
 
 	# Headers initialization
 	for vhost, headers of conf.exportedHeaders
