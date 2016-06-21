@@ -159,13 +159,19 @@ exports.conditionSub = (cond) ->
 	if cond.match /^logout(?:_sso|_app|_app_sso|)(?:\s+(.*))?$/i
 		url = RegExp.$1
 		if url
-			return ->
-				exports._logout = url
+			return [
+				(session) ->
+					session._logout = url
+					0
 				0
+			]
 		else
-			return ->
-				exports._logout = exports.tsv.portal()
+			return [
+				(session) ->
+					session._logout = exports.tsv.portal()
+					0
 				0
+			]
 	cond = exports.substitute(cond)
 	eval "sub = function(session) {return (#{cond});}"
 	return [sub, 0]

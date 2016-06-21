@@ -8,8 +8,6 @@ handler.init({
   }
 });
 
-console.log(handler);
-
 app.use(handler.run);
 
 app.get('/', function(req, res) {

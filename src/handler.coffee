@@ -57,7 +57,8 @@ grant = (req, uri, session) ->
 
 forbidden = (req, res, session) ->
 	uri = req.uri
-	if u = conf.datas._logout
+	u = session._logout
+	if u
 		return goToPortal res, u, 'logout=1'
 	res.status(403).send('Forbidden')
 
@@ -87,7 +88,7 @@ resolveAlias = (req) ->
 fetchId = (req) ->
 	if req.headers.cookie
 		cor = cookieDetect.exec req.headers.cookie
-		if cor and cor[1]
+		if cor and cor[1] != '0'
 			return cor[1]
 	else
 		return false
