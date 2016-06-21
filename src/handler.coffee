@@ -37,6 +37,7 @@ exports.run = (req, res, next) ->
 			unless grant req, uri, session
 				return forbidden req, res, session
 			sendHeaders req, session
+			hideCookie req
 			return next()
 
 	if protection == 'unprotect'
@@ -108,3 +109,7 @@ isUnprotected = (req, uri) ->
 		if uri.match rule
 			return conf.tsv.locationProtection[vhost][i]
 	return conf.tsv.defaultProtection[vhost]
+
+hideCookie = (req) ->
+	req.headers.cookie = req.headers.cookie.replace cookieDetect, ''
+
