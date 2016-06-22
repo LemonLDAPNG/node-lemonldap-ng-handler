@@ -40,7 +40,9 @@ exports.session = {}
 exports.datas = {}
 exports.datasUpdate = 0
 
-# Initialization
+# Initialization method
+#
+# Get local and global configuration
 exports.init = (args={}) ->
 	exports.lmConf = require('./conf').init(args.configStorage)
 	unless exports.lmConf
@@ -70,6 +72,9 @@ exports.init = (args={}) ->
 exports.checkConf = ->
 	console.log "checkConf() must not be called"
 
+# Configuration compilation
+#
+# Compile LLNG configuration for performances
 exports.reload = ->
 	conf = exports.lmConf.getConf()
 	unless conf?
@@ -147,6 +152,8 @@ exports.reload = ->
 				exports.tsv.vhostAlias[a] = vhost
 	1
 
+# Build expression into functions (used to control user access and build
+# headers)
 exports.conditionSub = (cond) ->
 	OK = -> 1
 	NOK = -> 0
@@ -176,11 +183,21 @@ exports.conditionSub = (cond) ->
 	eval "sub = function(session) {return (#{cond});}"
 	return [sub, 0]
 
+# Interpolate expressions
 exports.substitute = (expr) ->
 	expr
+
+	# Translate simple Perl expressions. Note that expressions must be
+	# written in Javascript
+	.replace /\seq\s/, ' === '
+	.replace /\sne\s/, ' !== '
+
+	# Special macros
 	.replace /\$date\b/, 'exports.date()'
 	.replace /\$vhost\b/, 'exports.hostname()'
 	.replace /\$ip\b/, 'exports.remote_ip()'
+
+	# Session attributes: $xx is replaced by session.xx
 	.replace /\$(_*[a-zA-Z]\w*)/g, 'session.$1'
 
 exports.date = ->
