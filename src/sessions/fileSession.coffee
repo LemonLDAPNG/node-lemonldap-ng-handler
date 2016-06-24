@@ -8,12 +8,12 @@ exports.directory = '/tmp'
 
 # Initialization:
 # verify that directory exists
-exports.init = (opts={}) ->
+exports.init = (opts) ->
 	exports.directory = opts.Directory if opts.Directory
 	state = exports.fs.statSync exports.directory
 	unless state.isDirectory()
 		console.log "#{exports.directory} isn't usable to manage File sessions"
-		process.exit(1)
+		process.exit 1
 	exports
 
 # get(): Recover session data
