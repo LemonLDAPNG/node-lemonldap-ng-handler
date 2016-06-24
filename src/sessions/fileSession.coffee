@@ -12,16 +12,19 @@ exports.init = (opts={}) ->
 
 exports.get = (id) ->
 	datas = {}
-	try
-		return JSON.parse @fs.readFileSync "#{@directory}/#{id}"
-	catch error
-		console.log error
-		return null
+	return new Promise (resolve, reject) ->
+		exports.fs.readFile "#{exports.directory}/#{id}", (err, data) ->
+			if err
+				console.log err
+				resolve false
+			else
+				resolve data
 
 exports.update = (id, data) ->
-	try
-		return @fs.writeFileSync "#{@directory}/#{id}", JSON.stringify data
-	catch error
-		console.log error
-		return 0
+	return new Promise (resolve, reject) ->
+		exports.fs.writeFile "#{exports.directory}/#{id}", JSON.stringify data, (err,data) ->
+			if err
+				reject err
+			else
+				resolve data
 

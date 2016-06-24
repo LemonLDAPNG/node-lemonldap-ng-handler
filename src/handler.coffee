@@ -30,21 +30,30 @@ exports.run = (req, res, next) ->
 		# TODO: verify this
 		return next()
 
-	id = fetchId(req)
-	if id
-		session = retrieveSession(id)
-		if session
-			unless grant req, uri, session
-				return forbidden req, res, session
-			sendHeaders req, session
-			hideCookie req
-			return next()
-
-	if protection == 'unprotect'
-		# TODO: status, log ?
-		return next()
-
-	return goToPortal res, 'http://' + vhost + uri
+	d = new Promise (resolve,reject) ->
+		id = fetchId(req)
+		if id
+			retrieveSession(id).then (session) ->
+				if session
+					unless grant req, uri, session
+						forbidden req, res, session
+						reject false
+					else
+						sendHeaders req, session
+						hideCookie req
+						resolve()
+			, (err) ->
+				console.log err
+				res.status(500).send 'Server error'
+		else
+			reject true
+	d.then () ->
+		next()
+	, (redirect) ->
+		if protection == 'unprotect'
+			next()
+		if redirect
+			goToPortal res, 'http://' + vhost + uri
 
 grant = (req, uri, session) ->
 	vhost = resolveAlias req
@@ -61,7 +70,7 @@ forbidden = (req, res, session) ->
 	u = session._logout
 	if u
 		return goToPortal res, u, 'logout=1'
-	res.status(403).send('Forbidden')
+	res.status(403).send 'Forbidden'
 
 sendHeaders = (req, session) ->
 	vhost = resolveAlias req
@@ -86,6 +95,7 @@ resolveAlias = (req) ->
 	vhost = req.headers.host.replace /:.*$/, ''
 	return conf.tsv.vhostAlias[vhost] || vhost
 
+# Get cookie value
 fetchId = (req) ->
 	if req.headers.cookie
 		cor = cookieDetect.exec req.headers.cookie
@@ -94,13 +104,25 @@ fetchId = (req) ->
 	else
 		return false
 
+# Get session from store
 retrieveSession = (id) ->
 	session = conf.sa.get id
 	unless session
 		console.log "Session #{id} can't be found in store"
-		return null
+		return false
+	# Timestamp in seconds
+	now = Date.now()/1000 | 0
+	if now - session._utime > conf.tsv.timeout or ( conf.tsv.timeoutActivity and session._lastSeen and now - $session._lastSeen > conf.tsv.timeoutActivity )
+		console.log "Session #{id} expired"
+		return false
+
+	# Update the session to notify activity, if necessary
+	if conf.tsv.timeoutActivity and now - session._lastSeen > 60
+		session._lastSeen = now
+		conf.sa.update id, session
 	return session
 
+# Check if uri is protected
 isUnprotected = (req, uri) ->
 	vhost = resolveAlias req
 	unless conf.tsv.defaultCondition[vhost]?
@@ -110,6 +132,7 @@ isUnprotected = (req, uri) ->
 			return conf.tsv.locationProtection[vhost][i]
 	return conf.tsv.defaultProtection[vhost]
 
+# Remove LLNG cookie from headers
 hideCookie = (req) ->
 	req.headers.cookie = req.headers.cookie.replace cookieDetect, ''
 
