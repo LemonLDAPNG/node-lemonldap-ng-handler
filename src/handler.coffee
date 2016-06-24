@@ -45,6 +45,7 @@ exports.run = (req, res, next) ->
 			, (err) ->
 				console.log err
 				res.status(500).send 'Server error'
+				reject false
 		else
 			reject true
 	d.then () ->

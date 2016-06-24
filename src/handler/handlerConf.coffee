@@ -36,7 +36,6 @@ exports.logLevels =
 	info: 1
 	debug:0
 exports.sa = {}
-exports.session = {}
 exports.datas = {}
 exports.datasUpdate = 0
 
