@@ -49,6 +49,12 @@ LLNG is designed in 3 kinds of elements:
 This module is the Node.js handler. See [Lemonldap::NG website](http://lemonldap-ng.org)
 for more.
 
+## TODO
+
+* Custom functions
+* Copy Safelib.pm
+* Think to menu problem
+
 ## BUG REPORT
 
 Use OW2 system to report bug or ask for features:
