@@ -1,8 +1,8 @@
 var express = require('express');
 var app = express();
-var handler = require('./lib/handler');
+var m = require('./lib/handler');
 
-handler.init({
+var handler = new m({
   configStorage: {
     "confFile": "test/lemonldap-ng.ini"
   }

@@ -1,6 +1,5 @@
 module.exports = function(grunt) {
   grunt.initConfig({
-
     coffee: {
       glob_to_multiple: {
         expand: true,
@@ -11,7 +10,6 @@ module.exports = function(grunt) {
         ext: '.js'
       }
     }
-
   });
   grunt.loadNpmTasks('grunt-contrib-coffee');
 

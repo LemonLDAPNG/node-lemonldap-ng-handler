@@ -6,7 +6,7 @@
 
 class fileConf
 	fs: require 'fs'
-	init: (args) ->
+	constructor: (args) ->
 		unless @dirName = args.dirName
 			console.log "'dirName' is required in 'File' configuration type ! \n"
 			return null
@@ -60,4 +60,4 @@ class fileConf
 		@fs.unlink "#{@dirName}/lmConf-#{fields.cfgNum}.js"
 		1
 
-module.exports = new fileConf()
+module.exports = fileConf

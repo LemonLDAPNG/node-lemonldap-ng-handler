@@ -3,13 +3,16 @@
 #
 # See README.md for license and copyright
 ###
-exports.init = (@key, @mode) ->
-	exports
 
-exports.encrypt = (s) ->
-	console.log 'TODO'
-	s
+class crypto
+	constructor: (@key, @mode) ->
 
-exports.decrypt = (s) ->
-	console.log 'TODO'
-	s
+	encrypt: (s) ->
+		console.log 'TODO'
+		s
+
+	decrypt: (s) ->
+		console.log 'TODO'
+		s
+
+module.exports = crypto
