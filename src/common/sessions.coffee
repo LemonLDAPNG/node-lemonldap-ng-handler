@@ -18,7 +18,7 @@ class sessions
 	get: (id) ->
 		return new Promise (resolve, reject) ->
 			localCache.get(id).then (lsession) ->
-				if lsession?
+				if lsession
 					resolve lsession
 				else
 					backend.get(id).then (session) ->
@@ -26,10 +26,10 @@ class sessions
 						localCache.set id, session
 						resolve session
 					.catch () ->
-						console.log "Session #{id} not found"
-						resolve null
+						reject null
 			.catch () ->
-				resolve null
+				console.log "localCache error"
+				reject false
 
     # Update session: update both central and local DB and return only central
 	# DB value

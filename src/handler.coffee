@@ -34,14 +34,14 @@ class handler
 		id = fetchId(req)
 		if id
 			retrieveSession(id).then (session) ->
-				unless session
-					goToPortal res, 'http://' + vhost + uri
+				unless grant req, uri, session
+					forbidden req, res, session
 				else
-					unless grant req, uri, session
-						forbidden req, res, session
-					else
-						sendHeaders req, session
-						hideCookie req
+					sendHeaders req, session
+					hideCookie req
+					return next()
+			.catch () ->
+				goToPortal res, 'http://' + vhost + uri
 		else
 			goToPortal res, 'http://' + vhost + uri
 
@@ -98,14 +98,11 @@ class handler
 	retrieveSession = (id) ->
 		d = new Promise (resolve, reject) ->
 			conf.sa.get(id).then (session) ->
-				unless session
-					console.log "Session #{id} can't be found in store"
-					resolve false
 				# Timestamp in seconds
 				now = Date.now()/1000 | 0
 				if now - session._utime > conf.tsv.timeout or ( conf.tsv.timeoutActivity and session._lastSeen and now - $session._lastSeen > conf.tsv.timeoutActivity )
 					console.log "Session #{id} expired"
-					resolve false
+					reject false
 
 				# Update the session to notify activity, if necessary
 				if conf.tsv.timeoutActivity and now - session._lastSeen > 60
@@ -113,7 +110,8 @@ class handler
 					conf.sa.update id, session
 				resolve session
 			.catch () ->
-				resolve false
+				console.log "Session #{id} can't be found in store"
+				reject false
 		d
 
 	# Check if uri is protected
