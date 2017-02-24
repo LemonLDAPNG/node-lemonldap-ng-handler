@@ -65,9 +65,12 @@ Use OW2 system to report bug or ask for features:
 Lemonldap::NG is available at
 http://forge.objectweb.org/project/showfiles.php?group_id=274
 
+This library is available at
+https://github.com/LemonLDAPNG/node-lemonldap-ng-handler
+
 ## COPYRIGHT AND LICENSE
 
-Copyright (C) 2016 by [Xavier Guimard](mailto:x.guimard@free.fr)
+Copyright (C) 2016-2017 by [Xavier Guimard](mailto:x.guimard@free.fr)
 
 This library is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
