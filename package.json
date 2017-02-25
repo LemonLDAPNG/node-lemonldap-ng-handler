@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "file-cache-simple": "0.0.5",
-    "inireader": "^1.0.0"
+    "inireader": "^1.0.0",
+    "node-dbi": "^0.7.1"
   }
 }

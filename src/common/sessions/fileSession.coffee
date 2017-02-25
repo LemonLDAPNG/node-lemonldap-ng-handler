@@ -5,7 +5,7 @@
 ###
 
 fs = require 'fs'
-class session
+class fileSession
 	directory: '/tmp'
 
 	# Initialization:
@@ -47,4 +47,4 @@ class session
 				else
 					resolve data
 
-module.exports = session
+module.exports = fileSession
