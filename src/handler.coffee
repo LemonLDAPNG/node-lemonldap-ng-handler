@@ -33,15 +33,16 @@ class handler
 
 		id = fetchId(req)
 		if id
-			retrieveSession(id).then (session) ->
-				unless grant req, uri, session
-					forbidden req, res, session
-				else
-					sendHeaders req, session
-					hideCookie req
-					return next()
-			.catch () ->
-				goToPortal res, 'http://' + vhost + uri
+			retrieveSession id
+				.then (session) ->
+					unless grant req, uri, session
+						forbidden req, res, session
+					else
+						sendHeaders req, session
+						hideCookie req
+						return next()
+				.catch () ->
+					goToPortal res, 'http://' + vhost + uri
 		else
 			goToPortal res, 'http://' + vhost + uri
 
@@ -97,21 +98,22 @@ class handler
 	# Get session from store
 	retrieveSession = (id) ->
 		d = new Promise (resolve, reject) ->
-			conf.sa.get(id).then (session) ->
-				# Timestamp in seconds
-				now = Date.now()/1000 | 0
-				if now - session._utime > conf.tsv.timeout or ( conf.tsv.timeoutActivity and session._lastSeen and now - $session._lastSeen > conf.tsv.timeoutActivity )
-					console.log "Session #{id} expired"
-					reject false
+			conf.sa.get id
+				.then (session) ->
+					# Timestamp in seconds
+					now = Date.now()/1000 | 0
+					if now - session._utime > conf.tsv.timeout or ( conf.tsv.timeoutActivity and session._lastSeen and now - $session._lastSeen > conf.tsv.timeoutActivity )
+						console.log "Session #{id} expired"
+						reject false
 
-				# Update the session to notify activity, if necessary
-				if conf.tsv.timeoutActivity and now - session._lastSeen > 60
-					session._lastSeen = now
-					conf.sa.update id, session
-				resolve session
-			.catch () ->
-				console.log "Session #{id} can't be found in store"
-				reject false
+					# Update the session to notify activity, if necessary
+					if conf.tsv.timeoutActivity and now - session._lastSeen > 60
+						session._lastSeen = now
+						conf.sa.update id, session
+					resolve session
+				.catch () ->
+					console.log "Session #{id} can't be found in store"
+					reject false
 		d
 
 	# Check if uri is protected

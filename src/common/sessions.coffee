@@ -17,19 +17,21 @@ class sessions
 
 	get: (id) ->
 		return new Promise (resolve, reject) ->
-			localCache.get(id).then (lsession) ->
-				if lsession
-					resolve lsession
-				else
-					backend.get(id).then (session) ->
-						console.log "Download session #{id}"
-						localCache.set id, session
-						resolve session
-					.catch () ->
-						reject null
-			.catch () ->
-				console.log "localCache error"
-				reject false
+			localCache.get id
+				.then (lsession) ->
+					if lsession
+						resolve lsession
+					else
+						backend.get id
+							.then (session) ->
+								console.log "Download session #{id}"
+								localCache.set id, session
+								resolve session
+							.catch () ->
+								reject null
+				.catch () ->
+					console.log "localCache error"
+					reject false
 
     # Update session: update both central and local DB and return only central
 	# DB value
@@ -39,11 +41,11 @@ class sessions
 				backend id, data
 				localCache.set id, data
 			]
-			.then (v) ->
-				resolve v[0]
-			.catch () ->
-				console.log "Session update error"
-				reject null
+				.then (v) ->
+					resolve v[0]
+				.catch () ->
+					console.log "Session update error"
+					reject null
 
 	newCache = (args={}) ->
 		fileCache = require('file-cache-simple')

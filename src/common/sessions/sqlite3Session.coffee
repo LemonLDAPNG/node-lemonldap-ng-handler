@@ -5,11 +5,11 @@ class SQLite3Session extends DBISession
 		if opts.DataSource.match /^dbi:SQLite:.*(dbname=[\w\-\.\/]+)(.*$)/
 			db = RegExp.$1
 			tmp = $2
-			table = if opts.TableName then opts.TableName else 'Sessions'
+			table = if opts.TableName then opts.TableName else 'sessions'
 			# get opts
 			@config =
 				database: db
-			super('sqlite3',@config)
+			super 'sqlite3', @config
 		else
 			console.log 'Bad DataSource'
 
