@@ -200,13 +200,6 @@ class handlerConf
 	substitute: (expr) ->
 		expr
 
-		# Translate simple Perl expressions. Note that expressions must be
-		# written in Javascript
-		.replace /\seq\s/g, ' === '
-		.replace /\sne\s/g, ' !== '
-		.replace /\sor\s/g, ' || '
-		.replace /\sand\s/g, ' && '
-
 		# Special macros
 		.replace /\$date\b/g, 'this.date()'
 		.replace /\$vhost\b/g, 'this.hostname()'
