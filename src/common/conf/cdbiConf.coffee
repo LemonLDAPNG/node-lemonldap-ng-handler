@@ -11,21 +11,32 @@ btype =
 	Pg: "pg"
 	mysql: "mysql"
 
+convert =
+	database: 'database'
+	dbname:   'database'
+	host:     'host'
+	port:     'port'
+
 class cdbiConf
 	constructor: (args) ->
-		if args.dbiChain.match /^dbi:(SQLite|Pg|mysql):.*dbname=([\w\-\.\/]+)(.*$)/
-			type = RegExp.$1
-			db = RegExp.$2
-			conn =
-				database: db
+		if args.dbiChain.match /^dbi:(SQLite|Pg|mysql):(.*)/
+			type = btype[RegExp.$1]
+			dbiargs = RegExp.$2
+			tmp = dbiargs.split /;/
+			dbargs =
 				user: args.dbiUser
 				password: args.dbiPassword
-			conn.path = db if type == 'SQLite'
-			@db = new DBWrapper btype[type], conn
+			for t in tmp
+				t2 = t.split /=/
+				if t.match /=/
+					if k = convert[t2[0]]
+						dbargs[k] = t2[1]
+			dbargs.path = dbargs.database if type == 'sqlite3'
+			@db = new DBWrapper type, dbargs
 			@table = if args.dbiTable then args.dbiTable else 'lmConfig'
 			@db.connect()
 		else
-			console.log "Invalid dbiChain: #{args.dbiChain.match}"
+			console.log "Invalid dbiChain: #{args.dbiChain}"
 			process.exit 1
 
 	available: ->

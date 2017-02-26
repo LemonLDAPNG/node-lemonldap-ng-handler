@@ -8,7 +8,7 @@ convert =
 
 class MySQLSession extends DBISession
 	constructor: (opts) ->
-		if opts.DataSource.match /^dbi:mysql:(.*$)/
+		if opts.DataSource.match /^dbi:Pg:(.*$)/
 			dbiargs = RegExp.$1
 			table = if opts.TableName then opts.TableName else 'sessions'
 			tmp = dbiargs.split /;/
@@ -22,7 +22,7 @@ class MySQLSession extends DBISession
 						dbargs[k] = t2[1]
 				else
 					dbargs.database = t
-			super('mysql', dbargs)
+			super('pg', dbargs)
 		else
 			console.log 'Bad DataSource'
 
