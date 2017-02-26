@@ -4,7 +4,7 @@ var handler = require('./lib/handler');
 
 handler.init({
   configStorage: {
-    "confFile": "test/lemonldap-ng.ini"
+    "confFile": "../lemonldap/e2e-tests/conf/lemonldap-ng.ini"
   }
 });
 

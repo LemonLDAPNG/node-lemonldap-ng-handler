@@ -66,6 +66,7 @@ Note: rules and headers must be written in Javascript and not in Perl. Example:
 
 * rules:
 
+
     default: $uid == 'dwho'
     ^/deny : deny
 
