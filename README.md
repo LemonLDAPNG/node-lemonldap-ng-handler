@@ -4,22 +4,22 @@ Experimental Lemonldap::NG handler for node.js
 
 ## SYNOPSIS
 
-    # Variables
+    // Variables
     var express = require('express');
     var app = express();
     var handler = require('node-lemonldap-ng-handler');
-    #
-    # initialize handler (optional args)
+    
+    // initialize handler (optional args)
     handler.init({
       configStorage: {
         "confFile":"test/lemonldap-ng.ini"
       }
     });
-    #
-    # and load it
+    
+    // and load it
     app.use(handler.run);
-    #
-    # Then simply use your express app
+    
+    // Then simply use your express app
     app.get('/', function(req, res) {
       return res.send('Hello ' + req.headers['Auth-User'] + ' !');
     });
