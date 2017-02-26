@@ -69,7 +69,7 @@ lemonldap-ng.ini. You must rewrite them on one line *(even in other sections)*.
 Nothing to change, node-lemonldap-ng-handler is compatible with the following
 LemonLDAP::NG backends:
 * File
-* CDBI
+* CDBI _(MySQL, PostgreSQL and SQLite3 only)_
 
 #### New section `[node-handler]`
 
