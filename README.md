@@ -9,7 +9,7 @@ If the job runs well, it will be integrated to version 2.0.0 of Lemonldap::NG.
     # Variables
     var express = require('express');
     var app = express();
-    var handler = require('./lib/handler');
+    var handler = require('node-lemonldap-ng-handler');
     #
     # initialize handler (optional args)
     handler.init({
@@ -48,6 +48,10 @@ LLNG is designed in 3 kinds of elements:
 
 This module is the Node.js handler. See [Lemonldap::NG website](http://lemonldap-ng.org)
 for more.
+
+## INSTALLATION
+
+    npm install node-lemonldap-ng-handler
 
 ## CONFIGURATION
 
