@@ -51,22 +51,39 @@ for more.
 
 ## INSTALLATION
 
+Of course, you must have a [LemonLDAP::NG](https://lemonldap-ng.org) system
+installed in your organization. To install node handler, use simply:
+
     npm install node-lemonldap-ng-handler
 
 ## CONFIGURATION
 
-Node-lemonldap-ng-handler uses lemonldap-ng.ini file, section "node-handler".
-You must set the list of virtual hosts handled by node.js in key "nodeVhosts".
+### Configuration file *(lemonldap-ng.ini)*
 
-**Note important**: node-lemonldap-ng-handler can't read multilines in
+Node-lemonldap-ng-handler uses LemonLDAP::NG configuration file, sections
+`[configuration]` and `[node-handler]`.
+
+> **Note important**: node-lemonldap-ng-handler can't read multilines in
 lemonldap-ng.ini. You must rewrite them on one line *(even in other sections)*.
+
+#### Section `[configuration]`
+
+Nothing to change, node-lemonldap-ng-handler is compatible with the following
+LemonLDAP::NG backends:
+* File
+* CDBI
+
+#### New section `[node-handler]`
+
+You can overwrite here LemonLDAP::NG configuration keys. You must set the list
+of virtual hosts handled by node.js in key `nodeVhosts`.
 
 Example:
 
     [node-handler]
     nodeVhosts = test1.example.com, test2.example.com
 
-Note: rules and headers must be written in Javascript and not in Perl. Example:
+**Rules and headers must be written in Javascript**, not in Perl. Example:
 
     default: $uid == 'dwho'
     ^/deny : deny
@@ -74,17 +91,14 @@ Note: rules and headers must be written in Javascript and not in Perl. Example:
 You'll have a warning in the manager when saving this rules since Perl doesn't
 understand Javascript.
 
-### Configuration and sessions backends
+### Sessions backends
 
-Node-lemonldap-ng-handler is compatible with the following backends:
-* Configuration:
-  * File
-  * CDBI
-* Sessions:
-  * Apache::Session::File, Apache::Session::Browseable::File
-  * Apache::Session::MySQL, Apache::Session::Browseable::MySQL
-  * Apache::Session::Postgres, Apache::Session::Browseable::Postgres
-  * Apache::Session::SQLite3, Apache::Session::Browseable::SQLite3
+Node-lemonldap-ng-handler is compatible with the following Lemonldap::NG
+backends:
+* Apache::Session::File, Apache::Session::Browseable::File
+* Apache::Session::MySQL, Apache::Session::Browseable::MySQL
+* Apache::Session::Postgres, Apache::Session::Browseable::Postgres
+* Apache::Session::SQLite3, Apache::Session::Browseable::SQLite3
 
 ## TODO
 
