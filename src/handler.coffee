@@ -4,13 +4,11 @@
 # See README.md for license and copyright
 ###
 conf          = null
-cookieDetect  = null
 
 class handler
 	constructor: (args) ->
 		m = require('./handlerConf')
 		conf          = new m(args)
-		cookieDetect  = new RegExp "\\b#{conf.tsv.cookieName}=([^;]+)"
 
 	run: (req, res, next) ->
 		vhost = req.headers.host
@@ -89,7 +87,7 @@ class handler
 	# Get cookie value
 	fetchId = (req) ->
 		if req.headers.cookie
-			cor = cookieDetect.exec req.headers.cookie
+			cor = conf.tsv.cookieDetect.exec req.headers.cookie
 			if cor and cor[1] != '0'
 				return cor[1]
 		else
@@ -128,7 +126,7 @@ class handler
 
 	# Remove LLNG cookie from headers
 	hideCookie = (req) ->
-		req.headers.cookie = req.headers.cookie.replace cookieDetect, ''
+		req.headers.cookie = req.headers.cookie.replace conf.tsv.cookieDetect, ''
 
 h = {}
 

@@ -1,4 +1,4 @@
-DBISession = require 'dbiSession'
+DBISession = require './dbiSession'
 
 class MySQLSession extends DBISession
 	constructor: (opts) ->

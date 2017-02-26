@@ -29,9 +29,9 @@ class sessions
 								resolve session
 							.catch () ->
 								reject null
-				.catch () ->
-					console.log "localCache error"
-					reject false
+				.catch (e) ->
+					console.log "localCache error", e
+					reject e
 
     # Update session: update both central and local DB and return only central
 	# DB value

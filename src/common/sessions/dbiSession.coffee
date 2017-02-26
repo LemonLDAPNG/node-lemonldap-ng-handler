@@ -20,13 +20,13 @@ class DBISession
 			db.fetchRow "SELECT * FROM #{table} WHERE id=?", [id], (err, res) ->
 				if err
 					console.log err
-					resolve false
+					reject false
 				else
 					try
-						tmp = JSON.parse data.a_session
+						tmp = JSON.parse res.a_session
 						resolve tmp
 					catch err
-						console.log "Error when parsing session file (#{err})"
+						console.log "Error when parsing session file (#{err})", res
 						reject err
 		q
 

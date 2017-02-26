@@ -1,14 +1,14 @@
-DBISession = require 'dbiSession'
+DBISession = require './dbiSession'
 
 class SQLite3Session extends DBISession
 	constructor: (opts) ->
-		if opts.DataSource.match /^dbi:SQLite:.*(dbname=[\w\-\.\/]+)(.*$)/
+		if opts.DataSource.match /^dbi:SQLite:.*dbname=([\w\-\.\/]+)(.*$)/
 			db = RegExp.$1
-			tmp = $2
+			#tmp = RegExp.$2
 			table = if opts.TableName then opts.TableName else 'sessions'
 			# get opts
 			@config =
-				database: db
+				path: db
 			super 'sqlite3', @config
 		else
 			console.log 'Bad DataSource'

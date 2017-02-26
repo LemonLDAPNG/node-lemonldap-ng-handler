@@ -24,23 +24,31 @@ class conf
 			console.log e
 			return null
 		console.log @type + ' module loaded'
-		for k in ['available','lastCfg','lock','isLocked','unlock','store','load','delete']
-			this[k] = @module[k]
-		this
+		#for k in ['available','lastCfg','lock','isLocked','unlock','store','load','delete']
+		#	this[k] = @module[k]
 
 	getConf: (args={}) ->
-		args.cfgNum or= @module.lastCfg()
-		unless args.cfgNum
-			console.log "No configuration available in backend.\n"
-			return null
-		r = @module.load args.cfgNum
-		unless r
-			console.log "Get configuration #{args.cfgNum} failed\n"
-			return null
-		unless args.raw
-			m = require("./crypto")
-			r.cipher = new m(r.key)
-		r
+		mod = @module
+		d = new Promise (resolve,reject) ->
+			mod.lastCfg()
+				.then (cn) ->
+					args.cfgNum or= cn
+					unless args.cfgNum
+						console.log "No configuration available in backend.\n"
+						reject null
+					mod.load args.cfgNum
+						.then (r) ->
+							unless args.raw
+								m = require("./crypto")
+								r.cipher = new m(r.key)
+							console.log "Configuration #{args.cfgNum} loaded"
+							resolve r
+						.catch (e) ->
+							console.log "Get configuration #{args.cfgNum} failed\n", e
+							reject null
+				.catch (e) ->
+					console.log 'No last cfg', e
+		d
 
 	getLocalConf: (section,file,loadDefault=true) ->
 		file = file or @confFile

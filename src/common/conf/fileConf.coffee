@@ -13,7 +13,6 @@ class fileConf
 		unless @fs.lstatSync(@dirName).isDirectory()
 			console.log "Directory #{@dirName} doesn't exist\n"
 			return null
-		this
 
 	available: ->
 		res = []

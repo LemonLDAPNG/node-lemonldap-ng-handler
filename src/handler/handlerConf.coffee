@@ -51,7 +51,7 @@ class handlerConf
 			console.log "Unable to build configuration"
 			return null
 
-		@localConfig = @lmConf.getLocalConf 'handler'
+		@localConfig = @lmConf.getLocalConf 'node-handler'
 		@localConfig[i] = args[i] for i of args
 
 		@checkTime = @localConfig.checkTime if @localConfig.checkTime
@@ -67,7 +67,6 @@ class handlerConf
 
 		# Load initial configuration
 		@reload()
-		this
 
 	# Note that checkConf isn't needed: no shared cache with node.js
 	checkConf: ->
@@ -77,82 +76,94 @@ class handlerConf
 	#
 	# Compile LLNG configuration for performances
 	reload: ->
-		conf = @lmConf.getConf()
-		unless conf?
-			console.log "Die"
-			1/0
+		self = this
+		@lmConf.getConf()
+			.then (conf) ->
+				for k of self.localConfig
+					conf[k] = self.localConfig[k]
 
-		# Default values initialization
-		for w in ['cda', 'cookieExpiration', 'cipher', 'cookieName', 'customFunctions', 'httpOnly', 'securedCookie', 'timeoutActivity', 'useRedirectOnError', 'useRedirectOnForbidden', 'whatToTrace']
-			@tsv[w] = conf[w]
+				vhostList = if conf.nodeVhosts then conf.nodeVhosts.split(/[,\s]+/) else []
 
-		for w in ['https', 'port', 'maintenance']
-			if conf[w]?
-				@tsv[w] = {_: conf[w]}
-				if conf.vhostOptions
-					name = "vhost#{w.unFirst()}"
-					for vhost, vConf of conf.vhostOptions
-						val = vConf[name]
-						# TODO: log
-						@tsv[w][vhost] = val if val>0
+				# Default values initialization
+				for w in ['cda', 'cookieExpiration', 'cipher', 'cookieName', 'customFunctions', 'httpOnly', 'securedCookie', 'timeoutActivity', 'useRedirectOnError', 'useRedirectOnForbidden', 'whatToTrace']
+					self.tsv[w] = conf[w]
 
-		# Portal initialization
-		unless conf.portal
-			# TODO die
-			1/0
-		if conf.portal.match(/[\$\(&\|"']/)
-			@tsv.portal = @conditionSub conf.portal
-		else
-			@tsv.portal = ->
-				conf.portal
+				for w in ['https', 'port', 'maintenance']
+					if conf[w]?
+						self.tsv[w] = { _: conf[w] }
+						if conf.vhostOptions
+							name = "vhost#{w.unFirst()}"
+							for vhost, vConf of conf.vhostOptions
+								val = vConf[name]
+								# TODO: log
+								self.tsv[w][vhost] = val if val>0
 
-		# Location rules initialization
-		for vhost, rules of conf.locationRules
-			@tsv.locationCount[vhost] = 0
-			for url, rule of rules
-				[cond, prot] = @conditionSub rule
-				if url == 'default'
-					@tsv.defaultCondition[vhost] = cond
-					@tsv.defaultProtection[vhost] = prot
+				# Portal initialization
+				unless conf.portal
+					# TODO die
+					1/0
+				if conf.portal.match(/[\$\(&\|"']/)
+					self.tsv.portal = self.conditionSub conf.portal
 				else
-					@tsv.locationCondition[vhost] = [] unless @tsv.locationCondition[vhost]?
-					@tsv.locationCondition[vhost].push cond
-					@tsv.locationProtection[vhost] = [] unless @tsv.locationProtection[vhost]?
-					@tsv.locationProtection[vhost].push prot
-					@tsv.locationRegexp[vhost] = [] unless @tsv.locationRegexp[vhost]?
-					@tsv.locationRegexp[vhost].push(new RegExp url.replace /\(\?#.*?\)/,'')
-					@tsv.locationCount[vhost]++
-			unless @tsv.defaultCondition[vhost]
-				@tsv.defaultCondition[vhost] = () -> 1
-				@tsv.defaultProtection = false
+					self.tsv.portal = ->
+						conf.portal
 
-		# Sessions storage initialization
-		unless sessionStorageModule = conf.globalStorage.replace /^Apache::Session::/, ''
-			#TODO: die "globalStorage required"
-			1/0
-		m = require "./sessions"
-		@sa = new m sessionStorageModule, conf.globalStorageOptions
+				# Location rules initialization
+				for vhost, rules of conf.locationRules
+					if vhostList.indexOf(vhost) != -1
+						console.log "Compiling rules for #{vhost}"
+						self.tsv.locationCount[vhost] = 0
+						for url, rule of rules
+							[cond, prot] = self.conditionSub rule
+							if url == 'default'
+								self.tsv.defaultCondition[vhost] = cond
+								self.tsv.defaultProtection[vhost] = prot
+							else
+								self.tsv.locationCondition[vhost] = [] unless self.tsv.locationCondition[vhost]?
+								self.tsv.locationCondition[vhost].push cond
+								self.tsv.locationProtection[vhost] = [] unless self.tsv.locationProtection[vhost]?
+								self.tsv.locationProtection[vhost].push prot
+								self.tsv.locationRegexp[vhost] = [] unless self.tsv.locationRegexp[vhost]?
+								self.tsv.locationRegexp[vhost].push(new RegExp url.replace /\(\?#.*?\)/,'')
+								self.tsv.locationCount[vhost]++
+						unless self.tsv.defaultCondition[vhost]
+							self.tsv.defaultCondition[vhost] = () -> 1
+							self.tsv.defaultProtection = false
 
-		# Headers initialization
-		for vhost, headers of conf.exportedHeaders
-			@tsv.headerList[vhost] = [] unless @tsv.headerList[vhost]?
-			@tsv.headerList[vhost].push(a) for a of headers
-			sub = ''
-			for h,v of headers
-				val = @substitute v
-				sub += "'#{h}': #{val},"
-			sub = sub.replace /,$/, ''
-			eval "this.tsv.forgeHeaders['#{vhost}'] = function(session) {return {#{sub}};}"
+				# Sessions storage initialization
+				unless sessionStorageModule = conf.globalStorage.replace /^Apache::Session::/, ''
+					#TODO: die "globalStorage required"
+					1/0
+				m = require "./sessions"
+				self.sa = new m sessionStorageModule, conf.globalStorageOptions
 
-		# TODO: post url initialization
+				# Headers initialization
+				for vhost, headers of conf.exportedHeaders
+					if vhostList.indexOf(vhost) != -1
+						console.log "Compiling headers for #{vhost}"
+						self.tsv.headerList[vhost] = [] unless self.tsv.headerList[vhost]?
+						self.tsv.headerList[vhost].push(a) for a of headers
+						sub = ''
+						for h,v of headers
+							val = self.substitute v
+							sub += "'#{h}': #{val},"
+						sub = sub.replace /,$/, ''
+						eval "self.tsv.forgeHeaders['#{vhost}'] = function(session) {return {#{sub}};}"
 
-		# Alias initialization
-		for vhost,aliases of conf.vhostOptions
-			if aliases
-				t = aliases.split /\s+/
-				for a in t
-					@tsv.vhostAlias[a] = vhost
-		1
+				# TODO: post url initialization
+
+				# Alias initialization
+				for vhost,aliases of conf.vhostOptions
+					if aliases
+						t = aliases.split /\s+/
+						for a in t
+							self.tsv.vhostAlias[a] = vhost
+
+				self.tsv['cookieDetect'] = new RegExp "\\b#{self.tsv.cookieName}=([^;]+)"
+
+				1
+			.catch (e) ->
+				console.log "Can't get configuration", e
 
 	# Build expression into functions (used to control user access and build
 	# headers)
@@ -191,13 +202,15 @@ class handlerConf
 
 		# Translate simple Perl expressions. Note that expressions must be
 		# written in Javascript
-		.replace /\seq\s/, ' === '
-		.replace /\sne\s/, ' !== '
+		.replace /\seq\s/g, ' === '
+		.replace /\sne\s/g, ' !== '
+		.replace /\sor\s/g, ' || '
+		.replace /\sand\s/g, ' && '
 
 		# Special macros
-		.replace /\$date\b/, 'this.date()'
-		.replace /\$vhost\b/, 'this.hostname()'
-		.replace /\$ip\b/, 'this.remote_ip()'
+		.replace /\$date\b/g, 'this.date()'
+		.replace /\$vhost\b/g, 'this.hostname()'
+		.replace /\$ip\b/g, 'this.remote_ip()'
 
 		# Session attributes: $xx is replaced by session.xx
 		.replace /\$(_*[a-zA-Z]\w*)/g, 'session.$1'
