@@ -27,8 +27,8 @@ class sessions
 								console.log "Download session #{id}"
 								localCache.set id, session
 								resolve session
-							.catch () ->
-								reject null
+							.catch (e) ->
+								reject e
 				.catch (e) ->
 					console.log "localCache error", e
 					reject e
@@ -43,9 +43,9 @@ class sessions
 			]
 				.then (v) ->
 					resolve v[0]
-				.catch () ->
-					console.log "Session update error"
-					reject null
+				.catch (e) ->
+					console.log "Session update error: #{e}"
+					reject e
 
 	newCache = (args={}) ->
 		fileCache = require('file-cache-simple')

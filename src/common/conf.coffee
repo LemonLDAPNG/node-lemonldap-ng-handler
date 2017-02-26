@@ -50,7 +50,7 @@ class conf
 					console.log 'No last cfg', e
 		d
 
-	getLocalConf: (section,file,loadDefault=true) ->
+	getLocalConf: (section,file,loadDefault=false) ->
 		file = file or @confFile
 		iniparser = require('inireader').IniReader()
 		iniparser.load file
