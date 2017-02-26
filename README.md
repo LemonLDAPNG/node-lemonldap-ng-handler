@@ -49,11 +49,47 @@ LLNG is designed in 3 kinds of elements:
 This module is the Node.js handler. See [Lemonldap::NG website](http://lemonldap-ng.org)
 for more.
 
+## CONFIGURATION
+
+Node-lemonldap-ng-handler uses lemonldap-ng.ini file, section "node-handler".
+You must set the list of virtual hosts handled by node.js in key "nodeVhosts".
+
+**Note important**: node-lemonldap-ng-handler can't read multilines in
+lemonldap-ng.ini. You must rewrite them on one line *(even in other sections)*.
+
+Example:
+
+    [node-handler]
+    nodeVhosts = test1.example.com, test2.example.com
+
+Note: rules and headers must be written in Javascript and not in Perl. Example:
+
+* rules:
+
+    default: $uid == 'dwho'
+    ^/deny : deny
+
+You'll have a warning in the manager when saving this rules since Perl doesn't
+understand Javascript.
+
+### Configuration and sessions backends
+
+Node-lemonldap-ng-handler is compatible with the following backends:
+* Configuration:
+  * File
+  * CDBI
+* Sessions:
+  * Apache::Session::File, Apache::Session::Browseable::File
+  * Apache::Session::MySQL, Apache::Session::Browseable::MySQL
+  * Apache::Session::Postgres, Apache::Session::Browseable::Postgres
+  * Apache::Session::SQLite3, Apache::Session::Browseable::SQLite3
+
 ## TODO
 
 * Custom functions
 * Copy Safelib.pm
 * Think to menu problem
+* REST backends
 
 ## BUG REPORT
 

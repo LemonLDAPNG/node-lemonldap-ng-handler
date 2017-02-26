@@ -131,7 +131,7 @@ class handlerConf
 							self.tsv.defaultProtection = false
 
 				# Sessions storage initialization
-				unless sessionStorageModule = conf.globalStorage.replace /^Apache::Session::/, ''
+				unless sessionStorageModule = conf.globalStorage.replace /^Apache::Session::(?:Browseable::)?/, ''
 					#TODO: die "globalStorage required"
 					1/0
 				m = require "./sessions"
