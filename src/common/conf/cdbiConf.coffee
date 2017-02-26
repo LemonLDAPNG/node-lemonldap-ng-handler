@@ -6,14 +6,27 @@
 
 DBWrapper = require('node-dbi').DBWrapper
 DBExpr = require('node-dbi').DBExpr
+btype =
+	SQLite: "sqlite3"
+	Pg: "pg"
+	mysql: "mysql"
 
 class cdbiConf
 	constructor: (args) ->
-		if args.dbiChain.match /^dbi:SQLite:.*dbname=([\w\-\.\/]+)(.*$)/
-			db = RegExp.$1
-			@db = new DBWrapper 'sqlite3', {path: db, database: db, user: 'x', password:'x'}
+		if args.dbiChain.match /^dbi:(SQLite|Pg|mysql):.*dbname=([\w\-\.\/]+)(.*$)/
+			type = RegExp.$1
+			db = RegExp.$2
+			conn =
+				database: db
+				user: args.dbiUser
+				password: args.dbiPassword
+			conn.path = db if type == 'SQLite'
+			@db = new DBWrapper btype[type], conn
 			@table = if args.dbiTable then args.dbiTable else 'lmConfig'
 			@db.connect()
+		else
+			console.log "Invalid dbiChain: #{args.dbiChain.match}"
+			process.exit 1
 
 	available: ->
 		db = @connect()
