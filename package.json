@@ -2,7 +2,7 @@
   "name": "node-lemonldap-ng-handler",
   "version": "0.1.1",
   "description": "LemonLDAP::NG handler for Node.js",
-  "main": "handler.js",
+  "main": "index.js",
   "maintainers": [
     {
       "name": "Xavier Guimard",
@@ -28,7 +28,7 @@
   "authors": [
     "Xavier Guimard <x.guimard@free.fr>"
   ],
-  "license": "GPL-2",
+  "license": "GPL-2.0",
   "bugs": {
     "url": "https://github.com/guimard/node-lemonldap-ng-handler/issues"
   },
