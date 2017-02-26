@@ -17,7 +17,7 @@
   "bugs": "https://jira.ow2.org/browse/LEMONLDAP",
   "repository": {
     "type": "git",
-    "url": "https://github.com/guimard/node-lemonldap-ng-handler.git"
+    "url": "https://github.com/LemonLDAPNG/node-lemonldap-ng-handler.git"
   },
   "keywords": [
     "Lemonldap::NG",
@@ -30,7 +30,7 @@
   ],
   "license": "GPL-2.0",
   "bugs": {
-    "url": "https://github.com/guimard/node-lemonldap-ng-handler/issues"
+    "url": "https://jira.ow2.org/browse/LEMONLDAP/"
   },
   "devDependencies": {
     "coffee": "x",
