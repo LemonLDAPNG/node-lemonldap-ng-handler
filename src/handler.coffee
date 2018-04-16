@@ -44,6 +44,28 @@ class handler
 		else
 			goToPortal res, 'http://' + vhost + uri
 
+	server: (options) ->
+		self = @
+		fcgiOpt =
+			mode: "fcgi"
+			port: 9090
+			ip: 'localhost'
+
+		if options?
+			for k of fcgiOtp
+				fcgiOpt = options[k] if options[k]?
+		# Define server
+		srv = if fcgiOpt.mode == 'fcgi' then require('node-fastcgi') else require('http')
+		srv.createServer (req, res) ->
+			next = () ->
+				console.log "OK"
+				res.writeHead 200, req.headers
+			resp = self.run req, res, next
+			resp.then () ->
+				res.end()
+		.listen fcgiOpt.port, fcgiOpt.ip
+		console.log "Server started at " + fcgiOpt.ip + ":" + fcgiOpt.port
+
 	grant = (req, uri, session) ->
 		vhost = resolveAlias req
 		unless conf.tsv.defaultCondition[vhost]?
@@ -64,9 +86,17 @@ class handler
 	sendHeaders = (req, session) ->
 		vhost = resolveAlias req
 		try
+			i=0
 			for k,v of conf.tsv.forgeHeaders[vhost](session)
+				i++
 				req.headers[k] = v
 				req.rawHeaders.push k, v
+
+				# req.redirect is defined when running under express. If not
+				# we are running as FastCGI server
+				unless req.redirect?
+					req.headers["Headername#{i}"] = k
+					req.headers["Headervalue#{i}"] = v
 		catch err
 			console.log "No headers configuration found for #{vhost}"
 		true
@@ -78,7 +108,17 @@ class handler
 		if args
 			urlc += if uri then '&' else '?'
 			urlc += args
-		res.redirect urlc
+
+		# req.redirect is defined when running under express. If not
+		# we are running as FastCGI server
+		if res.redirect
+			res.redirect urlc
+		else
+			console.log "Redirecting to " + urlc
+			# Nginx doesn't accept 302 from a auth request. LLNG Nginx configuration
+			# maps 401 to 302 when "Location" is set
+			res.writeHead 401,
+				Location: urlc
 
 	resolveAlias = (req) ->
 		vhost = req.headers.host.replace /:.*$/, ''
@@ -135,3 +175,5 @@ module.exports =
 		h = new handler(args)
 	run: (req, res, next) ->
 		h.run req, res, next
+	server: (options) ->
+		h.server options
