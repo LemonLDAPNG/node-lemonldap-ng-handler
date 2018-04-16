@@ -154,6 +154,13 @@ Example:
 You'll have a warning in the manager when saving this rules since Perl doesn't
 understand Javascript.
 
+### Configuration backends
+
+Node-lemonldap-ng-handler is compatible with the following Lemonldap::NG
+backends:
+* CDBI
+* File
+
 ### Sessions backends
 
 Node-lemonldap-ng-handler is compatible with the following Lemonldap::NG
