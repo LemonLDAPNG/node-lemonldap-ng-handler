@@ -4,28 +4,93 @@ Experimental Lemonldap::NG handler for node.js
 
 ## SYNOPSIS
 
-    // Variables
-    var express = require('express');
-    var app = express();
-    var handler = require('node-lemonldap-ng-handler');
-    
-    // initialize handler (optional args)
-    handler.init({
-      configStorage: {
-        "confFile":"test/lemonldap-ng.ini"
-      }
-    });
-    
-    // and load it
-    app.use(handler.run);
-    
-    // Then simply use your express app
-    app.get('/', function(req, res) {
-      return res.send('Hello ' + req.headers['Auth-User'] + ' !');
-    });
-    app.listen(3000, function() {
-      return console.log('Example app listening on port 3000!');
-    });
+### lemonldap-ng.ini
+```
+...
+[node-handler]
+
+nodeVhosts = test.example.com, test2.example.com
+```
+
+### Express app
+```
+// Variables
+var express = require('express');
+var app = express();
+var handler = require('node-lemonldap-ng-handler');
+
+// initialize handler (optional args)
+handler.init({
+  configStorage: {
+    "confFile":"test/lemonldap-ng.ini"
+  }
+});
+
+// and load it
+app.use(handler.run);
+
+// Then simply use your express app
+app.get('/', function(req, res) {
+  return res.send('Hello ' + req.headers['Auth-User'] + ' !');
+});
+app.listen(3000, function() {
+  return console.log('Example app listening on port 3000!');
+});
+```
+
+### Nginx authorization server
+
+FastCGI server:
+```
+var handler = require('./lib/handler');
+
+handler.init({
+  configStorage: {
+    "confFile": "/path/to/lemonldap-ng.ini"
+  }
+});
+
+handler.nginxServer({
+  "mode": "fcgi",   // or "http", default: fcgi
+  "port": 9090,     // default value
+  "ip": 'localhost' // default value
+});
+```
+
+Nginx configuration. For more, see [Nginx configuration on LLNG website](https://lemonldap-ng.org/documentation/2.0/configvhost#nginx_configuration)
+```
+server {
+  listen 19876;
+  server_name test.example.com;
+  root /home/xavier/dev/lemonldap/e2e-tests/conf/site;
+
+  # Internal authentication request
+  location = /lmauth {
+    internal;
+    include /etc/nginx/fastcgi_params;
+    fastcgi_pass localhost:9090;
+
+    # Drop post datas
+    fastcgi_pass_request_body  off;
+    fastcgi_param CONTENT_LENGTH "";
+
+    # Keep original hostname
+    fastcgi_param HOST $http_host;
+
+    # Keep original request (LLNG server will received /llauth)
+    fastcgi_param X_ORIGINAL_URI  $request_uri;
+  }
+
+  # Client requests
+  location / {
+    auth_request /lmauth;
+    auth_request_set $lmremote_user $upstream_http_lm_remote_user;
+    auth_request_set $lmlocation $upstream_http_location;
+    error_page 401 $lmlocation;
+    include conf/nginx-lua-headers.conf;
+  }
+
+```
 
 ## DESCRIPTION
 

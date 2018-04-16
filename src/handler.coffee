@@ -44,7 +44,7 @@ class handler
 		else
 			goToPortal res, 'http://' + vhost + uri
 
-	server: (options) ->
+	nginxServer: (options) ->
 		self = @
 		fcgiOpt =
 			mode: "fcgi"
@@ -69,7 +69,7 @@ class handler
 	grant = (req, uri, session) ->
 		vhost = resolveAlias req
 		unless conf.tsv.defaultCondition[vhost]?
-			console.log "No configuration found for #{vhost}"
+			console.log "No configuration found for #{vhost} (or not listed in Node.js virtualHosts)"
 			return false
 		for rule,i in conf.tsv.locationRegexp[vhost]
 			if uri.match rule
@@ -81,7 +81,12 @@ class handler
 		u = session._logout
 		if u
 			return goToPortal res, u, 'logout=1'
-		res.status(403).send 'Forbidden'
+		# req.redirect is defined when running under express. If not
+		# we are running as FastCGI server
+		if req.redirect?
+			res.status(403).send 'Forbidden'
+		else
+			res.writeHead 403, 'Forbidden'
 
 	sendHeaders = (req, session) ->
 		vhost = resolveAlias req
@@ -175,5 +180,5 @@ module.exports =
 		h = new handler(args)
 	run: (req, res, next) ->
 		h.run req, res, next
-	server: (options) ->
-		h.server options
+	nginxServer: (options) ->
+		h.nginxServer options

@@ -82,6 +82,7 @@ class handlerConf
 				for k of self.localConfig
 					conf[k] = self.localConfig[k]
 
+				console.log "Virtualhosts configured for Node.js", conf.nodeVhosts
 				vhostList = if conf.nodeVhosts then conf.nodeVhosts.split(/[,\s]+/) else []
 
 				# Default values initialization
