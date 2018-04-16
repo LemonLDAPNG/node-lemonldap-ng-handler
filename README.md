@@ -42,7 +42,7 @@ app.listen(3000, function() {
 
 FastCGI server:
 ```
-var handler = require('./lib/handler');
+var handler = require('node-lemonldap-ng-handler');
 
 handler.init({
   configStorage: {
