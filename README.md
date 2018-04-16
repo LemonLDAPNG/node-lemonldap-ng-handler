@@ -180,19 +180,19 @@ backends:
 ## BUG REPORT
 
 Use OW2 system to report bug or ask for features:
-[LLNG OW2 Jira](https://jira.ow2.org/browse/LEMONLDAP/)
+[LLNG OW2 GitLab](https://gitlab.ow2.org/lemonldap-ng/lemonldap-ng/issues)
 
 ## DOWNLOAD
 
 Lemonldap::NG is available at
-http://forge.objectweb.org/project/showfiles.php?group_id=274
+https://gitlab.ow2.org/lemonldap-ng/lemonldap-ng/tags
 
 This library is available at
 https://github.com/LemonLDAPNG/node-lemonldap-ng-handler
 
 ## COPYRIGHT AND LICENSE
 
-Copyright (C) 2016-2017 by [Xavier Guimard](mailto:x.guimard@free.fr)
+Copyright (C) 2016-2018 by [Xavier Guimard](mailto:x.guimard@free.fr)
 
 This library is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
