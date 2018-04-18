@@ -39,7 +39,7 @@
   },
   "scripts": {
     "compile": "grunt",
-    "test": "test.js"
+    "test": "node ./test/test.js"
   },
   "dependencies": {
     "file-cache-simple": "0.0.5",
