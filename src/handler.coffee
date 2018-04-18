@@ -78,8 +78,8 @@ class Handler
 			return false
 		for rule,i in @conf.tsv.locationRegexp[vhost]
 			if uri.match rule
-				return @conf.tsv.locationCondition[vhost][i](session)
-		return @conf.tsv.defaultCondition[vhost](session)
+				return @conf.tsv.locationCondition[vhost][i](req,session)
+		return @conf.tsv.defaultCondition[vhost](req,session)
 
 	forbidden: (req, res, session) ->
 		uri = req.uri

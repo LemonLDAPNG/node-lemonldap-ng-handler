@@ -194,7 +194,7 @@ class handlerConf
 					0
 				]
 		cond = @substitute(cond)
-		eval "sub = function(session) {return (#{cond});}"
+		eval "sub = function(req,session) {return (#{cond});}"
 		return [sub, 0]
 
 	# Interpolate expressions
@@ -203,8 +203,8 @@ class handlerConf
 
 		# Special macros
 		.replace /\$date\b/g, 'this.date()'
-		.replace /\$vhost\b/g, 'this.hostname()'
-		.replace /\$ip\b/g, 'this.remote_ip()'
+		.replace /\$vhost\b/g, 'this.hostname(req)'
+		.replace /\$ip\b/g, 'this.remote_ip(req)'
 
 		# Session attributes: $xx is replaced by session.xx
 		.replace /\$(_*[a-zA-Z]\w*)/g, 'session.$1'
@@ -217,10 +217,10 @@ class handlerConf
 			s += if x<10 then "0#{x}" else "#{x}"
 		return s
 
-	hostname: ->
-		# TODO
+	hostname: (req) ->
+		return req.headers.host
 
-	remote_ip: ->
-		# TODO
+	remote_ip: (req) ->
+		return if req.ip? then req.ip else req.cgiParams.REMOTE_ADDR
 
 module.exports = handlerConf
