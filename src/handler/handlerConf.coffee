@@ -210,7 +210,12 @@ class handlerConf
 		.replace /\$(_*[a-zA-Z]\w*)/g, 'session.$1'
 
 	date: ->
-		# TODO
+		d = new Date()
+		s = ''
+		a = [ d.getFullYear(), d.getMonth()+1, d.getDate(), d.getHours(), d.getMinutes(), d.getSeconds() ]
+		for x in a
+			s += if x<10 then "0#{x}" else "#{x}"
+		return s
 
 	hostname: ->
 		# TODO
