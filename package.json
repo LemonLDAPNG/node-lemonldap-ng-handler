@@ -14,7 +14,9 @@
     "lib": "lib",
     "src": "src"
   },
-  "bugs": "https://jira.ow2.org/browse/LEMONLDAP",
+  "bugs": {
+    "url": "https://jira.ow2.org/browse/LEMONLDAP/"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/LemonLDAPNG/node-lemonldap-ng-handler.git"
@@ -29,9 +31,6 @@
     "Xavier Guimard <x.guimard@free.fr>"
   ],
   "license": "GPL-2.0",
-  "bugs": {
-    "url": "https://jira.ow2.org/browse/LEMONLDAP/"
-  },
   "devDependencies": {
     "coffee": "x",
     "grunt": "^1.0.1",
@@ -42,6 +41,7 @@
     "test": "node ./test/test.js"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "file-cache-simple": "0.0.5",
     "inireader": "^1.0.0",
     "node-dbi": "^0.7.1",
