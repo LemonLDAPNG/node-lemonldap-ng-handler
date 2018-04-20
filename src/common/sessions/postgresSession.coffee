@@ -24,6 +24,6 @@ class MySQLSession extends DBISession
 					dbargs.database = t
 			super('pg', dbargs)
 		else
-			console.log 'Bad DataSource'
+			console.error 'Bad DataSource'
 
 module.exports = MySQLSession

@@ -12,7 +12,7 @@ class sessions
 			backend = new m opts
 			newCache(opts)
 		catch err
-			console.log "Unable to load #{type} session backend: #{err}"
+			console.error "Unable to load #{type} session backend: #{err}"
 			process.exit 1
 
 	get: (id) ->
@@ -30,7 +30,7 @@ class sessions
 							.catch (e) ->
 								reject e
 				.catch (e) ->
-					console.log "localCache error", e
+					console.error "localCache error", e
 					reject e
 
     # Update session: update both central and local DB and return only central
@@ -44,7 +44,7 @@ class sessions
 				.then (v) ->
 					resolve v[0]
 				.catch (e) ->
-					console.log "Session update error: #{e}"
+					console.error "Session update error: #{e}"
 					reject e
 
 	newCache = (args={}) ->

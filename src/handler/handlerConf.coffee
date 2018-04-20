@@ -48,7 +48,7 @@ class handlerConf
 		@lmConf = new m(args.configStorage)
 		unless @lmConf
 			# TODO: change msg in LlngConf
-			console.log "Unable to build configuration"
+			console.error "Unable to build configuration"
 			return null
 
 		@localConfig = @lmConf.getLocalConf 'node-handler'
@@ -61,7 +61,7 @@ class handlerConf
 			if @logLevels[@localConfig.logLevel]?
 				@localConfig.logLevel = @logLevels[@localConfig.logLevel]
 			else
-				console.log "Unknown log level '#{@localConfig.logLevel}'"
+				console.error "Unknown log level '#{@localConfig.logLevel}'"
 
 		# TODO: status
 
@@ -70,7 +70,7 @@ class handlerConf
 
 	# Note that checkConf isn't needed: no shared cache with node.js
 	checkConf: ->
-		console.log "checkConf() must not be called"
+		console.error "checkConf() must not be called"
 
 	# Configuration compilation
 	#
@@ -164,7 +164,7 @@ class handlerConf
 
 				1
 			.catch (e) ->
-				console.log "Can't get configuration", e
+				console.error "Can't get configuration", e
 
 	# Build expression into functions (used to control user access and build
 	# headers)

@@ -8,11 +8,11 @@ class crypto
 	constructor: (@key, @mode) ->
 
 	encrypt: (s) ->
-		console.log 'TODO'
+		console.error 'TODO'
 		s
 
 	decrypt: (s) ->
-		console.log 'TODO'
+		console.error 'TODO'
 		s
 
 module.exports = crypto

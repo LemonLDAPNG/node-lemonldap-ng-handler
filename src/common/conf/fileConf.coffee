@@ -9,10 +9,10 @@ fs = require 'fs'
 class fileConf
 	constructor: (args) ->
 		unless @dirName = args.dirName
-			console.log "'dirName' is required in 'File' configuration type ! \n"
+			console.error "'dirName' is required in 'File' configuration type ! \n"
 			return null
 		unless fs.lstatSync(@dirName).isDirectory()
-			console.log "Directory #{@dirName} doesn't exist\n"
+			console.error "Directory #{@dirName} doesn't exist\n"
 			return null
 
 	available: ->
@@ -72,7 +72,7 @@ class fileConf
 	#	try
 	#		fs.accessSync "#{@dirName}/lmConf-#{cfgNum}.js", fs.W_OK
 	#	catch error
-	#		console.log "Unable to access #{@dirName}/lmConf-#{cfgNum}.js (#{error})"
+	#		console.error "Unable to access #{@dirName}/lmConf-#{cfgNum}.js (#{error})"
 	#		return null
 	#	fs.unlink "#{@dirName}/lmConf-#{fields.cfgNum}.js"
 	#	1

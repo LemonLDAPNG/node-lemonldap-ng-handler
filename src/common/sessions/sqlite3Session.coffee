@@ -11,6 +11,6 @@ class SQLite3Session extends DBISession
 				path: db
 			super 'sqlite3', @config
 		else
-			console.log 'Bad DataSource'
+			console.error 'Bad DataSource'
 
 module.exports = SQLite3Session

@@ -19,14 +19,14 @@ class DBISession
 		q = new Promise (resolve, reject) ->
 			db.fetchRow "SELECT * FROM #{table} WHERE id=?", [id], (err, res) ->
 				if err
-					console.log err
+					console.error err
 					reject false
 				else
 					try
 						tmp = JSON.parse res.a_session
 						resolve tmp
 					catch err
-						console.log "Error when parsing session file (#{err})", res
+						console.error "Error when parsing session file (#{err})", res
 						reject err
 		q
 

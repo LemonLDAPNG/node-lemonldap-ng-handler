@@ -36,7 +36,7 @@ class cdbiConf
 			@table = if args.dbiTable then args.dbiTable else 'lmConfig'
 			@db.connect()
 		else
-			console.log "Invalid dbiChain: #{args.dbiChain}"
+			console.error "Invalid dbiChain: #{args.dbiChain}"
 			process.exit 1
 
 	available: ->
@@ -45,7 +45,7 @@ class cdbiConf
 		q = new Promise (resolve, reject) ->
 			db.fetchCol "SELECT cfgNum FROM #{table} ORDER BY cfgNum", null, (err, res) ->
 				if err
-					console.log err
+					console.error err
 					resolve []
 				else
 					resolve res
@@ -57,7 +57,7 @@ class cdbiConf
 		q = new Promise (resolve, reject) ->
 			db.fetchOne "SELECT max(cfgNum) FROM #{table} ORDER BY cfgNum", [], (err, res) ->
 				if err
-					console.log err
+					console.error err
 					reject null
 				else
 					resolve res
@@ -71,31 +71,31 @@ class cdbiConf
 		q = new Promise (resolve, reject) ->
 			db.fetchRow "SELECT data FROM #{table} WHERE cfgNum=?", [cfgNum], (err, res) ->
 				if err
-					console.log err
+					console.error err
 					reject null
 				else
 					try
 						tmp = JSON.parse res.data
 						resolve tmp
 					catch err
-						console.log "Error when parsing session file (#{err})"
+						console.error "Error when parsing session file (#{err})"
 						reject err
 		q
 
 	lock: ->
-		console.log 'TODO later'
+		console.error 'TODO later'
 
 	isLocked: ->
-		console.log 'TODO later'
+		console.error 'TODO later'
 
 	unlock: ->
-		console.log 'TODO later'
+		console.error 'TODO later'
 
 	store: ->
-		console.log 'TODO later'
+		console.error 'TODO later'
 
 	delete: ->
-		console.log 'TODO later'
+		console.error 'TODO later'
 
 	connect: () ->
 		return @db if @db.isConnected()

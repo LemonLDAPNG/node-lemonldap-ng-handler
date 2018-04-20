@@ -15,7 +15,7 @@ class Handler
 		vhost = req.headers.host
 		uri = decodeURI req.url
 		if @conf.tsv.maintenance[vhost]
-			console.log "Go to portal with maintenance error code #{vhost}"
+			console.error "Go to portal with maintenance error code #{vhost}"
 			return @setError res, '/', 503, 'Service Temporarily Unavailable'
 
 		protection = @isUnprotected req, uri
@@ -36,7 +36,7 @@ class Handler
 						.catch () ->
 							self.forbidden req, res, session
 				.catch (e) ->
-					console.log e
+					console.error e
 					self.goToPortal res, 'http://' + vhost + uri
 		else
 			console.log "No id"
@@ -61,7 +61,7 @@ class Handler
 		srv = if fcgiOpt.mode == 'fcgi' then require('node-fastcgi') else require('http')
 		srv.createServer (req, res) ->
 			next = () ->
-				console.log "OK"
+				console.log "Granted"
 				res.writeHead 200, req.headers
 			resp = self.run req, res, next
 			if resp.then
@@ -77,7 +77,7 @@ class Handler
 		d = new Promise (resolve,reject) ->
 			vhost = self.resolveAlias req
 			unless self.conf.tsv.defaultCondition[vhost]?
-				console.log "No configuration found for #{vhost} (or not listed in Node.js virtualHosts)"
+				console.error "No configuration found for #{vhost} (or not listed in Node.js virtualHosts)"
 				return reject()
 			for rule,i in self.conf.tsv.locationRegexp[vhost]
 				if uri.match rule
@@ -112,7 +112,7 @@ class Handler
 					req.headers["Headername#{i}"] = k
 					req.headers["Headervalue#{i}"] = v
 		catch err
-			console.log "No headers configuration found for #{vhost}"
+			console.error "No headers configuration found for #{vhost}"
 		true
 
 	resolveAlias: (req) ->
