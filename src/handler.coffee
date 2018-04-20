@@ -27,13 +27,14 @@ class Handler
 		if id
 			self.retrieveSession id
 				.then (session) ->
-					unless self.grant req, uri, session
-						self.forbidden req, res, session
-					else
-						console.log "Granted #{id}"
-						self.sendHeaders req, session
-						self.hideCookie req
-						return next()
+					self.grant req, uri, session
+						.then () ->
+							console.log "Granted #{id}"
+							self.sendHeaders req, session
+							self.hideCookie req
+							return next()
+						.catch () ->
+							self.forbidden req, res, session
 				.catch (e) ->
 					console.log e
 					self.goToPortal res, 'http://' + vhost + uri
@@ -72,14 +73,20 @@ class Handler
 		console.log "Server started at " + fcgiOpt.ip + ":" + fcgiOpt.port
 
 	grant: (req, uri, session) ->
-		vhost = @resolveAlias req
-		unless @conf.tsv.defaultCondition[vhost]?
-			console.log "No configuration found for #{vhost} (or not listed in Node.js virtualHosts)"
-			return false
-		for rule,i in @conf.tsv.locationRegexp[vhost]
-			if uri.match rule
-				return @conf.tsv.locationCondition[vhost][i](req,session)
-		return @conf.tsv.defaultCondition[vhost](req,session)
+		self = @
+		d = new Promise (resolve,reject) ->
+			vhost = self.resolveAlias req
+			unless self.conf.tsv.defaultCondition[vhost]?
+				console.log "No configuration found for #{vhost} (or not listed in Node.js virtualHosts)"
+				return reject()
+			for rule,i in self.conf.tsv.locationRegexp[vhost]
+				if uri.match rule
+					return resolve self.conf.tsv.locationCondition[vhost][i](req,session)
+			if self.conf.tsv.defaultCondition[vhost](req,session)
+				resolve()
+			else
+				reject()
+		d
 
 	forbidden: (req, res, session) ->
 		uri = req.uri
