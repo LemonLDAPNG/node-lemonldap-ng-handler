@@ -86,7 +86,8 @@ class handlerConf
 				vhostList = if conf.nodeVhosts then conf.nodeVhosts.split(/[,\s]+/) else []
 
 				# Default values initialization
-				for w in ['cda', 'cookieExpiration', 'cipher', 'cookieName', 'customFunctions', 'httpOnly', 'securedCookie', 'timeoutActivity', 'useRedirectOnError', 'useRedirectOnForbidden', 'whatToTrace']
+				for w in ['cda', 'cookieExpiration', 'cipher', 'cookieName', 'customFunctions', 'httpOnly', 'securedCookie', 'timeoutActivity', 'useRedirectOnError', 'useRedirectOnForbidden', 'whatToTrace', 'loopBackUrl']
+					console.log "Conf key #{w}:", conf[w] unless w == 'cipher'
 					self.tsv[w] = conf[w]
 
 				for w in ['https', 'port', 'maintenance']

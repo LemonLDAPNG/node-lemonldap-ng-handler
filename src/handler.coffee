@@ -29,11 +29,13 @@ class Handler
 				.then (session) ->
 					self.grant req, uri, session
 						.then () ->
+							# TODO: display uid
 							console.log "Granted #{id}"
 							self.sendHeaders req, session
 							self.hideCookie req
 							return next()
-						.catch () ->
+						.catch (e) ->
+							console.log "#{id} rejected " + if e.message? then e.message
 							self.forbidden req, res, session
 				.catch (e) ->
 					console.error e
