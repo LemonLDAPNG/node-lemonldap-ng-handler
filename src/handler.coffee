@@ -208,9 +208,11 @@ h = {}
 module.exports =
 	init: (args) ->
 		if args.type
-			if args.type == 'DevOps'
-				h = require('./handlerDevOps')
+			try
+				h = require('./handler' + args.type)
 				return h = new h(args)
+			catch err
+				console.error "Unable to load #{args.type} handler: #{err}"
 		h = new Handler(args)
 	run: (req, res, next) ->
 		h.run req, res, next
