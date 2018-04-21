@@ -170,6 +170,20 @@ backends:
 * Apache::Session::Postgres, Apache::Session::Browseable::Postgres
 * Apache::Session::SQLite3, Apache::Session::Browseable::SQLite3
 
+### Special handlers
+
+Node-lemonldap-ng-handler can be used as
+[DevOps handler](https://lemonldap-ng.org/documentation/2.0/devopshandler).
+You just have to specify `"type":"DevOps"` in `init()` arguments:
+```
+handler.init({
+  type: "DevOps",
+  configStorage: {
+    "confFile": "/path/to/lemonldap-ng.ini"
+  }
+});
+```
+
 ## TODO
 
 * Custom functions

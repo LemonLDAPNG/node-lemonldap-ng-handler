@@ -207,6 +207,10 @@ h = {}
 
 module.exports =
 	init: (args) ->
+		if args.type
+			if args.type == 'DevOps'
+				h = require('./handlerDevOps')
+				return h = new h(args)
 		h = new Handler(args)
 	run: (req, res, next) ->
 		h.run req, res, next

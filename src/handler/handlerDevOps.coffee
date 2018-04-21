@@ -106,12 +106,4 @@ class HandlerDevOps extends Handler
 			req.end()
 		d
 
-h = {}
-module.exports =
-	init: (args) ->
-		h = new HandlerDevOps(args)
-	run: (req, res, next) ->
-		h.run req, res, next
-	nginxServer: (options) ->
-		h.nginxServer options
-	class: HandlerDevOps
+module.exports = HandlerDevOps
