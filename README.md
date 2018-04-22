@@ -173,8 +173,9 @@ backends:
 ### Special handlers
 
 Node-lemonldap-ng-handler can be used as
-[DevOps handler](https://lemonldap-ng.org/documentation/2.0/devopshandler).
-You just have to specify `"type":"DevOps"` in `init()` arguments:
+ * [DevOps handler](https://lemonldap-ng.org/documentation/2.0/devopshandler)
+ * [ServiceToken handler](https://lemonldap-ng.org/documentation/2.0/servertoserver)
+You just have to specify `"type":_<type>_` in `init()` arguments. Example:
 ```
 handler.init({
   type: "DevOps",
