@@ -11,7 +11,13 @@ class HandlerServiceToken extends Handler
 		super(args)
 
 	fetchId: (req) ->
-		if req.cgiParams and token = req.cgiParams['HTTP_X_LLNG_TOKEN']
+		token = ''
+		if req.cgiParams
+			token = req.cgiParams['HTTP_X_LLNG_TOKEN']
+		else
+			token = req.header['x-llng-token']
+
+		if token
 			# Decrypt token
 			s = @conf.tsv.cipher.decrypt token
 
