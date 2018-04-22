@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.1.7
+ * Missing compilation for ServiceToken
+
 ## 0.1.6
  * Crypto lib
  * Handlers:
