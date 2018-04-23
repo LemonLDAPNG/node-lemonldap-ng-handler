@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.1.8
+ * Fix "Unable to give options to nginxServer"
+
 ## 0.1.7
  * Missing compilation for ServiceToken
 
