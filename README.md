@@ -57,7 +57,7 @@ handler.nginxServer({
 });
 ```
 
-Nginx configuration. For more, see [Nginx configuration on LLNG website](https://lemonldap-ng.org/documentation/2.0/configvhost#nginx_configuration)
+Nginx configuration. For more, see [Nginx configuration on LLNG website](https://lemonldap-ng.org/documentation/latest/configvhost#nginx_configuration)
 ```nginx
 server {
   listen 19876;
@@ -132,10 +132,8 @@ lemonldap-ng.ini. You must rewrite them on one line *(even in other sections)*.
 
 #### Section `[configuration]`
 
-Nothing to change, node-lemonldap-ng-handler is compatible with the following
-LemonLDAP::NG backends:
-* File
-* CDBI _(MySQL, PostgreSQL and SQLite3 only)_
+Nothing to change, but node-lemonldap-ng-handler isn't compatible with all
+LLNG backends. See below.
 
 #### New section `[node-handler]`
 
@@ -159,17 +157,22 @@ understand Javascript.
 
 Node-lemonldap-ng-handler is compatible with the following Lemonldap::NG
 backends:
-* CDBI
-* File
+* [File](https://lemonldap-ng.org/documentation/latest/fileconfbackend)
+* [CDBI](https://lemonldap-ng.org/documentation/latest/sqlconfbackend) _(MySQL,
+PostgreSQL and SQLite3 only)_
 
 ### Sessions backends
 
 Node-lemonldap-ng-handler is compatible with the following Lemonldap::NG
 backends:
-* Apache::Session::File, Apache::Session::Browseable::File
-* Apache::Session::MySQL, Apache::Session::Browseable::MySQL
-* Apache::Session::Postgres, Apache::Session::Browseable::Postgres
-* Apache::Session::SQLite3, Apache::Session::Browseable::SQLite3
+* [Apache::Session::File](https://metacpan.org/pod/Apache::Session::File)
+* [Apache::Session::Browseable::File](https://metacpan.org/pod/Apache::Session::Browseable::File)
+* [Apache::Session::MySQL](https://metacpan.org/pod/Apache::Session::MySQL)
+* [Apache::Session::Browseable::MySQL](https://metacpan.org/pod/Apache::Session::Browseable::MySQL)
+* [Apache::Session::Postgres](https://metacpan.org/pod/Apache::Session::Postgres)
+* [Apache::Session::Browseable::Postgres](https://metacpan.org/pod/Apache::Session::Browseable::Postgres)
+* [Apache::Session::SQLite3](https://metacpan.org/pod/Apache::Session::SQLite3)
+* [Apache::Session::Browseable::SQLite](https://metacpan.org/pod/Apache::Session::Browseable::SQLite)
 
 ### Special handlers
 
