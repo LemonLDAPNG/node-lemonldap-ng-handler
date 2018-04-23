@@ -57,8 +57,8 @@ class Handler
 			ip: 'localhost'
 
 		if options?
-			for k of fcgiOtp
-				fcgiOpt = options[k] if options[k]?
+			for k of fcgiOpt
+				fcgiOpt[k] = options[k] if options[k]?
 		# Define server
 		srv = if fcgiOpt.mode == 'fcgi' then require('node-fastcgi') else require('http')
 		srv.createServer (req, res) ->
