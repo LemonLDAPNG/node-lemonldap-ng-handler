@@ -23,7 +23,6 @@ class rdbiConf extends _DBI
 						cfg = {}
 						for row in res
 							cfg[row.field] = row.value
-						console.log 'COUCOU', cfg
 						resolve self.unserialize cfg
 					catch err
 						console.error "Error when parsing configuration (#{err})"
