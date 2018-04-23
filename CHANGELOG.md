@@ -2,6 +2,7 @@
 
 ## 0.1.8
  * Fix "Unable to give options to nginxServer"
+ * Add RDBI support
 
 ## 0.1.7
  * Missing compilation for ServiceToken

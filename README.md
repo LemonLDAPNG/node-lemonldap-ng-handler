@@ -160,8 +160,8 @@ understand Javascript.
 Node-lemonldap-ng-handler is compatible with the following Lemonldap::NG
 backends:
 * [File](https://lemonldap-ng.org/documentation/latest/fileconfbackend)
-* [CDBI](https://lemonldap-ng.org/documentation/latest/sqlconfbackend) _(MySQL,
-PostgreSQL and SQLite3 only)_
+* [CDBI / RDBI](https://lemonldap-ng.org/documentation/latest/sqlconfbackend)
+_(MySQL, PostgreSQL and SQLite3 only)_
 
 ### Sessions backends
 
