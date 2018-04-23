@@ -117,8 +117,9 @@ for more.
 
 Of course, you must have a [LemonLDAP::NG](https://lemonldap-ng.org) system
 installed in your organization. To install node handler, use simply:
-
-    npm install node-lemonldap-ng-handler
+```shell
+npm install node-lemonldap-ng-handler
+```
 
 ## CONFIGURATION
 
@@ -141,9 +142,10 @@ You can overwrite here LemonLDAP::NG configuration keys. You must set the list
 of virtual hosts handled by node.js in key `nodeVhosts`.
 
 Example:
-
-    [node-handler]
-    nodeVhosts = test1.example.com, test2.example.com
+```ini
+[node-handler]
+nodeVhosts = test1.example.com, test2.example.com
+```
 
 **Rules and headers must be written in Javascript**, not in Perl. Example:
 
