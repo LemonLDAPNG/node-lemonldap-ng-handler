@@ -5,7 +5,7 @@ Experimental Lemonldap::NG handler for node.js
 ## SYNOPSIS
 
 ### lemonldap-ng.ini
-```
+```ini
 ...
 [node-handler]
 
@@ -13,7 +13,7 @@ nodeVhosts = test.example.com, test2.example.com
 ```
 
 ### Express app
-```
+```javascript
 // Variables
 var express = require('express');
 var app = express();
@@ -41,7 +41,7 @@ app.listen(3000, function() {
 ### Nginx authorization server
 
 FastCGI server:
-```
+```javascript
 var handler = require('node-lemonldap-ng-handler');
 
 handler.init({
@@ -58,7 +58,7 @@ handler.nginxServer({
 ```
 
 Nginx configuration. For more, see [Nginx configuration on LLNG website](https://lemonldap-ng.org/documentation/2.0/configvhost#nginx_configuration)
-```
+```nginx
 server {
   listen 19876;
   server_name test.example.com;
@@ -90,6 +90,7 @@ server {
     include conf/nginx-lua-headers.conf;
   }
 
+}
 ```
 
 ## DESCRIPTION
@@ -177,7 +178,7 @@ Node-lemonldap-ng-handler can be used as
  * [ServiceToken handler](https://lemonldap-ng.org/documentation/2.0/servertoserver)
 
 You just have to specify `"type":<type>` in `init()` arguments. Example:
-```
+```javascript
 handler.init({
   "type": "DevOps",
   "configStorage": {
