@@ -134,8 +134,7 @@ class handlerConf
 
 				# Sessions storage initialization
 				unless sessionStorageModule = conf.globalStorage.replace /^Apache::Session::(?:Browseable::)?/, ''
-					#TODO: die "globalStorage required"
-					1/0
+					Error "Unsupported session backend: #{conf.globalStorage}"
 				m = require "./sessions"
 				self.sa = new m sessionStorageModule, conf.globalStorageOptions
 

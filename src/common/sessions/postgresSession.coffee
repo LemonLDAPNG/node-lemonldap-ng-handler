@@ -6,7 +6,7 @@ convert =
 	host:     'host'
 	port:     'port'
 
-class MySQLSession extends DBISession
+class PgSession extends DBISession
 	constructor: (opts) ->
 		if opts.DataSource.match /^dbi:Pg:(.*$)/
 			dbiargs = RegExp.$1
@@ -26,4 +26,4 @@ class MySQLSession extends DBISession
 		else
 			console.error 'Bad DataSource'
 
-module.exports = MySQLSession
+module.exports = PgSession

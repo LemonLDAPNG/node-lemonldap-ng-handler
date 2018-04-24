@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.1.9
+ * Add Apache::Session::Browseable::{PgHstore,PgJSON} support
+
 ## 0.1.8
  * Fix "Unable to give options to nginxServer"
  * Add RDBI support
