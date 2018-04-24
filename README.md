@@ -1,6 +1,6 @@
 # Lemonldap::NG handler for Node.js
 
-Beta Lemonldap::NG handler for node.js
+Beta [Lemonldap::NG](https://lemonldap-ng.org) handler for node.js
 
 ## SYNOPSIS
 
