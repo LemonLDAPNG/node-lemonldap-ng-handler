@@ -173,6 +173,8 @@ backends:
 * [Apache::Session::Browseable::MySQL](https://metacpan.org/pod/Apache::Session::Browseable::MySQL)
 * [Apache::Session::Postgres](https://metacpan.org/pod/Apache::Session::Postgres)
 * [Apache::Session::Browseable::Postgres](https://metacpan.org/pod/Apache::Session::Browseable::Postgres)
+* [Apache::Session::Browseable::PgHstore](https://metacpan.org/pod/Apache::Session::Browseable::PgHstore)
+* [Apache::Session::Browseable::PgJSON](https://metacpan.org/pod/Apache::Session::Browseable::PgJSON)
 * [Apache::Session::SQLite3](https://metacpan.org/pod/Apache::Session::SQLite3)
 * [Apache::Session::Browseable::SQLite](https://metacpan.org/pod/Apache::Session::Browseable::SQLite)
 
