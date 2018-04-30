@@ -1,5 +1,5 @@
 ###
-# LemonLDAP::NG file configuration accessor for Node.js/express
+# LemonLDAP::NG file configuration accessor for Node.js
 #
 # See README.md for license and copyright
 ###

@@ -2,6 +2,7 @@
 
 ## 0.1.9
  * Add Apache::Session::Browseable::{PgHstore,PgJSON} support
+ * Add REST conf backend
  * Switch to nodedbi (instead of node-dbi) for DB access
 
 ## 0.1.8

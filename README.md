@@ -162,6 +162,7 @@ backends:
 * [File](https://lemonldap-ng.org/documentation/latest/fileconfbackend)
 * [CDBI / RDBI](https://lemonldap-ng.org/documentation/latest/sqlconfbackend)
 _(MySQL, PostgreSQL and SQLite3 only)_
+* [REST](https://lemonldap-ng.org/documentation/2.0/restconfbackend)
 
 ### Sessions backends
 
