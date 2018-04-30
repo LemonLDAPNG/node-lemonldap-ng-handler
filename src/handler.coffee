@@ -30,7 +30,7 @@ class Handler
 					self.grant req, uri, session
 						.then () ->
 							# TODO: display uid
-							console.log "Granted #{id}"
+							console.log "User #{session[self.conf.tsv.whatToTrace]} was granted to access to #{uri}"
 							self.sendHeaders req, session
 							self.hideCookie req
 							return next()
@@ -63,7 +63,6 @@ class Handler
 		srv = if fcgiOpt.mode == 'fcgi' then require('node-fastcgi') else require('http')
 		srv.createServer (req, res) ->
 			next = () ->
-				console.log "Granted"
 				res.writeHead 200, req.headers
 			resp = self.run req, res, next
 			if resp.then
