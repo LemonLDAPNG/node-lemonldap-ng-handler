@@ -4,48 +4,47 @@
 # See README.md for license and copyright
 ###
 
-DBWrapper = require('node-dbi').DBWrapper
-
 class DBISession
 	constructor: (@eng, @config) ->
-		@db = new DBWrapper(@eng, @config)
+		perlWrap = require './perldbi'
+		@db = new perlWrap(@config)
 		@config.table or= 'sessions'
-		@connect()
 
 	# get(): Recover session data
 	get: (id) ->
-		db = @connect()
+		db = @db.connect()
 		table = @config.table
-		q = new Promise (resolve, reject) ->
-			db.fetchRow "SELECT * FROM #{table} WHERE id=?", [id], (err, res) ->
-				if err
-					console.error err
-					reject false
-				else
+		d = new Promise (resolve, reject) ->
+			q = db.query "SELECT a_session FROM #{table} WHERE id=%1", [id]
+			if q
+				if q.count() == 1
+					q.seek 1
 					try
-						tmp = JSON.parse res.a_session
+						tmp = JSON.parse q.value 1
 						resolve tmp
 					catch err
 						console.error "Error when parsing session file (#{err})", res
 						reject err
-		q
+				else
+					console.log "Session #{id} expired"
+					reject false
+			else
+				console.error "Unable to query database"
+				reject false
+		d
 
 	update: (id, data) ->
-		db = @connect()
+		db = @db.connect()
 		table = @config.table
-		q = new Promise (resolve, reject) ->
+		d = new Promise (resolve, reject) ->
 			tmp =
 				id: id
 				a_session: JSON.stringify data
-			db.insert table, tmp, (err) ->
-				if err
-					reject err
-				else
-					resolve true
-
-	connect: () ->
-		return @db if @db.isConnected()
-		@db.connect()
-		@db
+			#db.insert table, tmp, (err) ->
+			#	if err
+			#		reject err
+			#	else
+			#		resolve true
+		d
 
 module.exports = DBISession

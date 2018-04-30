@@ -9,7 +9,7 @@ _DBI = require './_dbiConf'
 class cdbiConf extends _DBI
 	load: (cfgNum, fields) ->
 		# TODO fields
-		db = @connect()
+		db = @db.connect()
 		table = @table
 		d = new Promise (resolve, reject) ->
 			q = db.query "SELECT data FROM #{table} WHERE cfgNum=%1", [cfgNum]

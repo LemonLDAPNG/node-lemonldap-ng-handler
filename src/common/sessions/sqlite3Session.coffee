@@ -2,13 +2,11 @@ DBISession = require './dbiSession'
 
 class SQLite3Session extends DBISession
 	constructor: (opts) ->
-		if opts.DataSource.match /^dbi:SQLite:.*dbname=([\w\-\.\/]+)(.*$)/
-			db = RegExp.$1
-			#tmp = RegExp.$2
-			table = if opts.TableName then opts.TableName else 'sessions'
+		if opts.DataSource
+			@table = if opts.TableName then opts.TableName else 'sessions'
 			# get opts
 			@config =
-				path: db
+				dbiChain: opts.DataSource
 			super 'sqlite3', @config
 		else
 			console.error 'Bad DataSource'

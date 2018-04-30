@@ -11,9 +11,10 @@ class rdbiConf extends _DBI
 	load: (cfgNum, fields) ->
 		self = @
 		# TODO fields
-		db = @connect()
+		db = @db.connect()
 		table = @table
-		q = new Promise (resolve, reject) ->
+		d = new Promise (resolve, reject) ->
+			# TODO: change this to dc.query
 			db.fetchAll "SELECT field,value FROM #{table} WHERE cfgNum=?", [cfgNum], (err, res) ->
 				if err
 					console.error err
@@ -27,7 +28,7 @@ class rdbiConf extends _DBI
 					catch err
 						console.error "Error when parsing configuration (#{err})"
 						reject err
-		q
+		d
 
 	store: ->
 		console.error 'TODO later'
