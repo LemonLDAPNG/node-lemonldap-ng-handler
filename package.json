@@ -45,7 +45,7 @@
     "file-cache-simple": "0.0.5",
     "inireader": "^1.0.0",
     "js-md5": "x",
-    "node-dbi": "^0.7.1",
+    "nodedbi": "x",
     "node-fastcgi": "x"
   }
 }

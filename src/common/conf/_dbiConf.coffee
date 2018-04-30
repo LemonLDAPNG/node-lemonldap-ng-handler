@@ -5,37 +5,43 @@
 ###
 
 
-DBWrapper = require('node-dbi').DBWrapper
-DBExpr = require('node-dbi').DBExpr
+DBWrapper = require('nodedbi')
 btype =
 	SQLite: "sqlite3"
 	Pg: "pg"
 	mysql: "mysql"
 
 convert =
-	database: 'database'
-	dbname:   'database'
+	database: 'dbname'
+	dbname:   'dbname'
 	host:     'host'
 	port:     'port'
+	encoding: 'encoding'
 
 class _dbiConf
 	constructor: (args) ->
 		if args.dbiChain.match /^dbi:(SQLite|Pg|mysql):(.*)/
 			type = btype[RegExp.$1]
-			dbiargs = RegExp.$2
-			tmp = dbiargs.split /;/
-			dbargs =
-				user: args.dbiUser
-				password: args.dbiPassword
+			unless type
+				Error "Unsupported database type: #{RegExp.$1}"
+			tmp = RegExp.$2.split /;/
+			@dbargs =
+				type: type
 			for t in tmp
-				t2 = t.split /=/
-				if t.match /=/
-					if k = convert[t2[0]]
-						dbargs[k] = t2[1]
-			dbargs.path = dbargs.database if type == 'sqlite3'
-			@db = new DBWrapper type, dbargs
+				if t2 = t.match /^(.*?)=(.*)$/
+					if k = convert[t2[1]]
+						@dbargs[k] = t2[2]
+			if type == 'sqlite3'
+				if @dbargs.dbname.match /^(.*)[\\\/](.*?)$/
+					@dbargs.dbname = RegExp.$2
+					@dbargs.sqlite3_dbdir = RegExp.$1
+				else
+					@dbargs.sqlite3_dbdir = '.'
+			else
+				@dbargs.user     = args.dbiUser
+				@dbargs.password = args.dbiPassword
+			@connect()
 			@table = if args.dbiTable then args.dbiTable else 'lmConfig'
-			@db.connect()
 		else
 			console.error "Invalid dbiChain: #{args.dbiChain}"
 			process.exit 1
@@ -43,26 +49,32 @@ class _dbiConf
 	available: ->
 		db = @connect()
 		table = @table
-		q = new Promise (resolve, reject) ->
-			db.fetchCol "SELECT cfgNum FROM #{table} ORDER BY cfgNum", null, (err, res) ->
-				if err
-					console.log 'No conf found in database', err
-					resolve []
-				else
-					resolve res
-		q
+		d = new Promise (resolve, reject) ->
+			q = db.query "SELECT cfgNum FROM #{table} ORDER BY cfgNum"
+			if q
+				rc = q.count()
+				t = []
+				for i in [1 .. rc+1]
+					q.seek i
+					t.push q.value 1
+				resolve t
+			else
+				console.log 'No conf found in database', err
+				resolve []
+		d
 
 	lastCfg: ->
 		db = @connect()
 		table = @table
-		q = new Promise (resolve, reject) ->
-			db.fetchOne "SELECT max(cfgNum) FROM #{table} ORDER BY cfgNum", [], (err, res) ->
-				if err
-					console.error err
-					reject null
-				else
-					resolve res
-		q
+		d = new Promise (resolve, reject) ->
+			q = db.query "SELECT max(cfgNum) FROM #{table} ORDER BY cfgNum"
+			if q
+				q.seek 1
+				resolve q.value 1
+			else
+				console.log 'No conf found in database', err
+				resolve []
+		d
 
 	lock: ->
 		console.error 'TODO later'
@@ -77,8 +89,11 @@ class _dbiConf
 		console.error 'TODO later'
 
 	connect: () ->
-		return @db if @db.isConnected()
-		@db.connect()
+		return @db if @db
+		@db = DBWrapper.DBConnection @dbargs
+		unless @db
+			console.error 'Connection failed', @dbargs
+			Error 'Unable to connect to database'
 		@db
 
 module.exports = _dbiConf
