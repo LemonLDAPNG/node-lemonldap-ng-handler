@@ -163,7 +163,7 @@ backends:
 * [REST](https://lemonldap-ng.org/documentation/2.0/restconfbackend)
 * [CDBI / RDBI](https://lemonldap-ng.org/documentation/latest/sqlconfbackend)
 _(MySQL, PostgreSQL and SQLite3 only)_. **Note that you must install nodedbi
-and needed dependencies**. Example _(Debian)_:
+and needed dependencies**. Example with PostgreSQL _(Debian)_:
 ```
 $ sudo apt-get install libdbi-dev libdbd-pgsql
 $ npm install nodedbi
@@ -185,7 +185,7 @@ backends:
 * [Apache::Session::Browseable::SQLite](https://metacpan.org/pod/Apache::Session::Browseable::SQLite)
 
 **Note that, except for Apache::Session::File, you must install nodedbi
-and needed dependencies**. Example _(Debian)_:
+and needed dependencies**. Example with PostgreSQL _(Debian)_:
 ```
 $ sudo apt-get install libdbi-dev libdbd-pgsql
 $ npm install nodedbi
