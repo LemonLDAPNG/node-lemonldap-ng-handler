@@ -1,4 +1,9 @@
-# Changelog
+Changelog
+=========
+
+## 0.2.0
+ * Move nodedbi to optionalDependencies
+ * Use SPDX license name
 
 ## 0.1.9
  * Add Apache::Session::Browseable::{PgHstore,PgJSON} support

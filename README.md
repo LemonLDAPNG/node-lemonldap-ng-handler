@@ -160,9 +160,14 @@ understand Javascript.
 Node-lemonldap-ng-handler is compatible with the following Lemonldap::NG
 backends:
 * [File](https://lemonldap-ng.org/documentation/latest/fileconfbackend)
-* [CDBI / RDBI](https://lemonldap-ng.org/documentation/latest/sqlconfbackend)
-_(MySQL, PostgreSQL and SQLite3 only)_
 * [REST](https://lemonldap-ng.org/documentation/2.0/restconfbackend)
+* [CDBI / RDBI](https://lemonldap-ng.org/documentation/latest/sqlconfbackend)
+_(MySQL, PostgreSQL and SQLite3 only)_. **Note that you must install nodedbi
+and needed dependencies**. Example _(Debian)_:
+```
+$ sudo apt-get install libdbi-dev libdbd-pgsql
+$ npm install nodedbi
+```
 
 ### Sessions backends
 
@@ -178,6 +183,13 @@ backends:
 * [Apache::Session::Browseable::PgJSON](https://metacpan.org/pod/Apache::Session::Browseable::PgJSON)
 * [Apache::Session::SQLite3](https://metacpan.org/pod/Apache::Session::SQLite3)
 * [Apache::Session::Browseable::SQLite](https://metacpan.org/pod/Apache::Session::Browseable::SQLite)
+
+**Note that, except for Apache::Session::File, you must install nodedbi
+and needed dependencies**. Example _(Debian)_:
+```
+$ sudo apt-get install libdbi-dev libdbd-pgsql
+$ npm install nodedbi
+```
 
 ### Special handlers
 
