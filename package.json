@@ -43,8 +43,10 @@
     "aes-js": "^3.1.1",
     "file-cache-simple": "0.0.5",
     "inireader": "^1.0.0",
-    "js-md5": "x",
-    "nodedbi": "x",
-    "node-fastcgi": "x"
+    "js-md5": "*",
+    "node-fastcgi": "*"
+  },
+  "optionalDependencies": {
+    "nodedbi": "*"
   }
 }
