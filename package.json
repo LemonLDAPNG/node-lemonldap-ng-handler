@@ -30,7 +30,7 @@
   "authors": [
     "Xavier Guimard <x.guimard@free.fr>"
   ],
-  "license": "GPL-2.0",
+  "license": "GPL-2.0-or-later",
   "devDependencies": {
     "grunt": "^1.0.1",
     "grunt-contrib-coffee": "^1.0.0"
