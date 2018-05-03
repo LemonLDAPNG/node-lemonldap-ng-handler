@@ -207,6 +207,29 @@ handler.init({
 });
 ```
 
+## METHODS
+
+### init()
+
+Takes an optional object argument with the following optional keys:
+ * configStorage: object
+ * type: special handler _(see "Special handlers section")_
+
+### run()
+
+Used by express to handle requests. Arguments:
+ * req: the express request
+ * res: the express response
+ * next: next function in stack
+
+### nginxServer
+
+Launch Nginx compatible authorization server. Takes an optional object as
+argument. Keys:
+ * mode: server mode, "fcgi" or "http", defult to "fcgi"
+ * port: port to listen to
+ * ip:   ip address to listen to
+
 ## TODO
 
 * Custom functions
