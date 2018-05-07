@@ -4,8 +4,6 @@
 # See README.md for license and copyright
 ###
 
-'use strict'
-
 class DBISession
 	constructor: (@eng, @logger, @config) ->
 		perlWrap = require './perldbi'

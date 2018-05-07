@@ -2,8 +2,6 @@
 #
 ###
 
-'use strict'
-
 localCache = {}
 backend = {}
 class sessions

@@ -4,8 +4,6 @@
 # See README.md for license and copyright
 ###
 
-'use strict'
-
 Handler = require('./handler').class
 
 class HandlerServiceToken extends Handler

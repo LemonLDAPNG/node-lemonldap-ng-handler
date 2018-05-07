@@ -1,5 +1,3 @@
-'use strict'
-
 DBISession = require './dbiSession'
 
 convert =

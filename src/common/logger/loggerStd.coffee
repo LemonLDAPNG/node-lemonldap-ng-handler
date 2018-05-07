@@ -1,5 +1,3 @@
-'use strict'
-
 class LoggerStd
 	constructor: (conf) ->
 		i = 1
