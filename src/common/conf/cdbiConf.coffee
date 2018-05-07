@@ -8,6 +8,7 @@ _DBI = require './_dbiConf'
 
 class cdbiConf extends _DBI
 	load: (cfgNum, fields) ->
+		self = @
 		# TODO fields
 		db = @db.connect()
 		table = @table
@@ -20,14 +21,14 @@ class cdbiConf extends _DBI
 					tmp = JSON.parse data
 					resolve tmp
 				catch err
-					console.error "Error when parsing session file (#{err})"
+					self.logger.error "Error when parsing session file (#{err})"
 					reject err
 			else
-				console.error "Conf #{cfgNum} not found", d.lastError()
+				self.logger.error "Conf #{cfgNum} not found: #{d.lastError()}"
 				reject null
 		d
 
 	store: ->
-		console.error 'TODO later'
+		@logger.error 'TODO later'
 
 module.exports = cdbiConf

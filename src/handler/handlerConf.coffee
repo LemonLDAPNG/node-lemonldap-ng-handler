@@ -53,15 +53,19 @@ class handlerConf
 
 		@localConfig = @lmConf.getLocalConf 'node-handler'
 		@localConfig[i] = args[i] for i of args
+		Logger = require './logger'
+		@logger = new Logger @localConfig, 0
+		@userLogger = new Logger @localConfig, 1
+		@lmConf['logger'] = @logger
 
 		@checkTime = @localConfig.checkTime if @localConfig.checkTime
 
 		# logLevel
-		if @localConfig.logLevel
-			if @logLevels[@localConfig.logLevel]?
-				@localConfig.logLevel = @logLevels[@localConfig.logLevel]
-			else
-				console.error "Unknown log level '#{@localConfig.logLevel}'"
+		#if @localConfig.logLevel
+		#	if @logLevels[@localConfig.logLevel]?
+		#		@localConfig.logLevel = @logLevels[@localConfig.logLevel]
+		#	else
+		#		console.error "Unknown log level '#{@localConfig.logLevel}'"
 
 		# TODO: status
 
@@ -70,24 +74,24 @@ class handlerConf
 
 	# Note that checkConf isn't needed: no shared cache with node.js
 	checkConf: ->
-		console.error "checkConf() must not be called"
+		@logger.error "checkConf() must not be called"
 
 	# Configuration compilation
 	#
 	# Compile LLNG configuration for performances
 	reload: ->
 		self = this
-		@lmConf.getConf()
+		@lmConf.getConf { logger: @logger }
 			.then (conf) ->
 				for k of self.localConfig
 					conf[k] = self.localConfig[k]
 
-				console.log "Virtualhosts configured for Node.js", conf.nodeVhosts
+				self.logger.debug "Virtualhosts configured for Node.js: #{conf.nodeVhosts}"
 				vhostList = if conf.nodeVhosts then conf.nodeVhosts.split(/[,\s]+/) else []
 
 				# Default values initialization
 				for w in ['cda', 'cookieExpiration', 'cipher', 'cookieName', 'customFunctions', 'httpOnly', 'securedCookie', 'timeoutActivity', 'useRedirectOnError', 'useRedirectOnForbidden', 'whatToTrace', 'loopBackUrl']
-					console.log "Conf key #{w}:", conf[w] unless w == 'cipher'
+					self.logger.debug "Conf key #{w}: #{conf[w]}" unless w == 'cipher'
 					self.tsv[w] = conf[w]
 
 				for w in ['https', 'port', 'maintenance']
@@ -113,7 +117,7 @@ class handlerConf
 				# Location rules initialization
 				for vhost, rules of conf.locationRules
 					if vhostList.indexOf(vhost) != -1
-						console.log "Compiling rules for #{vhost}"
+						self.logger.debug "Compiling rules for #{vhost}"
 						self.tsv.locationCount[vhost] = 0
 						for url, rule of rules
 							[cond, prot] = self.conditionSub rule
@@ -136,12 +140,12 @@ class handlerConf
 				unless sessionStorageModule = conf.globalStorage.replace /^Apache::Session::(?:Browseable::)?/, ''
 					Error "Unsupported session backend: #{conf.globalStorage}"
 				m = require "./sessions"
-				self.sa = new m sessionStorageModule, conf.globalStorageOptions
+				self.sa = new m sessionStorageModule, self.logger, conf.globalStorageOptions
 
 				# Headers initialization
 				for vhost, headers of conf.exportedHeaders
 					if vhostList.indexOf(vhost) != -1
-						console.log "Compiling headers for #{vhost}"
+						self.logger.debug "Compiling headers for #{vhost}"
 						self.tsv.headerList[vhost] = [] unless self.tsv.headerList[vhost]?
 						self.tsv.headerList[vhost].push(a) for a of headers
 						sub = ''
@@ -164,7 +168,7 @@ class handlerConf
 
 				1
 			.catch (e) ->
-				console.error "Can't get configuration", e
+				self.logger.error "Can't get configuration: #{e}"
 
 	# Build expression into functions (used to control user access and build
 	# headers)

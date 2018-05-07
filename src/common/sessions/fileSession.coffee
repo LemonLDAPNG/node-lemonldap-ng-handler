@@ -10,12 +10,11 @@ class fileSession
 
 	# Initialization:
 	# verify that directory exists
-	constructor: (opts) ->
+	constructor: (@logger, opts) ->
 		@directory = opts.Directory if opts.Directory
 		state = fs.statSync @directory
 		unless state.isDirectory()
-			console.log "#{@directory} isn't usable to manage File sessions"
-			process.exit 1
+			Error "#{@directory} isn't usable to manage File sessions"
 		this
 
 	# get(): Recover session data
@@ -23,19 +22,19 @@ class fileSession
 	# Note that it fails only on JSON parsing: if session doesn't exists, it just
 	# return a false value
 	get: (id) ->
+		self = @
 		dir = @directory
 		q = new Promise (resolve, reject) ->
 			fs.readFile "#{dir}/#{id}", 'utf-8', (err, data) ->
 				if err
-					console.log err
+					self.logger.info err
 					resolve false
 				else
 					try
 						tmp = JSON.parse data
 						resolve tmp
 					catch err
-						console.log "Error when parsing session file (#{err})"
-						reject err
+						reject "Error when parsing session file (#{err})"
 		q
 
 	update: (id, data) ->

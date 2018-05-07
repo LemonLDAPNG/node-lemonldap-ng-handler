@@ -23,31 +23,31 @@ class conf
 		catch e
 			console.error e
 			return null
-		console.log @type + ' module loaded'
+		console.debug @type + ' module loaded'
 		#for k in ['available','lastCfg','lock','isLocked','unlock','store','load','delete']
 		#	this[k] = @module[k]
 
 	getConf: (args={}) ->
+		self = @
 		mod = @module
 		d = new Promise (resolve,reject) ->
 			mod.lastCfg()
 				.then (cn) ->
 					args.cfgNum or= cn
 					unless args.cfgNum
-						console.error "No configuration available in backend.\n"
-						reject null
+						reject "No configuration available in backend.\n"
 					mod.load args.cfgNum
 						.then (r) ->
 							unless args.raw
 								m = require("./crypto")
 								r.cipher = new m(r.key)
-							console.log "Configuration #{args.cfgNum} loaded"
+							self.logger.debug "Configuration #{args.cfgNum} loaded"
 							resolve r
 						.catch (e) ->
-							console.error "Get configuration #{args.cfgNum} failed\n", e
+							self.logger.error "Get configuration #{args.cfgNum} failed\n", e
 							reject null
 				.catch (e) ->
-					console.error 'No last cfg', e
+					self.logger.error "No last cfg: #{e}"
 		d
 
 	getLocalConf: (section,file,loadDefault=false) ->
@@ -74,10 +74,10 @@ class conf
 
 		tmp = @module.store conf
 		unless tmp > 0
-			console.error "Configuration #{conf.cfgNum} not stored\n"
+			@logger.error "Configuration #{conf.cfgNum} not stored\n"
 			@module.unlock()
 			return if tmp? then tmp else -2
-		console.log "Configuration #{conf.cfgNum} stored\n"
+		@logger.info "Configuration #{conf.cfgNum} stored\n"
 		return if @module.unlock() then tmp else -2
 
 module.exports = conf

@@ -5,13 +5,14 @@
 ###
 
 class DBISession
-	constructor: (@eng, @config) ->
+	constructor: (@eng, @logger, @config) ->
 		perlWrap = require './perldbi'
 		@db = new perlWrap(@config)
 		@config.table or= 'sessions'
 
 	# get(): Recover session data
 	get: (id) ->
+		self = @
 		db = @db.connect()
 		table = @config.table
 		d = new Promise (resolve, reject) ->
@@ -23,13 +24,13 @@ class DBISession
 						tmp = JSON.parse q.value 1
 						resolve tmp
 					catch err
-						console.error "Error when parsing session file (#{err})", res
+						self.logger.error "Error when parsing session file (#{err})", res
 						reject err
 				else
-					console.log "Session #{id} expired"
+					self.logger.info "Session #{id} expired"
 					reject false
 			else
-				console.error "Unable to query database"
+				self.logger.error "Unable to query database"
 				reject false
 		d
 

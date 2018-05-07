@@ -7,7 +7,7 @@ convert =
 	port:     'port'
 
 class MySQLSession extends DBISession
-	constructor: (opts) ->
+	constructor: (logger, opts) ->
 		if opts.DataSource.match /^dbi:mysql:(.*$)/
 			dbiargs = RegExp.$1
 			table = if opts.TableName then opts.TableName else 'sessions'
@@ -22,8 +22,8 @@ class MySQLSession extends DBISession
 						dbargs[k] = t2[1]
 				else
 					dbargs.database = t
-			super('mysql', dbargs)
+			super('mysql', logger, dbargs)
 		else
-			console.log 'Bad DataSource'
+			logger.error 'Bad DataSource'
 
 module.exports = MySQLSession

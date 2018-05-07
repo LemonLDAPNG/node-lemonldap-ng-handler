@@ -27,19 +27,19 @@ class HandlerServiceToken extends Handler
 
 			# At least one vhost
 			unless t[2]
-				console.error 'Bad service token'
+				@userLogger.error 'Bad service token'
 				return false
 
 			# Is token in good interval ?
 			time = Date.now()/1000
 			unless t[0] <= time and t[0] > time - 30
-				console.error 'Expired service token'
+				@userLogger.warn 'Expired service token'
 				return false
 
 			# Is vhost listed in token ?
 			vh = @resolveAlias req
 			unless t.indexOf(vh) >1
-				console.error "#{vh} not authorizated in token (#{s})"
+				@userLogger.error "#{vh} not authorizated in token (#{s})"
 				return false
 
 			# Retun _session_id

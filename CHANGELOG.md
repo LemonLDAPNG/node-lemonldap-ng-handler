@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 0.2.1
+ * Add logger system
+
 ## 0.2.0
  * Move nodedbi to optionalDependencies
  * Use SPDX license name

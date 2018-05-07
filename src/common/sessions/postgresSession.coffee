@@ -7,7 +7,7 @@ convert =
 	port:     'port'
 
 class PgSession extends DBISession
-	constructor: (opts) ->
+	constructor: (logger,opts) ->
 		if opts.DataSource.match /^dbi:Pg:(.*$)/
 			dbiargs = RegExp.$1
 			table = if opts.TableName then opts.TableName else 'sessions'
@@ -22,8 +22,8 @@ class PgSession extends DBISession
 						dbargs[k] = t2[1]
 				else
 					dbargs.database = t
-			super('pg', dbargs)
+			super('pg', logger, dbargs)
 		else
-			console.error 'Bad DataSource'
+			logger.error 'Bad DataSource'
 
 module.exports = PgSession

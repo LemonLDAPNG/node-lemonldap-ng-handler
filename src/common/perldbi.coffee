@@ -41,8 +41,7 @@ class PerlDBI
 				@dbargs.password = args.dbiPassword
 			@connect()
 		else
-			console.error "Invalid dbiChain: #{args.dbiChain}"
-			process.exit 1
+			Error "Invalid dbiChain: #{args.dbiChain}"
 	connect: () ->
 		return @db if @db
 		@db = DBWrapper.DBConnection @dbargs

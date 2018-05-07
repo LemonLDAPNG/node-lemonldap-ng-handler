@@ -59,11 +59,9 @@ class restConf
 							json = JSON.parse str
 							resolve json
 						catch err
-							console.error "JSON parsing error: #{err}"
-							reject "#{err}"
+							reject "JSON parsing error: #{err}"
 					else
-						console.error "No response received"
-						reject false
+						reject "No response received"
 		d
 
 module.exports = restConf

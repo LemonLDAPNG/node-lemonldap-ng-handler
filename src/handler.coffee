@@ -9,13 +9,15 @@ class Handler
 	constructor: (args) ->
 		m = require('./handlerConf')
 		@conf = new m(args)
+		@logger = @conf.logger
+		@userLogger = @conf.userLogger
 
 	run: (req, res, next) ->
 		self = @
 		vhost = req.headers.host
 		uri = decodeURI req.url
 		if @conf.tsv.maintenance[vhost]
-			console.error "Go to portal with maintenance error code #{vhost}"
+			self.logger.info "Go to portal with maintenance error code #{vhost}"
 			return @setError res, '/', 503, 'Service Temporarily Unavailable'
 
 		protection = @isUnprotected req, uri
@@ -30,18 +32,18 @@ class Handler
 					self.grant req, uri, session
 						.then () ->
 							# TODO: display uid
-							console.log "User #{session[self.conf.tsv.whatToTrace]} was granted to access to #{uri}"
+							self.userLogger.info "User #{session[self.conf.tsv.whatToTrace]} was granted to access to #{uri}"
 							self.sendHeaders req, session
 							self.hideCookie req
 							return next()
 						.catch (e) ->
-							console.log "#{id} rejected " + if e.message? then e.message
+							self.userLogger.warn "#{session[self.conf.tsv.whatToTrace]} rejected " + if e.message? then e.message
 							self.forbidden req, res, session
 				.catch (e) ->
-					console.error e
+					self.logger.info e
 					self.goToPortal res, 'http://' + vhost + uri
 		else
-			console.log "No id"
+			self.logger.debug "No id"
 			u = "://#{vhost}#{uri}"
 			if @conf.tsv.https? and @conf.tsv.https[vhost]
 				u = "https#{u}"
@@ -71,14 +73,14 @@ class Handler
 			else
 				res.end()
 		.listen fcgiOpt.port, fcgiOpt.ip
-		console.log "Server started at " + fcgiOpt.ip + ":" + fcgiOpt.port
+		self.logger.info "Server started at " + fcgiOpt.ip + ":" + fcgiOpt.port
 
 	grant: (req, uri, session) ->
 		self = @
 		d = new Promise (resolve,reject) ->
 			vhost = self.resolveAlias req
 			unless self.conf.tsv.defaultCondition[vhost]?
-				console.error "No configuration found for #{vhost} (or not listed in Node.js virtualHosts)"
+				self.logger.error "No configuration found for #{vhost} (or not listed in Node.js virtualHosts)"
 				return reject()
 			for rule,i in self.conf.tsv.locationRegexp[vhost]
 				if uri.match rule
@@ -113,7 +115,7 @@ class Handler
 					req.headers["Headername#{i}"] = k
 					req.headers["Headervalue#{i}"] = v
 		catch err
-			console.error "No headers configuration found for #{vhost}"
+			@logger.warn "No headers configuration found for #{vhost}"
 		true
 
 	resolveAlias: (req) ->
@@ -138,7 +140,7 @@ class Handler
 					# Timestamp in seconds
 					now = Date.now()/1000 | 0
 					if now - session._utime > self.conf.tsv.timeout or ( self.conf.tsv.timeoutActivity and session._lastSeen and now - $session._lastSeen > self.conf.tsv.timeoutActivity )
-						console.log "Session #{id} expired"
+						self.userLogger.info "Session #{id} expired"
 						reject false
 
 					# Update the session to notify activity, if necessary
@@ -147,7 +149,7 @@ class Handler
 						self.conf.sa.update id, session
 					resolve session
 				.catch () ->
-					console.log "Session #{id} can't be found in store"
+					self.userLogger.info "Session #{id} can't be found in store"
 					reject false
 		d
 
@@ -175,7 +177,7 @@ class Handler
 
 		# req.redirect is defined when running under express. If not
 		# we are running as FastCGI server
-		console.log "Redirecting to " + urlc
+		@logger.debug "Redirecting to " + urlc
 		if res.redirect
 			res.redirect urlc
 		else
@@ -188,7 +190,7 @@ class Handler
 	setError: (res, uri, code, txt) ->
 		if @conf.tsv.useRedirectOnError
 			u = "#{@conf.tsv.portal}/lmerror/#{code}?url=" + new Buffer(encodeURI(uri)).toString('base64')
-			console.log "Redirecting to " + u
+			@logger.debug "Redirecting to #{u}"
 			if res.redirect?
 				res.redirect u
 			else

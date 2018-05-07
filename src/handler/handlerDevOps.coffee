@@ -18,7 +18,7 @@ class HandlerDevOps extends Handler
 			@conf.tsv.lastVhostUpdate or= {}
 			base = @conf.tsv.loopBackUrl or "http://127.0.0.1" # TODO arg + port
 			unless base.match /^(https?):\/\/([^\/:]+)(?::(\d+))?(.*)$/
-				console.error "Bad loopBackUrl #{base}"
+				@logger.error "Bad loopBackUrl #{base}"
 			@lvOpts =
 				prot: RegExp.$1
 				host: RegExp.$2
@@ -34,9 +34,8 @@ class HandlerDevOps extends Handler
 						.catch (e) ->
 							reject e
 					.catch (e) ->
-						console.log 'E',e
+						self.logger.error 'E',e
 						HandlerDevOps.__super__.grant.call(self,req, uri, session).then () ->
-						super(req, uri, session).then () ->
 							resolve true
 						.catch (e) ->
 							reject e
@@ -95,13 +94,13 @@ class HandlerDevOps extends Handler
 							eval "self.conf.tsv.forgeHeaders['#{vhost}'] = function(session) {return {#{sub}};}"
 							return resolve()
 						catch err
-							console.error "JSON parsing error: #{err}"
-					console.log "No rules found, apply default rule"
+							self.logger.error "JSON parsing error: #{err}"
+					self.logger.info "No rules found, apply default rule"
 					self.conf.tsv.defaultCondition[vhost] = () -> 1
 					self.conf.tsv.defaultProtection = false
 					resolve()
 			req.on 'error', (e) ->
-				console.error "Unable to load rules.json: #{e.message}"
+				self.logger.error "Unable to load rules.json: #{e.message}"
 				reject()
 			req.end()
 		d

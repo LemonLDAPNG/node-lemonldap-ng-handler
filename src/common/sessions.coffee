@@ -6,16 +6,18 @@ localCache = {}
 backend = {}
 class sessions
 
-	constructor: (type, opts={}) ->
+	constructor: (type, logger, opts={}) ->
 		try
 			m = require "./#{type.toLowerCase()}Session"
-			backend = new m opts
+			backend = new m logger, opts
+			@logger = logger
 			newCache(opts)
 		catch err
 			console.error "Unable to load #{type} session backend: #{err}"
 			process.exit 1
 
 	get: (id) ->
+		self = @
 		return new Promise (resolve, reject) ->
 			localCache.get id
 				.then (lsession) ->
@@ -24,18 +26,19 @@ class sessions
 					else
 						backend.get id
 							.then (session) ->
-								console.log "Download session #{id}"
+								self.logger.debug "Download session #{id}"
 								localCache.set id, session
 								resolve session
 							.catch (e) ->
 								reject e
 				.catch (e) ->
-					console.error "localCache error", e
+					self.logger.error "localCache error: #{e}"
 					reject e
 
     # Update session: update both central and local DB and return only central
 	# DB value
 	update: (id, data) ->
+		self = @
 		return new Promise (resolve, reject) ->
 			Promise.all [
 				backend id, data
@@ -44,7 +47,7 @@ class sessions
 				.then (v) ->
 					resolve v[0]
 				.catch (e) ->
-					console.error "Session update error: #{e}"
+					self.logger.error "Session update error: #{e}"
 					reject e
 
 	newCache = (args={}) ->

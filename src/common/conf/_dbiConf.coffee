@@ -12,6 +12,7 @@ class _dbiConf
 			@table = if args.dbiTable then args.dbiTable else 'lmConfig'
 
 	available: ->
+		self = @
 		db = @db.connect()
 		table = @table
 		d = new Promise (resolve, reject) ->
@@ -24,7 +25,7 @@ class _dbiConf
 					t.push q.value 1
 				resolve t
 			else
-				console.log 'No conf found in database', err
+				self.logger.error 'No conf found in database'
 				resolve []
 		d
 
@@ -37,20 +38,20 @@ class _dbiConf
 				q.seek 1
 				resolve q.value 1
 			else
-				console.log 'No conf found in database', err
+				self.logger.error 'No conf found in database'
 				resolve []
 		d
 
 	lock: ->
-		console.error 'TODO later'
+		@logger.error 'TODO later'
 
 	isLocked: ->
-		console.error 'TODO later'
+		@logger.error 'TODO later'
 
 	unlock: ->
-		console.error 'TODO later'
+		@logger.error 'TODO later'
 
 	delete: ->
-		console.error 'TODO later'
+		@logger.error 'TODO later'
 
 module.exports = _dbiConf

@@ -17,7 +17,7 @@ class rdbiConf extends _DBI
 			# TODO: change this to dc.query
 			db.fetchAll "SELECT field,value FROM #{table} WHERE cfgNum=?", [cfgNum], (err, res) ->
 				if err
-					console.error err
+					self.logger.error err
 					reject null
 				else
 					try
@@ -26,12 +26,12 @@ class rdbiConf extends _DBI
 							cfg[row.field] = row.value
 						resolve self.unserialize cfg
 					catch err
-						console.error "Error when parsing configuration (#{err})"
+						self.logger.error "Error when parsing configuration (#{err})"
 						reject err
 		d
 
 	store: ->
-		console.error 'TODO later'
+		self.logger.error 'TODO later'
 
 	unserialize: (cfg) ->
 		res = {}
