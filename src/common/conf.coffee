@@ -4,6 +4,8 @@
 # See README.md for license and copyright
 ###
 
+'use strict'
+
 class conf
 
 	module: null

@@ -4,6 +4,8 @@
 # See README.md for license and copyright
 ###
 
+'use strict'
+
 class Crypto
 	constructor: (key, @mode) ->
 		MD5 = require 'js-md5'

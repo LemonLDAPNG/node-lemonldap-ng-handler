@@ -4,6 +4,7 @@
 # See README.md for license and copyright
 ###
 
+'use strict'
 
 class _dbiConf
 	constructor: (args) ->

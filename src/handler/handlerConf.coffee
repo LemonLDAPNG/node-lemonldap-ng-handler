@@ -7,6 +7,8 @@
 # TODO Reload mechanism, needed for cluster only:
 # see file:///usr/share/doc/nodejs/api/cluster.html "Event 'message'"
 
+'use strict'
+
 class handlerConf
 	tsv:
 		defaultCondition: {}

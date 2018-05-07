@@ -1,3 +1,5 @@
+'use strict'
+
 DBISession = require './dbiSession'
 
 class SQLite3Session extends DBISession

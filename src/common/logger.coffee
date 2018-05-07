@@ -1,3 +1,5 @@
+'use strict'
+
 module.exports = (conf, type) ->
 	cl = (if type then conf.userLogger or conf.logger else conf.logger) or 'Std'
 	cl = 'logger' + cl.replace /^Lemonldap::NG::Common::Logger::/i, ''

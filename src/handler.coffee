@@ -5,6 +5,8 @@
 ###
 conf = null
 
+'use strict'
+
 class Handler
 	constructor: (args) ->
 		m = require('./handlerConf')
