@@ -47,6 +47,7 @@
     "node-fastcgi": "*"
   },
   "optionalDependencies": {
-    "nodedbi": "*"
+    "nodedbi": "*",
+    "syslog-client": "*"
   }
 }

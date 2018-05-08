@@ -131,10 +131,17 @@ Node-lemonldap-ng-handler uses LemonLDAP::NG configuration file, sections
 > **Note important**: node-lemonldap-ng-handler can't read multilines in
 lemonldap-ng.ini. You must rewrite them on one line *(even in other sections)*.
 
-#### Section `[configuration]`
+#### Sections `[all]` and `[configuration]`
 
 Nothing to change, but node-lemonldap-ng-handler isn't compatible with all
 LLNG backends. See below.
+
+##### Loggers
+
+node-lemonldap-ng-handler is compatible with the following
+[loggers](https://lemonldap-ng.org/documentation/2.0/logs):
+* Lemonldap::NG::Common::Logger::Std : use console.log
+* Lemonldap::NG::Common::Logger::Syslog : use Syslog
 
 #### New section `[node-handler]`
 

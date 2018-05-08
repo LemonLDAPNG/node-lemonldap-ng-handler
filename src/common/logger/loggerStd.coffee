@@ -1,3 +1,9 @@
+###
+#
+# LemonLDAP::NG standard logger (log to console)
+#
+###
+
 class LoggerStd
 	constructor: (conf) ->
 		i = 1

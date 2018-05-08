@@ -2,7 +2,7 @@ Changelog
 =========
 
 ## 0.2.1
- * Add logger system
+ * Add logger system (Std and Syslog)
  * Fix inheritance error in DevOps handler
 
 ## 0.2.0
