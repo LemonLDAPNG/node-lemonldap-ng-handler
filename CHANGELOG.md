@@ -3,6 +3,7 @@ Changelog
 
 ## 0.2.1
  * Add logger system
+ * Fix inheritance error in DevOps handler
 
 ## 0.2.0
  * Move nodedbi to optionalDependencies

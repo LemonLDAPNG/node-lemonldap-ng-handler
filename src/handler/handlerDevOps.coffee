@@ -26,19 +26,21 @@ class HandlerDevOps extends Handler
 				port: RegExp.$3 or if RegExp.$1 == 'https' then 443 else 80
 		self = @
 		unless @conf.tsv.defaultCondition[vhost] and (Date.now()/1000 - @conf.tsv.defaultCondition[vhost] < 600 )
+			up = super.grant
 			d = new Promise (resolve,reject) ->
 				self.loadVhostConfig req, vhost
 					.then () ->
-						HandlerDevOps.__super__.grant.call(self,req, uri, session).then () ->
+						up.call(self, req, uri, session).then ->
 							resolve true
 						.catch (e) ->
 							reject e
 					.catch (e) ->
 						self.logger.error 'E',e
-						HandlerDevOps.__super__.grant.call(self,req, uri, session).then () ->
+						up.call(self, req, uri, session).then ->
 							resolve true
 						.catch (e) ->
 							reject e
+			return d
 		else
 			super(req, uri, session)
 
