@@ -3,53 +3,25 @@
 # LemonLDAP::NG syslog logger (log to console)
 #
 ###
-
-Severity =
-	error:  3
-	warn:   4
-	notice: 5
-	info:   6
-	debug:  7
-
-Facility =
-        kernel: 0,
-        user:   1,
-        system: 3,
-        daemon: 3,
-        auth:   4,
-        syslog: 5,
-        lpr:    6,
-        news:   7,
-        uucp:   8,
-        cron:   9,
-        authpriv: 10,
-        ftp:    11,
-        audit:  13,
-        alert:  14,
-        local0: 16,
-        local1: 17,
-        local2: 18,
-        local3: 19,
-        local4: 20,
-        local5: 21,
-        local6: 22,
-        local7: 23
+syslog = require 'modern-syslog'
+o = syslog.option
+f = syslog.facility
 
 class Syslog
 	constructor: (conf, type) ->
-		syslog = require 'syslog-client'
-		cli = syslog.createClient "localhost"
 		if type
-			fac = Facility[conf.userSyslogFacility] or Facility.auth
+			fac = conf.userSyslogFacility or 'auth'
 		else
-			fac = Facility[conf.syslogFacility] or Facility.daemon
+			fac = conf.syslogFacility or 'daemon'
+		fac = f["LOG_#{fac.toUpperCase()}"]
+		syslog.open 'LLNG', o.LOG_CONS + o.LOG_PID + o.LOG_NDELAY, fac
+		i = 1
 		for l in ['error','warn','notice','info','debug']
-			opt =
-				facility: fac
-				severity: Severity[l]
 			if i
+				p = if l == 'warn' then 'warning' else if l == 'error' then 'err' else l
+				p = syslog.level["LOG_#{p.toUpperCase()}"] + fac
 				@[l] = (txt) ->
-					cli.log txt, opt
+					syslog.log p, txt
 			else
 				@[l] = (txt) ->
 			i = 0 if conf.logLevel == l

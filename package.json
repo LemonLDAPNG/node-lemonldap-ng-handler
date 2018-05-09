@@ -48,6 +48,6 @@
   },
   "optionalDependencies": {
     "nodedbi": "*",
-    "syslog-client": "*"
+    "modern-syslog": "*"
   }
 }
