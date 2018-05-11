@@ -181,15 +181,18 @@ $ npm install nodedbi
 Node-lemonldap-ng-handler is compatible with the following Lemonldap::NG
 backends:
 * [Apache::Session::File](https://metacpan.org/pod/Apache::Session::File)
-* [Apache::Session::Browseable::File](https://metacpan.org/pod/Apache::Session::Browseable::File)
-* [Apache::Session::MySQL](https://metacpan.org/pod/Apache::Session::MySQL)
-* [Apache::Session::Browseable::MySQL](https://metacpan.org/pod/Apache::Session::Browseable::MySQL)
-* [Apache::Session::Postgres](https://metacpan.org/pod/Apache::Session::Postgres)
-* [Apache::Session::Browseable::Postgres](https://metacpan.org/pod/Apache::Session::Browseable::Postgres)
-* [Apache::Session::Browseable::PgHstore](https://metacpan.org/pod/Apache::Session::Browseable::PgHstore)
-* [Apache::Session::Browseable::PgJSON](https://metacpan.org/pod/Apache::Session::Browseable::PgJSON)
-* [Apache::Session::SQLite3](https://metacpan.org/pod/Apache::Session::SQLite3)
-* [Apache::Session::Browseable::SQLite](https://metacpan.org/pod/Apache::Session::Browseable::SQLite)
+* SQL backends:
+  * [Apache::Session::Browseable::File](https://metacpan.org/pod/Apache::Session::Browseable::File)
+  * [Apache::Session::MySQL](https://metacpan.org/pod/Apache::Session::MySQL)
+  * [Apache::Session::Browseable::MySQL](https://metacpan.org/pod/Apache::Session::Browseable::MySQL)
+  * [Apache::Session::Postgres](https://metacpan.org/pod/Apache::Session::Postgres)
+  * [Apache::Session::Browseable::Postgres](https://metacpan.org/pod/Apache::Session::Browseable::Postgres)
+  * [Apache::Session::Browseable::PgHstore](https://metacpan.org/pod/Apache::Session::Browseable::PgHstore)
+  * [Apache::Session::Browseable::PgJSON](https://metacpan.org/pod/Apache::Session::Browseable::PgJSON)
+  * [Apache::Session::SQLite3](https://metacpan.org/pod/Apache::Session::SQLite3)
+  * [Apache::Session::Browseable::SQLite](https://metacpan.org/pod/Apache::Session::Browseable::SQLite)
+* [Apache::Session::Redis](https://metacpan.org/pod/Apache::Session::Redis)
+* [Apache::Session::Browseable::Redis](https://metacpan.org/pod/Apache::Session::Browseable::Redis)
 
 **Note that, except for Apache::Session::File, you must install nodedbi
 and needed dependencies**. Example with PostgreSQL _(Debian)_:
