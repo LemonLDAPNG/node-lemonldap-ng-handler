@@ -141,7 +141,8 @@ LLNG backends. See below.
 node-lemonldap-ng-handler is compatible with the following
 [loggers](https://lemonldap-ng.org/documentation/2.0/logs):
 * Lemonldap::NG::Common::Logger::Std : use console.log
-* Lemonldap::NG::Common::Logger::Syslog : use Syslog
+* Lemonldap::NG::Common::Logger::Syslog : use Syslog _(install modern-syslog
+to use it)_
 
 #### New section `[node-handler]`
 
@@ -162,6 +163,8 @@ nodeVhosts = test1.example.com, test2.example.com
 You'll have a warning in the manager when saving this rules since Perl doesn't
 understand Javascript.
 
+> Note that `handler` section isn't read by node-lemonldap-ng-handler.
+
 ### Configuration backends
 
 Node-lemonldap-ng-handler is compatible with the following Lemonldap::NG
@@ -169,7 +172,7 @@ backends:
 * [File](https://lemonldap-ng.org/documentation/latest/fileconfbackend)
 * [REST](https://lemonldap-ng.org/documentation/2.0/restconfbackend)
 * [CDBI / RDBI](https://lemonldap-ng.org/documentation/latest/sqlconfbackend)
-_(MySQL, PostgreSQL and SQLite3 only)_. **Note that you must install nodedbi
+_(MySQL, PostgreSQL and SQLite3 only)_. **Note that you must install `nodedbi`
 and needed dependencies**. Example with PostgreSQL _(Debian)_:
 ```
 $ sudo apt-get install libdbi-dev libdbd-pgsql
@@ -180,9 +183,13 @@ $ npm install nodedbi
 
 Node-lemonldap-ng-handler is compatible with the following Lemonldap::NG
 backends:
-* [Apache::Session::File](https://metacpan.org/pod/Apache::Session::File)
-* SQL backends:
+* File:
+  * [Apache::Session::File](https://metacpan.org/pod/Apache::Session::File)
   * [Apache::Session::Browseable::File](https://metacpan.org/pod/Apache::Session::Browseable::File)
+* Redis _(install `redis` to use them)_:
+  * [Apache::Session::Redis](https://metacpan.org/pod/Apache::Session::Redis)
+  * [Apache::Session::Browseable::Redis](https://metacpan.org/pod/Apache::Session::Browseable::Redis)
+* SQL backends _(install `nodedbi` to use them)_:
   * [Apache::Session::MySQL](https://metacpan.org/pod/Apache::Session::MySQL)
   * [Apache::Session::Browseable::MySQL](https://metacpan.org/pod/Apache::Session::Browseable::MySQL)
   * [Apache::Session::Postgres](https://metacpan.org/pod/Apache::Session::Postgres)
@@ -191,11 +198,9 @@ backends:
   * [Apache::Session::Browseable::PgJSON](https://metacpan.org/pod/Apache::Session::Browseable::PgJSON)
   * [Apache::Session::SQLite3](https://metacpan.org/pod/Apache::Session::SQLite3)
   * [Apache::Session::Browseable::SQLite](https://metacpan.org/pod/Apache::Session::Browseable::SQLite)
-* [Apache::Session::Redis](https://metacpan.org/pod/Apache::Session::Redis)
-* [Apache::Session::Browseable::Redis](https://metacpan.org/pod/Apache::Session::Browseable::Redis)
 
-**Note that, except for Apache::Session::File, you must install nodedbi
-and needed dependencies**. Example with PostgreSQL _(Debian)_:
+**Note that fo SQL backends, you must install nodedbi and needed dependencies**.
+Example with PostgreSQL _(Debian/Ubuntu)_:
 ```
 $ sudo apt-get install libdbi-dev libdbd-pgsql
 $ npm install nodedbi
