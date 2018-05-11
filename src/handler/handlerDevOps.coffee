@@ -16,7 +16,7 @@ class HandlerDevOps extends Handler
 		# Initialize devps conf if needed
 		unless @lvOpts.prot
 			@conf.tsv.lastVhostUpdate or= {}
-			base = req.params['RULES_URL'] or @conf.tsv.loopBackUrl or "http://127.0.0.1" # TODO arg + port
+			base = if req.params and req.params['RULES_URL'] then req.params['RULES_URL'] else @conf.tsv.loopBackUrl or "http://127.0.0.1"
 			unless base.match /^(https?):\/\/([^\/:]+)(?::(\d+))?(.*)$/
 				@logger.error "Bad loopBackUrl #{base}"
 			@lvOpts =
