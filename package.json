@@ -3,12 +3,10 @@
   "version": "0.2.1",
   "description": "LemonLDAP::NG handler for Node.js",
   "main": "index.js",
-  "maintainers": [
-    {
-      "name": "Xavier Guimard",
-      "email": "x.guimard@free.fr"
-    }
-  ],
+  "maintainers": [{
+    "name": "Xavier Guimard",
+    "email": "x.guimard@free.fr"
+  }],
   "homepage": "https://lemonldap-ng.org",
   "directories": {
     "lib": "lib",
@@ -21,28 +19,24 @@
     "type": "git",
     "url": "https://github.com/LemonLDAPNG/node-lemonldap-ng-handler.git"
   },
-  "keywords": [
-    "Lemonldap::NG",
-    "SSO",
-    "SAML",
-    "OpenID-Connect"
-  ],
-  "authors": [
-    "Xavier Guimard <x.guimard@free.fr>"
-  ],
+  "keywords": ["Lemonldap::NG", "SSO", "SAML", "OpenID-Connect"],
+  "authors": ["Xavier Guimard <x.guimard@free.fr>"],
   "license": "GPL-2.0-or-later",
   "devDependencies": {
-    "grunt": "^1.0.1",
-    "grunt-contrib-coffee": "^1.0.0"
+    "grunt": "*",
+    "grunt-contrib-coffee": "*",
+    "mocha": "*"
   },
   "scripts": {
     "compile": "grunt",
-    "test": "node ./test/test.js"
+    "test": "mocha ./test/test.js"
   },
   "dependencies": {
-    "aes-js": "^3.1.1",
-    "file-cache-simple": "0.0.5",
-    "inireader": "^1.0.0",
+    "aes-js": "*",
+    "extend": "*",
+    "file-cache-simple": "*",
+    "fs-jetpack": "*",
+    "inireader": "*",
     "js-md5": "*",
     "node-fastcgi": "*"
   },

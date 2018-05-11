@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 0.2.2
+ * Use mocha for test
+
 ## 0.2.1
  * Add logger system (Std and Syslog)
  * Fix inheritance error in DevOps handler

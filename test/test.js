@@ -1,27 +1,34 @@
 // Simple test
-var handler = require('../lib/handler.js');
+var handler;
 
-handler.init({
-  configStorage: {
-    "confFile": "test/lemonldap-ng.ini"
-  }
+describe('Initialization tests', function() {
+  it('should load library', function() {
+    handler = require('../lib/handler.js');
+  });
+
+  it('should read test/lemonldap-ng.ini', function() {
+    handler.init({
+      configStorage: {
+        "confFile": "test/lemonldap-ng.ini"
+      }
+    });
+  });
+
+  it('should initialize ServiceToken', function() {
+    handler.init({
+      type: 'ServiceToken',
+      configStorage: {
+        "confFile": "test/lemonldap-ng.ini"
+      }
+    });
+  });
+
+  it('should initialize DevOps', function() {
+    handler.init({
+      type: 'DevOps',
+      configStorage: {
+        "confFile": "test/lemonldap-ng.ini"
+      }
+    });
+  });
 });
-
-// Service token test
-
-var h = handler.init({
-  type: 'ServiceToken',
-  configStorage: {
-    "confFile": "test/lemonldap-ng.ini"
-  }
-});
-
-// DevOps test
-
-var h = handler.init({
-  type: 'DevOps',
-  configStorage: {
-    "confFile": "test/lemonldap-ng.ini"
-  }
-});
-

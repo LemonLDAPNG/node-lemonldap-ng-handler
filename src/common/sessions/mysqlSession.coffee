@@ -10,7 +10,6 @@ class MySQLSession extends DBISession
 	constructor: (logger, opts) ->
 		if opts.DataSource.match /^dbi:mysql:(.*$)/
 			dbiargs = RegExp.$1
-			table = if opts.TableName then opts.TableName else 'sessions'
 			tmp = dbiargs.split /;/
 			dbargs =
 				user: opts.UserName
