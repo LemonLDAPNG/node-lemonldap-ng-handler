@@ -41,7 +41,8 @@
     "node-fastcgi": "*"
   },
   "optionalDependencies": {
+    "modern-syslog": "*",
     "nodedbi": "*",
-    "modern-syslog": "*"
+    "redis": "*"
   }
 }

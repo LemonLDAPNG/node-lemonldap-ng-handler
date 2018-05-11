@@ -58,10 +58,14 @@ class conf
 		if loadDefault
 			for k,v of iniparser.param 'all'
 				res[k] = v
-		return res if section == 'all'
 
 		for k,v  of iniparser.param section
 			res[k] = v
+
+		for k,v of res
+			if v.match /^\s*\{/
+				v = v.replace(/(\w+)\s*=>/g, '"$1":').replace(/:\s*'([^']+)'/g, ':"$1"')
+				res[k] = JSON.parse v
 		res
 
 	saveConf: (conf, args={}) ->

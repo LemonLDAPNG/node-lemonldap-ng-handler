@@ -3,6 +3,8 @@ Changelog
 
 ## 0.2.2
  * Use mocha for test
+ * Evaluate Perl hash in lemonldap-ng.ini file
+ * Add Redis session backend
 
 ## 0.2.1
  * Add logger system (Std and Syslog)
