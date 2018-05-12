@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-  - "8.11"
+  - "10"
 before_install:
   - sudo apt-get -qq update
   - sudo apt-get install -y libdbi-dev node-gyp nodejs-dev pkg-config
