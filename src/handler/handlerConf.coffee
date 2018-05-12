@@ -7,7 +7,9 @@
 # TODO Reload mechanism, needed for cluster only:
 # see file:///usr/share/doc/nodejs/api/cluster.html "Event 'message'"
 
-class handlerConf
+Iconv = null
+
+class HandlerConf
 	tsv:
 		defaultCondition: {}
 		defaultProtection: {}
@@ -71,6 +73,10 @@ class handlerConf
 
 		# Load initial configuration
 		@reload()
+		try
+			Iconv = require('iconv').Iconv
+		catch e
+			@logger.notice "iconv module not available"
 
 	# Note that checkConf isn't needed: no shared cache with node.js
 	checkConf: ->
@@ -198,6 +204,7 @@ class handlerConf
 					0
 				]
 		cond = @substitute(cond)
+		sub = null
 		eval "sub = function(req,session) {return (#{cond});}"
 		return [sub, 0]
 
@@ -213,7 +220,7 @@ class handlerConf
 		# Session attributes: $xx is replaced by session.xx
 		.replace /\$(_*[a-zA-Z]\w*)/g, 'session.$1'
 
-	date: ->
+	date = ->
 		d = new Date()
 		s = ''
 		a = [ d.getFullYear(), d.getMonth()+1, d.getDate(), d.getHours(), d.getMinutes(), d.getSeconds() ]
@@ -221,10 +228,39 @@ class handlerConf
 			s += if x<10 then "0#{x}" else "#{x}"
 		return s
 
-	hostname: (req) ->
+	hostname = (req) ->
 		return req.headers.host
 
-	remote_ip: (req) ->
+	remote_ip = (req) ->
 		return if req.ip? then req.ip else req.cgiParams.REMOTE_ADDR
 
-module.exports = handlerConf
+	basic = (login, pwd) ->
+		return "Basic " + unicode2iso("#{login}:#{pwd}").toString('base64')
+
+	groupMatch = (groups, attr, value) ->
+		match = 0
+		re = new RegExp value
+		for group, v of groups
+			if v[attr]?
+				if typeof v[attr] == 'object'
+					for s in v[attr]
+						match++ if s.match re
+				else
+					match++ if v[attr].match re
+		return match
+
+	#isInNet6:
+
+	#checkLogonHours:
+
+	#checkDate:
+
+	unicode2iso = (s) ->
+		iconv = new Iconv('UTF-8', 'ISO-8859-1')
+		return iconv.convert(s)
+
+	iso2unicode = (s) ->
+		iconv = new Iconv('ISO-8859-1', 'UTF-8')
+		return iconv.convert(s)
+
+module.exports = HandlerConf

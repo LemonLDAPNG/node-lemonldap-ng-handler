@@ -29,7 +29,7 @@
   },
   "scripts": {
     "compile": "grunt",
-    "test": "mocha ./test/test.js"
+    "test": "mocha ./test/*.js"
   },
   "dependencies": {
     "aes-js": "*",
