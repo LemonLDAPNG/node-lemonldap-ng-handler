@@ -251,9 +251,18 @@ class HandlerConf
 
 	#isInNet6:
 
-	#checkLogonHours:
+	checkLogonHours = (logonHours, syntax='hexadecimal', timeCorrection, defaultAccess=0) ->
+		Error 'Not implemented for now'
 
-	#checkDate:
+	checkDate = (start=0, end, defaultAccess=0) ->
+		start = start + ''
+		start = start.substring(0,14)
+		end   = end + ''
+		end   = end.substring(0,14)
+		return defaultAccess unless start or end
+		end or= 999999999999999
+		d = date()
+		return if (d >= start and d <= end) then true else false
 
 	unicode2iso = (s) ->
 		iconv = new Iconv('UTF-8', 'ISO-8859-1')
