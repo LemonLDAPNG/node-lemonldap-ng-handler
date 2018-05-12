@@ -249,7 +249,9 @@ class HandlerConf
 					match++ if v[attr].match re
 		return match
 
-	#isInNet6:
+	isInNet6 = (ip, net) ->
+		test = require 'is-in-subnet'
+		return test.isInSubnet ip, net
 
 	checkLogonHours = (logonHours, syntax='hexadecimal', timeCorrection, defaultAccess=0) ->
 		Error 'Not implemented for now'

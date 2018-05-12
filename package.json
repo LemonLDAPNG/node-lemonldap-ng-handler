@@ -42,6 +42,7 @@
   },
   "optionalDependencies": {
     "iconv": "*",
+    "is-in-subnet": "*",
     "modern-syslog": "*",
     "nodedbi": "*",
     "redis": "*"
