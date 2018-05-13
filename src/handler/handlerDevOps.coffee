@@ -1,5 +1,6 @@
 ###
-# LemonLDAP::NG handler for Node.js/express
+# LemonLDAP::NG DevOps handler
+# (see https://lemonldap-ng.org/documentation/2.0/devopshandler)
 #
 # See README.md for license and copyright
 ###
@@ -9,26 +10,27 @@ Handler = require('./handler').class
 class HandlerDevOps extends Handler
 	constructor: (args) ->
 		super(args)
-		@lvOpts = []
 
+	# Override grant() to get application rules.json before checking access
 	grant: (req, uri, session) ->
 		vhost = @resolveAlias req
-		# Initialize devps conf if needed
-		unless @lvOpts.prot
-			@conf.tsv.lastVhostUpdate or= {}
+		# Calculates rules.json URL
+		self = @
+		@conf.tsv.lastVhostUpdate or= {}
+		# Initialize devops conf if needed (each 10mn)
+		unless @conf.tsv.defaultCondition[vhost] and (Date.now()/1000 - @conf.tsv.defaultCondition[vhost] < 600 )
+			# TODO: FALSE !!!
 			base = if req.params and req.params['RULES_URL'] then req.params['RULES_URL'] else @conf.tsv.loopBackUrl or "http://127.0.0.1"
 			unless base.match /^(https?):\/\/([^\/:]+)(?::(\d+))?(.*)$/
 				@logger.error "Bad loopBackUrl #{base}"
-			@lvOpts =
+			lvOpts =
 				prot: RegExp.$1
 				host: RegExp.$2
 				path: '/rules.json'
 				port: RegExp.$3 or if RegExp.$1 == 'https' then 443 else 80
-		self = @
-		unless @conf.tsv.defaultCondition[vhost] and (Date.now()/1000 - @conf.tsv.defaultCondition[vhost] < 600 )
 			up = super.grant
 			d = new Promise (resolve,reject) ->
-				self.loadVhostConfig req, vhost
+				self.loadVhostConfig req, vhost, lvOpts
 					.then () ->
 						up.call(self, req, uri, session).then ->
 							resolve true
@@ -44,19 +46,19 @@ class HandlerDevOps extends Handler
 		else
 			super(req, uri, session)
 
-	loadVhostConfig: (req, vhost) ->
+	loadVhostConfig: (req, vhost, lvOpts) ->
 		self = @
 		d = new Promise (resolve,reject) ->
 			# Verify URL
 			# Build request
 			opts =
-				host: self.lvOpts.host
-				path: self.lvOpts.path
-				port: self.lvOpts.port
+				host: lvOpts.host
+				path: lvOpts.path
+				port: lvOpts.port
 				headers:
 					Host: vhost
 			# and launch it
-			http = require self.lvOpts.prot
+			http = require lvOpts.prot
 			req = http.request opts, (resp) ->
 				str = ''
 				resp.on 'data', (chunk) ->

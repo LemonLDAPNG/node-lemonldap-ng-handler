@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 0.2.3
+ * Fix bug in DevOps handler when RULES\_URL is used
+
 ## 0.2.2
  * Use mocha for test
  * Evaluate Perl hash in lemonldap-ng.ini file
