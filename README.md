@@ -251,6 +251,10 @@ argument. Keys:
 * Think to menu problem
 * REST backends
 
+## CHANGELOG
+
+See [CHANGELOG](CHANGELOG.md)
+
 ## BUG REPORT
 
 Use OW2 system to report bug or ask for features:
