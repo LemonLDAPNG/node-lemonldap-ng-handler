@@ -26,4 +26,12 @@ describe('Functions tests', function() {
     array = obj.conditionSub('encrypt($s)');
     assert.equal( array[0](null,{s:"a"}), 'vQ2pr1y64icsdZPtKD9/DQ==');
   });
+  it('should provide token', function() {
+    array = obj.conditionSub('token($sa,$sb)');
+    var val = array[0](null,{sa:"a",sb:"b"});
+    var s = obj.tsv.cipher.decrypt(val);
+    var a = s.split(':');
+    assert.equal(a[1],'a');
+    assert.equal(a[2],'b');
+  });
 });

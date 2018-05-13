@@ -275,4 +275,9 @@ class HandlerConf
 	encrypt = (s) ->
 		return cipher.encrypt s
 
+	token = () ->
+		time = Math.trunc Date.now()/1000 # Perl time
+		args = Array.from arguments
+		return encrypt "#{time}:#{args.join(':')}"
+
 module.exports = HandlerConf
