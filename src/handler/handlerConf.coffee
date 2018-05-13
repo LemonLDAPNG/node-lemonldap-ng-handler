@@ -242,8 +242,12 @@ class HandlerConf
 		return match
 
 	isInNet6 = (ip, net) ->
-		test = require 'is-in-subnet'
-		return test.isInSubnet ip, net
+		test = require 'ipaddr.js'
+		ip = test.parse(ip)
+		net = net.replace /^(.*)\/(.*)/, "$1"
+		bits = RegExp.$2
+		net = test.parse(net)
+		return ip.match net, bits
 
 	checkLogonHours = (logonHours, syntax='hexadecimal', timeCorrection, defaultAccess=0) ->
 		timeCorrection = parseInt timeCorrection

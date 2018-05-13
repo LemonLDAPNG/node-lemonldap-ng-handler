@@ -42,7 +42,7 @@
   },
   "optionalDependencies": {
     "iconv": "*",
-    "is-in-subnet": "*",
+    "ipaddr.js": "*",
     "modern-syslog": "*",
     "nodedbi": "*",
     "redis": "*"
