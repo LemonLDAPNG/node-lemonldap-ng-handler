@@ -23,7 +23,6 @@ class conf
 		catch e
 			console.error e
 			return null
-		console.debug @type + ' module loaded'
 		#for k in ['available','lastCfg','lock','isLocked','unlock','store','load','delete']
 		#	this[k] = @module[k]
 
