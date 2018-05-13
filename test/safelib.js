@@ -34,4 +34,8 @@ describe('Functions tests', function() {
     assert.equal(a[1],'a');
     assert.equal(a[2],'b');
   });
+  it('should provide encode_base64', function() {
+    array = obj.conditionSub('encode_base64("aaa")');
+    assert.equal( array[0](), 'YWFh' );
+  });
 });

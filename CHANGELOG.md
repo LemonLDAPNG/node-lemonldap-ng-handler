@@ -5,6 +5,7 @@ Changelog
  * Use mocha for test
  * Evaluate Perl hash in lemonldap-ng.ini file
  * Add Redis session backend
+ * Add all [extended function](https://lemonldap-ng.org/documentation/2.0/extendedfunctions)
 
 ## 0.2.1
  * Add logger system (Std and Syslog)

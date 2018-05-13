@@ -280,4 +280,7 @@ class HandlerConf
 		args = Array.from arguments
 		return encrypt "#{time}:#{args.join(':')}"
 
+	encode_base64 = (s) ->
+		r = new Buffer(s).toString('base64')
+
 module.exports = HandlerConf
