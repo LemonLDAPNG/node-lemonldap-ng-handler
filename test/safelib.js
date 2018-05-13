@@ -22,4 +22,8 @@ describe('Functions tests', function() {
     assert.equal( array[0](null,{i:"2018::1",net:"2000::0/11"}), true);
     assert.equal( array[0](null,{i:"2018::1",net:"2000::0/12"}), false);
   });
+  it('should provide encrypt', function() {
+    array = obj.conditionSub('encrypt($s)');
+    assert.equal( array[0](null,{s:"a"}), 'vQ2pr1y64icsdZPtKD9/DQ==');
+  });
 });

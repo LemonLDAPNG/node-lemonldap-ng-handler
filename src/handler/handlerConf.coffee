@@ -8,6 +8,7 @@
 # see file:///usr/share/doc/nodejs/api/cluster.html "Event 'message'"
 
 Iconv = null
+cipher = null
 
 class HandlerConf
 	tsv:
@@ -30,15 +31,6 @@ class HandlerConf
 	lmConf: {}
 	localConfig: {}
 	logLevel: 'notice'
-	logLevels:
-		emerg: 7
-		alert: 6
-		crit: 5
-		error: 4
-		warn: 3
-		notice: 2
-		info: 1
-		debug:0
 	datas: {}
 	datasUpdate: 0
 
@@ -61,13 +53,6 @@ class HandlerConf
 		@lmConf['logger'] = @logger
 
 		@checkTime = @localConfig.checkTime if @localConfig.checkTime
-
-		# logLevel
-		#if @localConfig.logLevel
-		#	if @logLevels[@localConfig.logLevel]?
-		#		@localConfig.logLevel = @logLevels[@localConfig.logLevel]
-		#	else
-		#		console.error "Unknown log level '#{@localConfig.logLevel}'"
 
 		# TODO: status
 
@@ -99,6 +84,7 @@ class HandlerConf
 				for w in ['cda', 'cookieExpiration', 'cipher', 'cookieName', 'customFunctions', 'httpOnly', 'securedCookie', 'timeoutActivity', 'useRedirectOnError', 'useRedirectOnForbidden', 'whatToTrace', 'loopBackUrl']
 					self.logger.debug "Conf key #{w}: #{conf[w]}" unless w == 'cipher'
 					self.tsv[w] = conf[w]
+				cipher = self.tsv.cipher
 
 				for w in ['https', 'port', 'maintenance']
 					if conf[w]?
@@ -285,5 +271,8 @@ class HandlerConf
 	iso2unicode = (s) ->
 		iconv = new Iconv('ISO-8859-1', 'UTF-8')
 		return iconv.convert(s)
+
+	encrypt = (s) ->
+		return cipher.encrypt s
 
 module.exports = HandlerConf
