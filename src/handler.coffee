@@ -37,7 +37,7 @@ class Handler
 							self.hideCookie req
 							return next()
 						.catch (e) ->
-							self.userLogger.warn "#{session[self.conf.tsv.whatToTrace]} rejected " + if e.message? then e.message
+							self.userLogger.warn "#{session[self.conf.tsv.whatToTrace]} rejected " + if e? then (if e.message? then e.message else e) else ''
 							self.forbidden req, res, session
 				.catch (e) ->
 					self.logger.info e

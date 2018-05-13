@@ -18,15 +18,15 @@ class HandlerDevOps extends Handler
 		self = @
 		@conf.tsv.lastVhostUpdate or= {}
 		# Initialize devops conf if needed (each 10mn)
-		unless @conf.tsv.defaultCondition[vhost] and (Date.now()/1000 - @conf.tsv.defaultCondition[vhost] < 600 )
+		unless @conf.tsv.defaultCondition[vhost] and (Date.now()/1000 - @conf.tsv.lastVhostUpdate[vhost] < 600 )
 			# TODO: FALSE !!!
-			base = if req.params and req.params['RULES_URL'] then req.params['RULES_URL'] else @conf.tsv.loopBackUrl or "http://127.0.0.1"
+			base = if req.cgiParams and req.cgiParams['RULES_URL'] then req.cgiParams['RULES_URL'] else "#{@conf.tsv.loopBackUrl or "http://127.0.0.1"}/rules.json"
 			unless base.match /^(https?):\/\/([^\/:]+)(?::(\d+))?(.*)$/
 				@logger.error "Bad loopBackUrl #{base}"
 			lvOpts =
 				prot: RegExp.$1
 				host: RegExp.$2
-				path: '/rules.json'
+				path: RegExp.$4
 				port: RegExp.$3 or if RegExp.$1 == 'https' then 443 else 80
 			up = super.grant
 			d = new Promise (resolve,reject) ->
@@ -58,6 +58,7 @@ class HandlerDevOps extends Handler
 				headers:
 					Host: vhost
 			# and launch it
+			self.logger.debug "Trying to get #{lvOpts.prot}://#{lvOpts.host}:#{lvOpts.port}#{lvOpts.path}"
 			http = require lvOpts.prot
 			req = http.request opts, (resp) ->
 				str = ''
@@ -76,6 +77,8 @@ class HandlerDevOps extends Handler
 							self.conf.tsv.headerList[vhost] = []
 							# Parse rules
 							for url, rule of json.rules
+								rule = new String(rule).valueOf()
+								self.logger.debug "Compile #{rule}"
 								[cond, prot] = self.conf.conditionSub rule
 								if url == 'default'
 									self.conf.tsv.defaultCondition[vhost] = cond
@@ -96,12 +99,14 @@ class HandlerDevOps extends Handler
 								sub += "'#{h}': #{val},"
 							sub = sub.replace /,$/, ''
 							eval "self.conf.tsv.forgeHeaders['#{vhost}'] = function(session) {return {#{sub}};}"
+							self.conf.tsv.lastVhostUpdate[vhost] = Date.now()/1000
 							return resolve()
 						catch err
 							self.logger.error "JSON parsing error: #{err}"
 					self.logger.info "No rules found, apply default rule"
 					self.conf.tsv.defaultCondition[vhost] = () -> 1
 					self.conf.tsv.defaultProtection = false
+					self.conf.tsv.lastVhostUpdate[vhost] = Date.now()/1000
 					resolve()
 			req.on 'error', (e) ->
 				self.logger.error "Unable to load rules.json: #{e.message}"
