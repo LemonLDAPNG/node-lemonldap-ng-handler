@@ -1,5 +1,5 @@
 ###
-# LemonLDAP::NG handler initialization module for Node.js/express
+# LemonLDAP::NG handler initialization module
 #
 # See README.md for license and copyright
 ###
@@ -206,6 +206,12 @@ class HandlerConf
 		# Session attributes: $xx is replaced by session.xx
 		.replace /\$(_*[a-zA-Z]\w*)/g, 'session.$1'
 
+	###
+	#
+	# Extended functions
+	# (see https://lemonldap-ng.org/documentation/latest/extendedfunctions)
+	#
+	###
 	date = ->
 		d = new Date()
 		s = ''

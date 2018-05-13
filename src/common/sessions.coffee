@@ -1,5 +1,5 @@
 ###
-#
+# Session access object
 ###
 
 localCache = {}

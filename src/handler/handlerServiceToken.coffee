@@ -1,5 +1,6 @@
 ###
-# LemonLDAP::NG handler for Node.js/express
+# LemonLDAP::NG handler-service-token for Node.js/express
+# (see https://lemonldap-ng.org/documentation/2.0/servertoserver)
 #
 # See README.md for license and copyright
 ###
@@ -10,6 +11,7 @@ class HandlerServiceToken extends Handler
 	constructor: (args) ->
 		super(args)
 
+	# Override fetchId() to use token if present instead of cookie
 	fetchId: (req) ->
 		token = ''
 		if req.cgiParams

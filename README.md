@@ -248,7 +248,6 @@ argument. Keys:
 ## TODO
 
 * Custom functions
-* Copy Safelib.pm
 * Think to menu problem
 * REST backends
 
