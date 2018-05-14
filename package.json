@@ -19,7 +19,7 @@
     "type": "git",
     "url": "https://github.com/LemonLDAPNG/node-lemonldap-ng-handler.git"
   },
-  "keywords": ["Lemonldap::NG", "SSO", "SAML", "OpenID-Connect"],
+  "keywords": ["Lemonldap::NG", "SSO", "SAML", "OpenID-Connect", "SSOaaS"],
   "authors": ["Xavier Guimard <x.guimard@free.fr>"],
   "license": "GPL-2.0-or-later",
   "devDependencies": {
