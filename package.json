@@ -28,7 +28,7 @@
     "mocha": "*"
   },
   "scripts": {
-    "compile": "grunt",
+    "build": "grunt",
     "test": "mocha ./test/*.js"
   },
   "dependencies": {
