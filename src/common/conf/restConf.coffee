@@ -7,7 +7,7 @@
 class restConf
 	constructor: (@args) ->
 		unless @args.baseUrl
-			Error "url parameter is required in REST configuration type"
+			Error "baseUrl parameter is required in REST configuration type"
 		unless @args.baseUrl.match /(https?):\/\/([^\/:]+)(?::(\d+))?(.*)/
 			Error "Bad URL #{@args.baseUrl}"
 		@host = RegExp.$2
