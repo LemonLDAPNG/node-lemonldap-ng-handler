@@ -5,6 +5,7 @@ Changelog
  * Fix bug in DevOps handler when RULES\_URL is used
  * replace is-in-subnet dependency by ipaddr.js (more easy to build and
    available in Debian)
+ * Add REST sessions backend
 
 ## 0.2.2 - 2018-05-13
  * Use mocha for test
