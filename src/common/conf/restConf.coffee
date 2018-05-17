@@ -21,10 +21,11 @@ class restConf
 		d
 
 	lastCfg: ->
+		self = @
 		d = new Promise (resolve, reject) ->
-			@get 'latest'
+			self.get 'latest'
 			.then (res) ->
-				resolve res
+				resolve res.cfgNum
 			.catch (e) ->
 				reject e
 		d
@@ -32,7 +33,7 @@ class restConf
 	load: (cfgNum, fields) ->
 		self = this
 		d = new Promise (resolve, reject) ->
-			@get "#{cfgNum}?full=1"
+			self.get "#{cfgNum}?full=1"
 			.then (res) ->
 				resolve res
 			.catch (e) ->
@@ -40,6 +41,7 @@ class restConf
 		d
 
 	get: (path) ->
+		self = @
 		opt =
 			host: @host
 			port: @port
@@ -48,7 +50,7 @@ class restConf
 			opt.headers =
 				Authorization: "Basic " + Buffer.from("#{@args.user}:#{@args.password}").toString('base64')
 		d = new Promise (resolve, reject) ->
-			req = @http.request opts, (resp) ->
+			req = self.http.request opt, (resp) ->
 				str = ''
 				resp.on 'data', (chunk) ->
 					str += chunk
