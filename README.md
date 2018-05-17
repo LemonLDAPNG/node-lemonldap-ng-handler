@@ -255,10 +255,13 @@ argument. Keys:
 
 See [CHANGELOG](CHANGELOG.md)
 
-## BUG REPORT
+## BUG REPORT AND OTHER ISSUES
 
 Use OW2 system to report bug or ask for features:
 [LLNG OW2 GitLab](https://gitlab.ow2.org/lemonldap-ng/lemonldap-ng/issues)
+
+> Note: uWGI isn't supported because V8 plugin for uWSGI [isn't compatible
+with async](http://uwsgi.readthedocs.io/en/latest/V8.html#commonjs)
 
 ## DOWNLOAD
 
