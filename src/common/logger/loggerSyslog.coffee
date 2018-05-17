@@ -1,6 +1,6 @@
 ###
 #
-# LemonLDAP::NG syslog logger (log to console)
+# LemonLDAP::NG syslog logger
 #
 ###
 syslog = require 'modern-syslog'
