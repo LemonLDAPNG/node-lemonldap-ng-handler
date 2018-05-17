@@ -42,8 +42,7 @@ class RestSession
 						self.logger.info err
 						resolve false
 			req.on 'error', (e) ->
-				self.logger.error "Unable to query session server: #{e.message}"
-				reject()
+				reject "Unable to query session server: #{e.message}"
 			req.end()
 
 	update: (id, data) ->

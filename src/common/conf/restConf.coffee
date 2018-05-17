@@ -62,6 +62,9 @@ class restConf
 							reject "JSON parsing error: #{err}"
 					else
 						reject "No response received"
+			req.on 'error', (e) ->
+				reject "Enable to query configuration server: #{e.message}"
+			req.end()
 		d
 
 module.exports = restConf
