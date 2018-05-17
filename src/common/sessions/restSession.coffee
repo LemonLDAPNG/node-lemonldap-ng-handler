@@ -22,24 +22,29 @@ class RestSession
 			host: @host
 			port: @port
 			path: @path + id
-		if @args.user
+		if @args.user and @args.password
 			opt.headers =
 				Authorization: "Basic " + Buffer.from("#{@args.user}:#{@args.password}").toString('base64')
 		return new Promise (resolve, reject) ->
-			req = @http.request opts, (resp) ->
+			self.logger.debug "Trying to get #{id} from remote #{opt.host}"
+			req = self.http.request opt, (resp) ->
 				str = ''
 				resp.on 'data', (chunk) ->
 					str += chunk
 				resp.on 'end', () ->
 					if str
 						try
-							tmp = JSON.parse data
+							tmp = JSON.parse str
 							resolve tmp
 						catch err
 							reject "Error when parsing REST session (#{err})"
 					else
 						self.logger.info err
 						resolve false
+			req.on 'error', (e) ->
+				self.logger.error "Unable to query session server: #{e.message}"
+				reject()
+			req.end()
 
 	update: (id, data) ->
 		return new Promise (resolve, reject) ->

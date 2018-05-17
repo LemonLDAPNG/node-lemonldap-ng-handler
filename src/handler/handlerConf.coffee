@@ -129,7 +129,10 @@ class HandlerConf
 							self.tsv.defaultProtection = false
 
 				# Sessions storage initialization
-				unless sessionStorageModule = conf.globalStorage.replace /^Apache::Session::(?:Browseable::)?/, ''
+				sessionStorageModule = conf.globalStorage
+				.replace(/^Lemonldap::NG::Common::Apache::Session::REST/,'rest')
+				.replace(/^Apache::Session::(?:Browseable::)?/, '')
+				if sessionStorageModule.match /Apache::Session/
 					Error "Unsupported session backend: #{conf.globalStorage}"
 				m = require './sessions'
 				self.sa = new m sessionStorageModule, self.logger, conf.globalStorageOptions

@@ -40,7 +40,7 @@ class Handler
 							self.userLogger.warn "#{session[self.conf.tsv.whatToTrace]} rejected " + if e? then (if e.message? then e.message else e) else ''
 							self.forbidden req, res, session
 				.catch (e) ->
-					self.logger.info e
+					self.logger.info "Session error: #{e}"
 					self.goToPortal res, 'http://' + vhost + uri
 		else
 			self.logger.debug "No id"
@@ -148,8 +148,8 @@ class Handler
 						session._lastSeen = now
 						self.conf.sa.update id, session
 					resolve session
-				.catch () ->
-					self.userLogger.info "Session #{id} can't be found in store"
+				.catch (e) ->
+					self.userLogger.info "Session #{id} can't be found in store: #{e}"
 					reject false
 		d
 
