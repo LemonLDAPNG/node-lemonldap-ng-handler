@@ -27,8 +27,7 @@ class fileSession
 		q = new Promise (resolve, reject) ->
 			fs.readFile "#{dir}/#{id}", 'utf-8', (err, data) ->
 				if err
-					self.logger.info err
-					resolve false
+					reject err
 				else
 					try
 						tmp = JSON.parse data

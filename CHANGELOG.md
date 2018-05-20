@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 0.2.4
+ * Fix bug when old session exists (fileSession)
+
 ## 0.2.3
  * Fix bug in DevOps handler when RULES\_URL is used
  * Fix bug in REST configuration backend
