@@ -104,6 +104,7 @@ class Handler
 		vhost = @resolveAlias req
 		try
 			i=0
+			req.headers['Lm-Remote-User'] = session[@conf.tsv.whatToTrace]
 			for k,v of @conf.tsv.forgeHeaders[vhost](session)
 				i++
 				req.headers[k] = v
@@ -115,7 +116,7 @@ class Handler
 					req.headers["Headername#{i}"] = k
 					req.headers["Headervalue#{i}"] = v
 		catch err
-			@logger.warn "No headers configuration found for #{vhost}"
+			@logger.warn "No headers configuration found for #{vhost}: #{err}"
 		true
 
 	resolveAlias: (req) ->
