@@ -9,6 +9,7 @@
 
 Iconv = null
 cipher = null
+sid = 0
 
 class HandlerConf
 	tsv:
@@ -33,6 +34,7 @@ class HandlerConf
 	logLevel: 'notice'
 	datas: {}
 	datasUpdate: 0
+	safe: {}
 
 	# Initialization method
 	#
@@ -62,6 +64,7 @@ class HandlerConf
 			Iconv = require('iconv').Iconv
 		catch e
 			@logger.notice "iconv module not available"
+		@vm = require 'vm'
 
 	# Note that checkConf isn't needed: no shared cache with node.js
 	checkConf: ->
@@ -72,6 +75,8 @@ class HandlerConf
 	# Compile LLNG configuration for performances
 	reload: ->
 		self = this
+		unFirst = (s) ->
+			return s.charAt(0).toUpperCase() + s.slice(1)
 		@lmConf.getConf { logger: @logger }
 			.then (conf) ->
 				for k of self.localConfig
@@ -90,7 +95,7 @@ class HandlerConf
 					if conf[w]?
 						self.tsv[w] = { _: conf[w] }
 						if conf.vhostOptions
-							name = "vhost#{w.unFirst()}"
+							name = "vhost#{unFirst(w)}"
 							for vhost, vConf of conf.vhostOptions
 								val = vConf[name]
 								# TODO: log
@@ -111,8 +116,24 @@ class HandlerConf
 					if vhostList.indexOf(vhost) != -1
 						self.logger.debug "Compiling rules for #{vhost}"
 						self.tsv.locationCount[vhost] = 0
+						unless self.safe[vhost]?
+							self.safe[vhost] =
+								date: date
+								hostname: hostname
+								remote_ip: remote_ip
+								basic: basic
+								groupMatch: groupMatch
+								isInNet6: isInNet6
+								checkLogonHours: checkLogonHours
+								checkDate: checkDate
+								unicode2iso: unicode2iso
+								iso2unicode: iso2unicode
+								encrypt: encrypt
+								token: token
+								encode_base64: encode_base64
+							self.vm.createContext(self.safe[vhost])
 						for url, rule of rules
-							[cond, prot] = self.conditionSub rule
+							[cond, prot] = self.conditionSub rule, self.safe[vhost]
 							if url == 'default'
 								self.tsv.defaultCondition[vhost] = cond
 								self.tsv.defaultProtection[vhost] = prot
@@ -148,14 +169,16 @@ class HandlerConf
 							val = self.substitute v
 							sub += "'#{h}': #{val},"
 						sub = sub.replace /,$/, ''
-						eval "self.tsv.forgeHeaders['#{vhost}'] = function(session) {return {#{sub}};}"
+						self.vm.runInContext "fg = function(session) {return {#{sub}};}", self.safe[vhost]
+						self.tsv.forgeHeaders[vhost] = self.safe[vhost].fg
 
 				# TODO: post url initialization
 
 				# Alias initialization
-				for vhost,aliases of conf.vhostOptions
-					if aliases
-						t = aliases.split /\s+/
+				for vhost,v of conf.vhostOptions
+					if v.aliases
+						console.error 'aliases', v.aliases
+						t = v.aliases.split /\s+/
 						for a in t
 							self.tsv.vhostAlias[a] = vhost
 
@@ -167,7 +190,7 @@ class HandlerConf
 
 	# Build expression into functions (used to control user access and build
 	# headers)
-	conditionSub: (cond) ->
+	conditionSub: (cond, ctx) ->
 		OK = -> 1
 		NOK = -> 0
 		return [OK, 0] if cond == 'accept'
@@ -193,9 +216,14 @@ class HandlerConf
 					0
 				]
 		cond = @substitute(cond)
-		sub = null
-		eval "sub = function(req,session) {return (#{cond});}"
-		return [sub, 0]
+		if ctx
+			sid++
+			@vm.runInContext "sub#{sid} = function(req,session) {return (#{cond});}", ctx
+			return [ ctx["sub#{sid}"], 0 ]
+		else
+			sub = null
+			eval "sub = function(req,session) {return (#{cond});}"
+			return [sub, 0]
 
 	# Interpolate expressions
 	substitute: (expr) ->

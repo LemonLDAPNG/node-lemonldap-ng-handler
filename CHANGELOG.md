@@ -1,6 +1,10 @@
 Changelog
 =========
 
+## 0.2.5
+ * Fix bug in rules compilation
+ * Replace `eval` calls by execution in Node.js vm
+
 ## 0.2.4
  * Fix bug when old session exists (fileSession)
  * Add missing header Lm-Remote-User
