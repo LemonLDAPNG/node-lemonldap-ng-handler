@@ -1,15 +1,18 @@
 Changelog
 =========
 
-## 0.2.5
+## 0.2.6 - 2018-05-21
+ * Propagate vm in DevOps handler
+
+## 0.2.5 - 2018-05-21
  * Fix bug in rules compilation
  * Replace `eval` calls by execution in Node.js vm
 
-## 0.2.4
+## 0.2.4 - 2018-05-20
  * Fix bug when old session exists (fileSession)
  * Add missing header Lm-Remote-User
 
-## 0.2.3
+## 0.2.3 - 2018-05-17
  * Fix bug in DevOps handler when RULES\_URL is used
  * Fix bug in REST configuration backend
  * replace is-in-subnet dependency by ipaddr.js (more easy to build and

@@ -76,10 +76,11 @@ class HandlerDevOps extends Handler
 							self.conf.tsv.locationCount = 0
 							self.conf.tsv.headerList[vhost] = []
 							# Parse rules
+							self.conf.safe[vhost] = self.conf.newSafe()
 							for url, rule of json.rules
 								rule = new String(rule).valueOf()
 								self.logger.debug "Compile #{rule}"
-								[cond, prot] = self.conf.conditionSub rule
+								[cond, prot] = self.conf.conditionSub rule, self.conf.safe[vhost]
 								if url == 'default'
 									self.conf.tsv.defaultCondition[vhost] = cond
 									self.conf.tsv.defaultProtection[vhost] = prot
@@ -98,7 +99,8 @@ class HandlerDevOps extends Handler
 								val = self.conf.substitute v
 								sub += "'#{h}': #{val},"
 							sub = sub.replace /,$/, ''
-							eval "self.conf.tsv.forgeHeaders['#{vhost}'] = function(session) {return {#{sub}};}"
+							self.conf.vm.runInContext "fg = function(session) {return {#{sub}};}", self.conf.safe[vhost]
+							self.conf.tsv.forgeHeaders[vhost] = self.conf.safe[vhost].fg
 							self.conf.tsv.lastVhostUpdate[vhost] = Date.now()/1000
 							return resolve()
 						catch err

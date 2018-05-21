@@ -1,6 +1,6 @@
 {
   "name": "node-lemonldap-ng-handler",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "description": "LemonLDAP::NG handler for Node.js",
   "main": "index.js",
   "maintainers": [{
