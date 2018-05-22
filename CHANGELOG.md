@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 0.2.7 -
+ * Add MongoDB configuration backend
+
 ## 0.2.6 - 2018-05-21
  * Propagate vm in DevOps handler
 
