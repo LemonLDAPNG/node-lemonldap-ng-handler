@@ -45,6 +45,7 @@
     "ipaddr.js": "*",
     "modern-syslog": "*",
     "nodedbi": "*",
-    "redis": "*"
+    "redis": "*",
+    "mongodb": "^3.0.8"
   }
 }
