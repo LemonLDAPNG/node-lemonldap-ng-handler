@@ -16,7 +16,7 @@ class MongoConf
 			self.db = client.db(dbName)
 			self.col = self.db.collection(self.colName)
 		.catch (err) ->
-			console.error err
+			Error err
 
 	available: ->
 		self = this
