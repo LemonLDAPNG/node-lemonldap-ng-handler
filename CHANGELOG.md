@@ -1,7 +1,7 @@
 Changelog
 =========
 
-## 0.2.7 -
+## 0.2.7 - 2018-05-24
  * Add MongoDB configuration backend
 
 ## 0.2.6 - 2018-05-21
