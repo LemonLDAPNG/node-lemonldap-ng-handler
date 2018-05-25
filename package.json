@@ -25,6 +25,8 @@
   "devDependencies": {
     "grunt": "*",
     "grunt-contrib-coffee": "*",
+    "iconv": "*",
+    "ipaddr.js": "*",
     "mocha": "*"
   },
   "scripts": {
