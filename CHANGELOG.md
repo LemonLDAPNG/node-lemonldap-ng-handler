@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 0.2.8 -
+ * Change bug database to OW2 GitLab
+
 ## 0.2.7 - 2018-05-24
  * Add MongoDB configuration backend
 
