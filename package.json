@@ -43,6 +43,7 @@
     "node-fastcgi": "*"
   },
   "optionalDependencies": {
+    "js-yaml": "*",
     "iconv": "*",
     "ipaddr.js": "*",
     "modern-syslog": "*",
