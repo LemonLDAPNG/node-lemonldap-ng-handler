@@ -170,6 +170,7 @@ understand Javascript.
 Node-lemonldap-ng-handler is compatible with the following Lemonldap::NG
 backends:
 * [File](https://lemonldap-ng.org/documentation/latest/fileconfbackend)
+* [YAMLFile](https://lemonldap-ng.org/documentation/latest/yamlconfbackend)
 * [REST](https://lemonldap-ng.org/documentation/2.0/restconfbackend)
 * [MongoDB](https://lemonldap-ng.org/documentation/latest/mongodbconfbackend)
 _(without authentication neither ssl for now)_
