@@ -60,6 +60,18 @@ class ldapConf
 				attrs: [self.contentAttr]
 			, (err, data) ->
 				return reject "LDAP search failed: #{err}" if err
-				# TODO
+				data = data.map ($_) ->
+					$_[self.contentAttr]
+				res = {}
+				for $_ in data
+					unless $_.match /^\{(.*?)\}(.*)/
+						reject "Bad conf line: #{$_}"
+					k = RegExp.$1
+					v = RegExp.$2
+					if v.match? and v.match /^{/
+						res[k] = JSON.parse v
+					else
+						res[k] = v
+				resolve res
 
 module.exports = ldapConf
