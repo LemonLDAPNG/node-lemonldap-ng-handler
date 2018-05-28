@@ -9,7 +9,7 @@ class ldapConf
 		# ldapServer ldapConfBase ldapBindDN ldapBindPassword
 		@objClass = args.ldapObjectClass or 'applicationProcess'
 		@idAttr   = args.ldapAttributeId or 'cn'
-		@contentAttr = ags.ldapAttributeContent or 'description'
+		@contentAttr = args.ldapAttributeContent or 'description'
 		@base = args.ldapConfBase
 		L = require 'ldap-client'
 		@ldap = new L
@@ -22,8 +22,9 @@ class ldapConf
 					opt =
 						binddn: args.ldapBindDN
 						password: args.ldapBindPassword
-				this.bind opt, (err) ->
-					Error "Unable to connect to LDAP server: #{err}" if err
+				this.simplebind opt, (err) ->
+					throw "Unable to connect to LDAP server: #{err}" if err
+					console.log args
 		, (err) ->
 			Error "Unable to connect to LDAP server: #{err}" if err
 
@@ -36,7 +37,7 @@ class ldapConf
 			, (err, data) ->
 				return reject "LDAP search failed: #{err}" if err
 				data = data.map ($_) ->
-					return $_.self.idAttr
+					return $_.idAttr
 				resolve data.sort (a,b) ->
 					a = parseInt(a,10)
 					b = parseInt(b,10)
@@ -55,7 +56,7 @@ class ldapConf
 		self = @
 		q = new Promise (resolve, reject) ->
 			self.ldap.search
-				base: "#{@idAttr}=lmConf-#{cfgNum},#{self.base}"
+				base: "#{self.idAttr}=lmConf-#{cfgNum},#{self.base}"
 				filter: "(objectClass=#{self.objClass}"
 				attrs: [self.contentAttr]
 			, (err, data) ->

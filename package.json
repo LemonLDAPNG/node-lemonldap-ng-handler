@@ -46,6 +46,7 @@
     "js-yaml": "*",
     "iconv": "*",
     "ipaddr.js": "*",
+    "ldap-client": "*",
     "modern-syslog": "*",
     "nodedbi": "*",
     "redis": "*",
