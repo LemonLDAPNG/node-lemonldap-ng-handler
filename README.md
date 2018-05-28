@@ -172,6 +172,7 @@ backends:
 * [File](https://lemonldap-ng.org/documentation/latest/fileconfbackend)
 * [YAMLFile](https://lemonldap-ng.org/documentation/latest/yamlconfbackend)
 * [REST](https://lemonldap-ng.org/documentation/2.0/restconfbackend)
+* [LDAP](https://lemonldap-ng.org/documentation/latest/ldapconfbackend)
 * [MongoDB](https://lemonldap-ng.org/documentation/latest/mongodbconfbackend)
 _(without authentication neither ssl for now)_
 * [CDBI / RDBI](https://lemonldap-ng.org/documentation/latest/sqlconfbackend)
