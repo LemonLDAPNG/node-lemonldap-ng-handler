@@ -31,9 +31,13 @@ class fileConf
 					reject err
 				else
 					res = []
-					for f in files.sort()
+					for f in files
 						if f.match /lmConf-(\d+)\.js/
 							res.push RegExp.$1
+					res.sort (a,b) ->
+						a = parseInt(a,10)
+						b = parseInt(b,10)
+						return if a==b then 0 else if a<b then -1 else 1
 					resolve res
 		q
 

@@ -2,6 +2,7 @@ Changelog
 =========
 
 ## 0.2.8 -
+ * Bug: bad conf order in fileConf when cfgNum>9
  * Change bug database to OW2 GitLab
  * Add YAMLFile configuration backend
 
