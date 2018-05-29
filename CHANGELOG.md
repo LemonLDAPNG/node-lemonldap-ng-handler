@@ -1,11 +1,12 @@
 Changelog
 =========
 
-## 0.2.8 - 2018-
+## 0.2.8 - 2018-05-29
  * Bug: bad conf order in fileConf when cfgNum>9
  * Change bug database to OW2 GitLab
  * Add YAMLFile configuration backend
  * Add LDAP configuration backend
+ * Add LDAP session backend
 
 ## 0.2.7 - 2018-05-24
  * Add MongoDB configuration backend

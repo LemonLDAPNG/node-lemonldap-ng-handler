@@ -52,7 +52,8 @@ class HandlerConf
 			console.error "Unable to build configuration"
 			return null
 
-		@localConfig = @lmConf.getLocalConf 'node-handler', null, 1
+
+		@localConfig = @lmConf.getLocalConf 'node-handler', null, true
 		@localConfig[i] = args[i] for i of args
 		Logger = require './logger'
 		@logger = new Logger @localConfig, 0
