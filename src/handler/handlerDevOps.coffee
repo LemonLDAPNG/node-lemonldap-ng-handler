@@ -20,7 +20,7 @@ class HandlerDevOps extends Handler
 		# Initialize devops conf if needed (each 10mn)
 		unless @conf.tsv.defaultCondition[vhost] and (Date.now()/1000 - @conf.tsv.lastVhostUpdate[vhost] < 600 )
 			# TODO: FALSE !!!
-			base = if req.cgiParams and req.cgiParams['RULES_URL'] then req.cgiParams['RULES_URL'] else "#{@conf.tsv.loopBackUrl or "http://127.0.0.1"}/rules.json"
+			base = if req.cgiParams and req.cgiParams['RULES_URL'] then req.cgiParams['RULES_URL'] else "#{@conf.tsv.loopBackUrl or 'http://127.0.0.1'}/rules.json"
 			unless base.match /^(https?):\/\/([^\/:]+)(?::(\d+))?(.*)$/
 				@logger.error "Bad loopBackUrl #{base}"
 			lvOpts =
@@ -28,6 +28,8 @@ class HandlerDevOps extends Handler
 				host: RegExp.$2
 				path: RegExp.$4
 				port: RegExp.$3 or if RegExp.$1 == 'https' then 443 else 80
+			unless req.cgiParams and req.cgiParams['RULES_URL']
+				lvOpts.lb = true
 			up = super.grant
 			d = new Promise (resolve,reject) ->
 				self.loadVhostConfig req, vhost, lvOpts
@@ -51,6 +53,7 @@ class HandlerDevOps extends Handler
 		d = new Promise (resolve,reject) ->
 			# Verify URL
 			# Build request
+			vhost = lvOpts.host unless lvOpts.lb
 			opts =
 				host: lvOpts.host
 				path: lvOpts.path
@@ -58,7 +61,7 @@ class HandlerDevOps extends Handler
 				headers:
 					Host: vhost
 			# and launch it
-			self.logger.debug "Trying to get #{lvOpts.prot}://#{lvOpts.host}:#{lvOpts.port}#{lvOpts.path}"
+			self.logger.debug "Trying to get #{lvOpts.prot}://#{vhost}:#{lvOpts.port}#{lvOpts.path}"
 			http = require lvOpts.prot
 			req = http.request opts, (resp) ->
 				str = ''
