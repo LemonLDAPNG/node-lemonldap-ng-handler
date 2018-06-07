@@ -3,6 +3,7 @@ Changelog
 
 ## 0.2.9 - 2018-06-07
  * Bug: bad host header in DevOps rules.json query
+ * Add DevOpsST handler
 
 ## 0.2.8 - 2018-05-29
  * Bug: bad conf order in fileConf when cfgNum>9
