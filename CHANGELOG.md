@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 0.3.0 -
+ * Add UWSGI logger
+
 ## 0.2.9 - 2018-06-07
  * Bug: bad host header in DevOps rules.json query
  * Add DevOpsST handler

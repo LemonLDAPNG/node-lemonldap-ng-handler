@@ -143,6 +143,8 @@ node-lemonldap-ng-handler is compatible with the following
 * Lemonldap::NG::Common::Logger::Std : use console.log
 * Lemonldap::NG::Common::Logger::Syslog : use Syslog _(install modern-syslog
 to use it)_
+* UWSGI : usable only under uwsgi V8 plugin. Override `logger` in section
+`[nginx-handler]` in your `[lemonldap-ng.ini]` file
 
 #### New section `[node-handler]`
 
