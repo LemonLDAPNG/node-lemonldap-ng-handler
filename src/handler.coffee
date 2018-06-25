@@ -22,7 +22,8 @@ class Handler
 
 		protection = @isUnprotected req, uri
 
-		if protection == 'skip'
+		# Skip value is 2
+		if protection == 2
 			return next()
 
 		id = @fetchId(req)

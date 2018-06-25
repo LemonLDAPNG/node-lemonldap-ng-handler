@@ -108,7 +108,7 @@ class HandlerConf
 					# TODO die
 					1/0
 				if conf.portal.match(/[\$\(&\|"']/)
-					self.tsv.portal = self.conditionSub conf.portal
+					self.tsv.portal = self.conditionSubs(conf.portal)[0]
 				else
 					self.tsv.portal = ->
 						conf.portal
