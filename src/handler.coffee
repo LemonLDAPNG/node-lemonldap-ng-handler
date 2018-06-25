@@ -82,6 +82,7 @@ class Handler
 			unless self.conf.tsv.defaultCondition[vhost]?
 				self.logger.error "No configuration found for #{vhost} (or not listed in Node.js virtualHosts)"
 				return reject()
+			self.conf.tsv.locationRegexp[vhost] = [] unless self.conf.tsv.locationRegexp[vhost]?
 			for rule,i in self.conf.tsv.locationRegexp[vhost]
 				if uri.match rule
 					return resolve self.conf.tsv.locationCondition[vhost][i](req,session)

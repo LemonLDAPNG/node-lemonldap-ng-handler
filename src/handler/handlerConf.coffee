@@ -118,6 +118,9 @@ class HandlerConf
 					if vhostList.indexOf(vhost) != -1
 						self.logger.debug "Compiling rules for #{vhost}"
 						self.tsv.locationCount[vhost] = 0
+						self.tsv.locationRegexp[vhost] = [] unless self.tsv.locationRegexp[vhost]?
+						self.tsv.locationProtection[vhost] = [] unless self.tsv.locationProtection[vhost]?
+						self.tsv.locationCondition[vhost] = [] unless self.tsv.locationCondition[vhost]?
 						unless self.safe[vhost]?
 							self.safe[vhost] = self.newSafe()
 						for url, rule of rules
@@ -126,11 +129,8 @@ class HandlerConf
 								self.tsv.defaultCondition[vhost] = cond
 								self.tsv.defaultProtection[vhost] = prot
 							else
-								self.tsv.locationCondition[vhost] = [] unless self.tsv.locationCondition[vhost]?
 								self.tsv.locationCondition[vhost].push cond
-								self.tsv.locationProtection[vhost] = [] unless self.tsv.locationProtection[vhost]?
 								self.tsv.locationProtection[vhost].push prot
-								self.tsv.locationRegexp[vhost] = [] unless self.tsv.locationRegexp[vhost]?
 								self.tsv.locationRegexp[vhost].push(new RegExp url.replace /\(\?#.*?\)/,'')
 								self.tsv.locationCount[vhost]++
 						unless self.tsv.defaultCondition[vhost]
