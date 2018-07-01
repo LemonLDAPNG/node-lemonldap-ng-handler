@@ -1,8 +1,9 @@
 Changelog
 =========
 
-## 0.3.0 -
+## 0.3.0 - 2018-07-01
  * Add UWSGI logger
+ * Fix "skip" management (#1)
 
 ## 0.2.9 - 2018-06-07
  * Bug: bad host header in DevOps rules.json query

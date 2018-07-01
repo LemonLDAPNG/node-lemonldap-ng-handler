@@ -24,7 +24,9 @@ class Handler
 
 		# Skip value is 2
 		if protection == 2
-			return next()
+			next()
+			return new Promise (resolve,reject) ->
+				resolve true
 
 		id = @fetchId(req)
 		if id
