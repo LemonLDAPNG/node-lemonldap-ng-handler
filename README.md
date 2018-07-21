@@ -107,11 +107,17 @@ the requested URL and the rule calculates if the user is authorized.
 
 LLNG is designed in 3 kinds of elements:
 * a portal
-* some handlers for Apache, Nginx or Node.js
 * a manager
+* some handlers for Apache, [Plack family](https://plackperl.org), Node.js
+* some FastCGI servers to provide Nginx handler or
+[SSOaaS](https://lemonldap-ng.org/documentation/2.0/ssoaas):
+  * pure Perl (default)
+  * uWSGI _(Perl via uwsgi-psgi plugin)_
+  * this Node.js module
 
-This module is the Node.js handler. See [Lemonldap::NG website](http://lemonldap-ng.org)
-for more.
+This module provide the Node.js handler and the FastCGI server.
+
+See [Lemonldap::NG website](http://lemonldap-ng.org) for more.
 
 ## INSTALLATION
 
