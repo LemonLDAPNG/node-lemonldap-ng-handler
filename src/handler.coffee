@@ -194,7 +194,7 @@ class Handler
 
 	setError: (res, uri, code, txt) ->
 		if @conf.tsv.useRedirectOnError
-			u = "#{@conf.tsv.portal}/lmerror/#{code}?url=" + new Buffer(encodeURI(uri)).toString('base64')
+			u = @conf.tsv.portal() + "?lmError=#{code}&url=" + new Buffer(encodeURI(uri)).toString('base64')
 			@logger.debug "Redirecting to #{u}"
 			if res.redirect?
 				res.redirect u
