@@ -1,11 +1,11 @@
 module.exports = function(grunt) {
   grunt.initConfig({
     coffee: {
-      glob_to_multiple: {
+      other: {
         expand: true,
-        flatten: true,
+        flatten: false,
         cwd: 'src/',
-        src: ['*.coffee', '*/*.coffee', '*/*/*.coffee'],
+        src: ['**/*.coffee'],
         dest: 'lib/',
         ext: '.js'
       }

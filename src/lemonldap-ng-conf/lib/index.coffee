@@ -18,7 +18,7 @@ class conf
 			console.error "Error: configStorage: type is not well formed.\n"
 			return null
 		try
-			m = require "./lib/#{@type.toLowerCase()}"
+			m = require "./#{@type.toLowerCase()}"
 			@module = new m(this)
 		catch e
 			try
