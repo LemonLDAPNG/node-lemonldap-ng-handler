@@ -1,5 +1,5 @@
 {
-  "name": "node-lemonldap-ng-handler",
+  "name": "lemonldap-ng-handler",
   "version": "0.3.0",
   "description": "LemonLDAP::NG handler for Node.js",
   "main": "index.js",
@@ -34,22 +34,14 @@
     "test": "mocha ./test/*.js"
   },
   "dependencies": {
-    "aes-js": "*",
     "extend": "*",
-    "file-cache-simple": "*",
-    "fs-jetpack": "*",
-    "inireader": "*",
-    "js-md5": "*",
+    "lemonldap-ng-conf": "latest",
+    "lemonldap-ng-logger": "latest",
+    "lemonldap-ng-sessions": "latest",
     "node-fastcgi": "*"
   },
   "optionalDependencies": {
-    "js-yaml": "*",
     "iconv": "*",
-    "ipaddr.js": "*",
-    "ldapjs": "*",
-    "modern-syslog": "*",
-    "nodedbi": "*",
-    "redis": "*",
-    "mongodb": "^3.0.8"
+    "ipaddr.js": "*"
   }
 }
