@@ -1,12 +1,14 @@
 {
   "name": "lemonldap-ng-handler",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "LemonLDAP::NG handler for Node.js",
   "main": "index.js",
-  "maintainers": [{
-    "name": "Xavier Guimard",
-    "email": "x.guimard@free.fr"
-  }],
+  "maintainers": [
+    {
+      "name": "Xavier Guimard",
+      "email": "x.guimard@free.fr"
+    }
+  ],
   "homepage": "https://lemonldap-ng.org",
   "directories": {
     "lib": "lib",
@@ -19,8 +21,16 @@
     "type": "git",
     "url": "https://github.com/LemonLDAPNG/node-lemonldap-ng-handler.git"
   },
-  "keywords": ["Lemonldap::NG", "SSO", "SAML", "OpenID-Connect", "SSOaaS"],
-  "authors": ["Xavier Guimard <x.guimard@free.fr>"],
+  "keywords": [
+    "Lemonldap::NG",
+    "SSO",
+    "SAML",
+    "OpenID-Connect",
+    "SSOaaS"
+  ],
+  "authors": [
+    "Xavier Guimard <x.guimard@free.fr>"
+  ],
   "license": "GPL-2.0-or-later",
   "devDependencies": {
     "grunt": "*",
@@ -35,8 +45,8 @@
   },
   "dependencies": {
     "extend": "*",
-    "lemonldap-ng-conf": "latest",
-    "lemonldap-ng-logger": "latest",
+    "lemonldap-ng-conf": "0.4.0",
+    "lemonldap-ng-logger": "0.4.0",
     "lemonldap-ng-sessions": "latest",
     "node-fastcgi": "*"
   },

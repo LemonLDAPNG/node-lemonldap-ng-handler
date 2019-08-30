@@ -27,8 +27,17 @@ module.exports = (grunt) ->
 	grunt.loadNpmTasks 'grunt-contrib-clean'
 	grunt.registerTask 'conf', 'Build package.json', () ->
 		main = grunt.file.readJSON "package.json"
+		depsError = 0
+		for p,v of main.dependencies
+			if p in packages and main.dependencies[p] != main.version
+				main.dependencies[p] = main.version
+				depsError++
+		if depsError
+			grunt.file.write 'package.json', JSON.stringify main, null, 2
 		packages.forEach (pack) ->
-			j = grunt.file.readJSON "./src/packages/#{pack}/package.json"
+			j = grunt.file.read "./src/packages/#{pack}/package.json"
+			j = j.replace /\$version/, main.version
+			j = JSON.parse j
 			for k,v of main
 				j[k] = v unless j[k]? or k.match /dependencies/i
 			j.name = pack
