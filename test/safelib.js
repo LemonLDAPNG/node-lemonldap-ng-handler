@@ -4,7 +4,7 @@ var obj;
 describe('Functions tests', function() {
   var array, vm;
   it('should load library', function() {
-    var m = require('../lib/handlerConf');
+    var m = require('../lib/conf');
     obj = new m({configStorage:{"confFile": "test/lemonldap-ng.ini"}});
     vm = obj.newSafe()
   });

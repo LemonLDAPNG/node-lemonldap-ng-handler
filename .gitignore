@@ -1,3 +1,6 @@
 node_modules/
 packages/
 lib/
+!src/packages/
+!src/**/lib
+package-lock.json

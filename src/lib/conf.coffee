@@ -143,7 +143,7 @@ class HandlerConf
 				.replace(/^Apache::Session::(?:Browseable::)?/, '')
 				if sessionStorageModule.match /Apache::Session/
 					Error "Unsupported session backend: #{conf.globalStorage}"
-				m = require 'lemonldap-ng-sessions'
+				m = require 'lemonldap-ng-session'
 				self.sa = new m sessionStorageModule, self.logger, conf.globalStorageOptions
 
 				# Headers initialization

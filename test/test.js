@@ -3,7 +3,7 @@ var handler;
 
 describe('Initialization tests', function() {
   it('should load library', function() {
-    handler = require('../lib/handler.js');
+    handler = require('../lib');
   });
 
   it('should read test/lemonldap-ng.ini', function() {

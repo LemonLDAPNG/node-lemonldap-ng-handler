@@ -3,4 +3,4 @@
  *
  * See README.md
  */
-module.exports = require('./lib/handler');
+module.exports = require('./lib/');
