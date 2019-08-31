@@ -17,7 +17,7 @@ nodeVhosts = test.example.com, test2.example.com
 // Variables
 var express = require('express');
 var app = express();
-var handler = require('node-lemonldap-ng-handler');
+var handler = require('lemonldap-ng-handler');
 
 // initialize handler (optional args)
 handler.init({
@@ -42,7 +42,7 @@ app.listen(3000, function() {
 
 FastCGI server:
 ```javascript
-var handler = require('node-lemonldap-ng-handler');
+var handler = require('lemonldap-ng-handler');
 
 handler.init({
   configStorage: {
@@ -124,7 +124,7 @@ See [Lemonldap::NG website](http://lemonldap-ng.org) for more.
 Of course, you must have a [LemonLDAP::NG](https://lemonldap-ng.org) system
 installed in your organization. To install node handler, use simply:
 ```shell
-npm install node-lemonldap-ng-handler
+npm install lemonldap-ng-handler
 ```
 
 ## CONFIGURATION
@@ -134,17 +134,17 @@ npm install node-lemonldap-ng-handler
 Node-lemonldap-ng-handler uses LemonLDAP::NG configuration file, sections
 `[configuration]` and `[node-handler]`.
 
-> **Note important**: node-lemonldap-ng-handler can't read multilines in
+> **Note important**: lemonldap-ng-handler can't read multilines in
 lemonldap-ng.ini. You must rewrite them on one line *(even in other sections)*.
 
 #### Sections `[all]` and `[configuration]`
 
-Nothing to change, but node-lemonldap-ng-handler isn't compatible with all
+Nothing to change, but lemonldap-ng-handler isn't compatible with all
 LLNG backends. See below.
 
 ##### Loggers
 
-node-lemonldap-ng-handler is compatible with the following
+lemonldap-ng-handler is compatible with the following
 [loggers](https://lemonldap-ng.org/documentation/2.0/logs):
 * Lemonldap::NG::Common::Logger::Std : use console.log
 * Lemonldap::NG::Common::Logger::Syslog : use Syslog _(install modern-syslog
@@ -171,7 +171,7 @@ nodeVhosts = test1.example.com, test2.example.com
 You'll have a warning in the manager when saving this rules since Perl doesn't
 understand Javascript.
 
-> Note that `handler` section isn't read by node-lemonldap-ng-handler.
+> Note that `handler` section isn't read by lemonldap-ng-handler.
 
 ### Configuration backends
 
@@ -284,11 +284,11 @@ Lemonldap::NG is available at
 https://gitlab.ow2.org/lemonldap-ng/lemonldap-ng/tags
 
 This library is available at
-https://github.com/LemonLDAPNG/node-lemonldap-ng-handler
+https://github.com/LemonLDAPNG/lemonldap-ng-handler
 
 ## COPYRIGHT AND LICENSE
 
-Copyright (C) 2016-2018 by [Xavier Guimard](mailto:x.guimard@free.fr)
+Copyright (C) 2016-2019 by [Xavier Guimard](mailto:x.guimard@free.fr)
 
 This library is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

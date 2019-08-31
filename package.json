@@ -2,11 +2,11 @@
   "name": "lemonldap-ng-handler",
   "version": "0.4.0",
   "description": "LemonLDAP::NG handler for Node.js",
-  "main": "index.js",
+  "main": "lib/index",
   "maintainers": [
     {
       "name": "Xavier Guimard",
-      "email": "x.guimard@free.fr"
+      "email": "yadd@debian.org"
     }
   ],
   "homepage": "https://lemonldap-ng.org",
@@ -14,6 +14,11 @@
     "lib": "lib",
     "src": "src"
   },
+  "files": [
+    "package.json",
+    "lib",
+    "README.md"
+  ],
   "bugs": {
     "url": "https://gitlab.ow2.org/lemonldap-ng/lemonldap-ng/issues"
   },
@@ -29,14 +34,17 @@
     "SSOaaS"
   ],
   "authors": [
-    "Xavier Guimard <x.guimard@free.fr>"
+    "Xavier Guimard <yadd@debian.org>"
   ],
   "license": "GPL-2.0-or-later",
   "devDependencies": {
+    "aes-js": "^3.1.2",
+    "file-cache-simple": "0.0.7",
     "grunt": "*",
     "grunt-contrib-coffee": "*",
-    "iconv": "*",
-    "ipaddr.js": "*",
+    "grunt-mocha-test": "^0.13.3",
+    "inireader": "*",
+    "js-md5": "^0.7.3",
     "mocha": "*"
   },
   "scripts": {
@@ -44,14 +52,16 @@
     "test": "mocha ./test/*.js"
   },
   "dependencies": {
+    "aes": "^0.1.0",
     "extend": "*",
+    "inireader": "^1.2.1",
     "lemonldap-ng-conf": "0.4.0",
     "lemonldap-ng-logger": "0.4.0",
-    "lemonldap-ng-sessions": "latest",
-    "node-fastcgi": "*"
+    "lemonldap-ng-session": "0.4.0",
+    "node-fastcgi": "^1.3.3"
   },
   "optionalDependencies": {
-    "iconv": "*",
-    "ipaddr.js": "*"
+    "iconv": "^2.3.4",
+    "ipaddr.js": "^1.9.1"
   }
 }
