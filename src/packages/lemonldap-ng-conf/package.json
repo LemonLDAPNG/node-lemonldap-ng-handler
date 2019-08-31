@@ -1,0 +1,11 @@
+{
+  "dependencies": {
+    "aes-js": "*",
+    "inireader": "*",
+    "fs-jetpack": "*",
+    "js-md5": "*"
+  },
+  "optionalDependencies": {
+    "lemonldap-ng-conf-dbi": "$version"
+  }
+}

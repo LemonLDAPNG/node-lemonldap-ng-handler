@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "file-cache-simple": "*"
+  }
+}
