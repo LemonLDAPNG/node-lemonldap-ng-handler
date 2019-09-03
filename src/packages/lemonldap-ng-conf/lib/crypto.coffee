@@ -5,15 +5,12 @@
 ###
 
 rnd = require 'random-bytes'
+sha = require 'sha.js'
 
 class Crypto
 	constructor: (key, @mode) ->
-		MD5 = require 'js-md5'
-		@sha = require 'sha.js'
-		h = MD5.create()
-		h.update(key)
 		@aesjs = require 'aes-js'
-		@rk = new @sha('sha256').update(key).digest()
+		@rk = new sha('sha256').update(key).digest()
 		@tob = @aesjs.utils.utf8.toBytes
 		@frb = @aesjs.utils.utf8.fromBytes
 
@@ -22,7 +19,7 @@ class Crypto
 		return Buffer.from Array.prototype.slice.call tmp, 0
 
 	encrypt: (s) ->
-		hmac = new @sha('sha256').update(s).digest()
+		hmac = new sha('sha256').update(s).digest()
 		s = Buffer.from s
 		s = Buffer.concat [hmac,s]
 		l = 16 - s.length % 16
@@ -49,7 +46,7 @@ class Crypto
 		res = res.toString()
 		# Remove \0 at end
 		res = res.substring 0, res.length-1
-		if hmac.equals new @sha('sha256').update(res).digest()
+		if hmac.equals new sha('sha256').update(res).digest()
 			return res
 		else
 			console.error "Bad hmac, ignored for now due to unknown bug"

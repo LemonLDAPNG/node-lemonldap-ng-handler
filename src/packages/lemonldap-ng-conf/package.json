@@ -3,7 +3,7 @@
     "aes-js": "*",
     "inireader": "*",
     "fs-jetpack": "*",
-    "js-md5": "*"
+    "sha.js": "*"
   },
   "optionalDependencies": {
     "lemonldap-ng-conf-dbi": "$version"
