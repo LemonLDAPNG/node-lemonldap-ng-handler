@@ -17,11 +17,11 @@ class Crypto
 		return Buffer.from Array.prototype.slice.call tmp, 0
 
 	encrypt: (s) ->
-		hmac = new sha('sha256').update(s).digest()
 		s = Buffer.from s
-		s = Buffer.concat [hmac,s]
 		l = 16 - s.length % 16
 		s = Buffer.concat [s, Buffer.allocUnsafe(l).fill "\0"]
+		hmac = new sha('sha256').update(s).digest()
+		s = Buffer.concat [hmac,s]
 		iv = this.newIv()
 		cipher = new aesjs.ModeOfOperation.cbc @rk, iv
 		buf = Buffer.concat [iv, cipher.encrypt s]
@@ -37,14 +37,14 @@ class Crypto
 		res = Buffer.from cipher.decrypt s
 		hmac = res.slice 0,32
 		res = res.slice 32
+		newhmac = new sha('sha256').update(res).digest()
 		z = res.indexOf "\0"
 		if z > 0
 			res = res.slice 0, z+1
 		res = res.toString()
-		newhmac = new sha('sha256').update(res).digest()
 		# Remove \0 at end
 		res = res.substring 0, res.length-1
-		if hmac.equals(newhmac) or hmac.equals(new sha('sha256').update(res).digest())
+		if hmac.equals(newhmac)
 			return res
 		else
 			console.error "Bad hmac"

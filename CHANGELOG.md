@@ -3,7 +3,7 @@ Changelog
 
 ## 0.4.1
  * BREACKING CHANGE:
-   * Cryptographic function are now compatible with LLNG ≥ 2.0.6 but then
+   * Cryptographic function are now compatible with LLNG ≥ 2.0.5 but then
      may be incompatible with previous versions.
 
 ## 0.4.0
