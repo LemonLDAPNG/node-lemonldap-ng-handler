@@ -1,6 +1,14 @@
 Changelog
 =========
 
+## 0.4.1
+ * BREACKING CHANGE:
+   * Cryptographic function are now compatible with LLNG ≥ 2.0.5 but then
+     may be incompatible with previous versions. This affects CDA
+
+## 0.4.0
+ * Reorganize and rename main package to "lemonldap-ng-handler"
+
 ## 0.3.0 - 2018-07-01
  * Add UWSGI logger
  * Fix "skip" management (#1)

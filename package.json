@@ -47,16 +47,18 @@
     "js-md5": "^0.7.3",
     "mocha": "*"
   },
+  "llng-compat": "2.0.5",
   "scripts": {
     "build": "grunt",
+    "pretest": "./scripts/pretest",
     "test": "mocha ./test/*.js"
   },
   "dependencies": {
     "extend": "*",
     "inireader": "^1.2.1",
-    "lemonldap-ng-conf": "0.4.0",
-    "lemonldap-ng-logger": "0.4.0",
-    "lemonldap-ng-session": "0.4.0",
+    "lemonldap-ng-conf": "0.4.1",
+    "lemonldap-ng-logger": "0.4.1",
+    "lemonldap-ng-session": "0.4.1",
     "node-fastcgi": "^1.3.3"
   },
   "optionalDependencies": {

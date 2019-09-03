@@ -25,7 +25,7 @@ module.exports = (grunt) ->
 			test:
 				options:
 					reporter: "spec"
-				src: ['test/**/*.js','src/packages/*/test/**/*.js']
+				src: ['test/**/*.js','packages/*/test/*.js']
 		clean:
 			packages: 'packages'
 			lib: 'lib'
@@ -62,5 +62,7 @@ module.exports = (grunt) ->
 			readme = readme.replace /\$package/g, pack
 			grunt.file.write "packages/#{pack}/README.md", readme
 		grunt.log.ok "#{packages.length} README.md files written"
+		packages.forEach (pack) ->
+			# TODO: copy test files
 	grunt.registerTask 'default', ['clean', 'coffee', 'conf']
 	grunt.registerTask 'test', 'mochaTest'

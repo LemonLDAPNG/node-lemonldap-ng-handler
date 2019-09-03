@@ -1,0 +1,51 @@
+#!/usr/bin/perl
+
+BEGIN {
+    eval {
+        require Lemonldap::NG::Common;
+        require Lemonldap::NG::Common::Crypto;
+        require JSON;
+    };
+    if ($@) {
+        print STDERR "Missing LLNG Perl libraries, aborting\n";
+        exit;
+    }
+}
+
+our @tests = (
+    'test',
+    'longtext ' . ( "x" x 30 ),
+    'utf8 iso 8859 àéç',
+    'utf8 Русский',
+);
+
+my $f;
+open $f, 'package.json' or die $!;
+my $buf;
+my $upgrade;
+while (<$f>) {
+    if (
+s/"llng-compat":\s*"([\d\.]+)"/"llng-compat": "$Lemonldap::NG::Common::VERSION"/
+      )
+    {
+        $upgrade = 1 if $1 ne $Lemonldap::NG::Common::VERSION;
+    }
+    $buf .= $_;
+}
+close $f;
+if ($upgrade) {
+    open $f, '>', 'package.json';
+    print $f $buf;
+    close $f;
+    print STDERR
+      "package.json llng-compat set to $Lemonldap::NG::Common::VERSION\n";
+}
+
+my $cr = Lemonldap::NG::Common::Crypto->new('qwertyui');
+my $h  = {};
+foreach (@tests) {
+    $h->{$_} = $cr->encrypt($_);
+}
+open $f, '>', 'src/packages/lemonldap-ng-conf/test/cr.json' or die $!;
+print $f JSON->new->pretty->encode($h);
+close $f;
