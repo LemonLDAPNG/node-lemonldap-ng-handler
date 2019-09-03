@@ -26,7 +26,6 @@ class Crypto
 		s = Buffer.concat [s, Buffer.allocUnsafe(l).fill "\0"]
 		iv = this.newIv()
 		cipher = new @aesjs.ModeOfOperation.cbc @rk, iv
-		# TODO: unshift iv, encrypt(hmac+data)
 		buf = Buffer.concat [iv, cipher.encrypt s]
 		res = Buffer(buf).toString 'base64'
 		res
@@ -49,7 +48,7 @@ class Crypto
 		if hmac.equals new sha('sha256').update(res).digest()
 			return res
 		else
-			console.error "Bad hmac, ignored for now due to unknown bug"
+			console.log "Bad hmac, ignored for now due to unknown Perl/JS incompatibility"
 			return res
 
 module.exports = Crypto
