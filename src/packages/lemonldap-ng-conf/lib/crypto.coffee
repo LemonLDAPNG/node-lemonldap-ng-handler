@@ -6,13 +6,11 @@
 
 rnd = require 'random-bytes'
 sha = require 'sha.js'
+aesjs = require 'aes-js'
 
 class Crypto
 	constructor: (key, @mode) ->
-		@aesjs = require 'aes-js'
 		@rk = new sha('sha256').update(key).digest()
-		@tob = @aesjs.utils.utf8.toBytes
-		@frb = @aesjs.utils.utf8.fromBytes
 
 	newIv: () ->
 		tmp = rnd.sync 16
@@ -25,7 +23,7 @@ class Crypto
 		l = 16 - s.length % 16
 		s = Buffer.concat [s, Buffer.allocUnsafe(l).fill "\0"]
 		iv = this.newIv()
-		cipher = new @aesjs.ModeOfOperation.cbc @rk, iv
+		cipher = new aesjs.ModeOfOperation.cbc @rk, iv
 		buf = Buffer.concat [iv, cipher.encrypt s]
 		res = Buffer(buf).toString 'base64'
 		res
@@ -35,7 +33,7 @@ class Crypto
 		s = Buffer.from(s, 'base64')
 		iv = s.slice 0, 16
 		s = s.slice 16
-		cipher = new @aesjs.ModeOfOperation.cbc(@rk, iv)
+		cipher = new aesjs.ModeOfOperation.cbc @rk, iv
 		res = Buffer.from cipher.decrypt s
 		hmac = res.slice 0,32
 		res = res.slice 32
@@ -43,12 +41,13 @@ class Crypto
 		if z > 0
 			res = res.slice 0, z+1
 		res = res.toString()
+		newhmac = new sha('sha256').update(res).digest()
 		# Remove \0 at end
 		res = res.substring 0, res.length-1
-		if hmac.equals new sha('sha256').update(res).digest()
+		if hmac.equals(newhmac) or hmac.equals(new sha('sha256').update(res).digest())
 			return res
 		else
-			console.log "Bad hmac, ignored for now due to unknown Perl/JS incompatibility"
+			console.error "Bad hmac"
 			return res
 
 module.exports = Crypto

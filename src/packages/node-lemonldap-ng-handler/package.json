@@ -1,5 +1,5 @@
 {
   "dependencies": {
-    "lemonldap-ng-handler": "$version"
+    "lemonldap-ng-handler": "latest"
   }
 }

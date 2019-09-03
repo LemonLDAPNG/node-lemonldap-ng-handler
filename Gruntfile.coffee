@@ -2,7 +2,7 @@ fs= require('fs')
 packages = fs.readdirSync('src/packages')
 np = "#{__dirname}/packages"
 process.env.NODE_PATH = if process.env.NODE_PATH? then ":#{np}" else np
-require("module").Module._initPaths();
+require("module").Module._initPaths()
 
 module.exports = (grunt) ->
 	grunt.initConfig
@@ -21,6 +21,14 @@ module.exports = (grunt) ->
 				src: ['**/*.coffee']
 				dest: 'packages/'
 				ext: '.js'
+		copy:
+			test:
+				files: [
+					expand: true
+					cwd: 'src/packages',
+					src: ['*/test/*.json']
+					dest: 'packages/'
+				]
 		mochaTest:
 			test:
 				options:
@@ -32,6 +40,7 @@ module.exports = (grunt) ->
 	grunt.loadNpmTasks 'grunt-contrib-coffee'
 	grunt.loadNpmTasks 'grunt-mocha-test'
 	grunt.loadNpmTasks 'grunt-contrib-clean'
+	grunt.loadNpmTasks 'grunt-contrib-copy'
 
 	# Build package.json files
 	main = grunt.file.readJSON "package.json"
@@ -64,5 +73,5 @@ module.exports = (grunt) ->
 		grunt.log.ok "#{packages.length} README.md files written"
 		packages.forEach (pack) ->
 			# TODO: copy test files
-	grunt.registerTask 'default', ['clean', 'coffee', 'conf']
+	grunt.registerTask 'default', ['clean', 'coffee', 'conf', 'copy']
 	grunt.registerTask 'test', 'mochaTest'
