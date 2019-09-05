@@ -138,13 +138,28 @@ class HandlerConf
 							self.tsv.defaultProtection = false
 
 				# Sessions storage initialization
-				sessionStorageModule = conf.globalStorage
-				.replace(/^Lemonldap::NG::Common::Apache::Session::REST/,'rest')
-				.replace(/^Apache::Session::(?:Browseable::)?/, '')
-				if sessionStorageModule.match /Apache::Session/
-					Error "Unsupported session backend: #{conf.globalStorage}"
-				m = require 'lemonldap-ng-session'
-				self.sa = new m sessionStorageModule, self.logger, conf.globalStorageOptions
+				for type in ['global','oidc']
+					sessionStorageModule = conf["#{type}Storage"]
+					.replace(/^Lemonldap::NG::Common::Apache::Session::REST/,'rest')
+					.replace(/^Apache::Session::(?:Browseable::)?/, '')
+					if sessionStorageModule.match /Apache::Session/ # == SOAP
+						self.logger.error "Unsupported session backend: #{conf[type+'Storage']}"
+						if type == 'global'
+							throw "aborting"
+					else
+						m = require 'lemonldap-ng-session'
+						try
+							smod = new m sessionStorageModule, self.logger, conf.globalStorageOptions
+							if type == 'global'
+								self.sa = smod
+							else
+								self["#{type}StorageModule"] = smod
+						catch e
+							if type == 'global'
+								Error e
+							else
+								self.logger.error "Unsupported session backend: #{conf[type+'Storage']}: #{e}"
+								return
 
 				# Headers initialization
 				for vhost, headers of conf.exportedHeaders
