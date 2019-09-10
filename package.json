@@ -65,20 +65,17 @@
   "optionalDependencies": {
     "iconv": "^2.3.4",
     "ipaddr.js": "^1.9.1",
-    "lemonldap-ng-conf-dbi": "0.4.0",
-    "lemonldap-ng-conf-ldap": "0.4.0",
-    "lemonldap-ng-conf-mongodb": "0.4.0",
-    "lemonldap-ng-conf-yaml": "0.4.0",
-    "lemonldap-ng-conf": "0.4.0",
-    "lemonldap-ng-logger-syslog": "0.4.0",
-    "lemonldap-ng-logger": "0.4.0",
-    "lemonldap-ng-session-dbi": "0.4.0",
-    "lemonldap-ng-session-ldap": "0.4.0",
-    "lemonldap-ng-session-mysql": "0.4.0",
-    "lemonldap-ng-session-pg": "0.4.0",
-    "lemonldap-ng-session-redis": "0.4.0",
-    "lemonldap-ng-session-sqlite": "0.4.0",
-    "lemonldap-ng-session": "0.4.0",
-    "perl-dbi": "0.4.0"
+    "lemonldap-ng-conf-dbi": "*",
+    "lemonldap-ng-conf-ldap": "*",
+    "lemonldap-ng-conf-mongodb": "*",
+    "lemonldap-ng-conf-yaml": "*",
+    "lemonldap-ng-logger-syslog": "*",
+    "lemonldap-ng-session-dbi": "*",
+    "lemonldap-ng-session-ldap": "*",
+    "lemonldap-ng-session-mysql": "*",
+    "lemonldap-ng-session-pg": "*",
+    "lemonldap-ng-session-redis": "*",
+    "lemonldap-ng-session-sqlite": "*",
+    "perl-dbi": "*"
   }
 }
