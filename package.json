@@ -41,6 +41,7 @@
     "aes-js": "^3.1.2",
     "file-cache-simple": "0.0.7",
     "grunt": "*",
+    "grunt-contrib-clean": "*",
     "grunt-contrib-coffee": "*",
     "grunt-contrib-copy": "^1.0.0",
     "grunt-mocha-test": "^0.13.3",
