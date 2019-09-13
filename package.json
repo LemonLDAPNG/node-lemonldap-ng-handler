@@ -53,7 +53,7 @@
   "scripts": {
     "build": "grunt",
     "pretest": "./scripts/pretest",
-    "test": "mocha ./test/*.js"
+    "test": "grunt test"
   },
   "dependencies": {
     "extend": "*",
