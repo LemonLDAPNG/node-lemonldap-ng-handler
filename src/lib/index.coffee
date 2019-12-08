@@ -173,6 +173,15 @@ class Handler
 		req.headers.cookie = req.headers.cookie.replace @conf.tsv.cookieDetect, ''
 
 	goToPortal: (res, uri, args) ->
+		unless typeof @conf.tsv.portal == 'function'
+			console.error "Configuration is not ready"
+			if res.redirect
+				res.status 503
+				.send 'Waiting for configuration'
+			else
+				res.writeHead 503
+				res.end()
+			return res
 		urlc = @conf.tsv.portal()
 		if uri
 			urlc += '?url=' + new Buffer(encodeURI(uri)).toString('base64')

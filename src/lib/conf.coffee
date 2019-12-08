@@ -110,7 +110,7 @@ class HandlerConf
 				if conf.portal.match(/[\$\(&\|"']/)
 					self.tsv.portal = self.conditionSubs(conf.portal)[0]
 				else
-					self.tsv.portal = ->
+					self.tsv.portal = () ->
 						conf.portal
 
 				# Location rules initialization
