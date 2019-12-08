@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 0.5.1
+ * Don't fail if configuration is not ready but return 503 (#4)
+
 ## 0.5.0
  * BREAKING CHANGE:
    * Cryptographic functions are now compatible with LLNG ≥ 2.0.5 but then
