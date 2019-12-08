@@ -1,6 +1,6 @@
 var express = require('express');
 var app = express();
-var handler = require('node-lemonldap-ng-handler');
+var handler = require('lemonldap-ng-handler');
 
 handler.init({
   configStorage: {
