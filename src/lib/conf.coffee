@@ -138,7 +138,8 @@ class HandlerConf
 							self.tsv.defaultProtection = false
 
 				# Sessions storage initialization
-				for type in ['global','oidc']
+				#for type in ['global','oidc']
+				for type in ['global']
 					sessionStorageModule = conf["#{type}Storage"]
 					.replace(/^Lemonldap::NG::Common::Apache::Session::REST/,'rest')
 					.replace(/^Apache::Session::(?:Browseable::)?/, '')
