@@ -17,6 +17,8 @@
   "files": [
     "package.json",
     "lib",
+    "CHANGELOG.md",
+    "LICENSE",
     "README.md"
   ],
   "bugs": {
@@ -58,9 +60,9 @@
   "dependencies": {
     "extend": "*",
     "inireader": "^1.2.1",
-    "lemonldap-ng-conf": "0.5.0",
-    "lemonldap-ng-logger": "0.5.0",
-    "lemonldap-ng-session": "0.5.0",
+    "lemonldap-ng-conf": "0.5.1",
+    "lemonldap-ng-logger": "0.5.1",
+    "lemonldap-ng-session": "0.5.1",
     "node-fastcgi": "^1.3.3"
   },
   "optionalDependencies": {
