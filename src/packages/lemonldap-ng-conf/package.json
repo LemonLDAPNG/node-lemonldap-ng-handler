@@ -3,6 +3,7 @@
     "aes-js": "*",
     "inireader": "*",
     "fs-jetpack": "*",
+    "random-bytes": "*",
     "sha.js": "*"
   },
   "optionalDependencies": {
