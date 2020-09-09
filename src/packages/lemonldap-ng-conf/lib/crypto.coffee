@@ -25,7 +25,7 @@ class Crypto
 		iv = this.newIv()
 		cipher = new aesjs.ModeOfOperation.cbc @rk, iv
 		buf = Buffer.concat [iv, cipher.encrypt s]
-		res = Buffer(buf).toString 'base64'
+		res = Buffer.from(buf).toString 'base64'
 		res
 
 	decrypt: (s) ->

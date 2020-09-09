@@ -88,7 +88,7 @@ class ExtdFunc
 		return encrypt "#{time}:#{args.join(':')}"
 
 	encode_base64: (s) ->
-		r = new Buffer(s).toString('base64')
+		r = new Buffer.from(s).toString('base64')
 
 	unicode2iso = (s) ->
 		iconv = new Iconv('UTF-8', 'ISO-8859-1')
