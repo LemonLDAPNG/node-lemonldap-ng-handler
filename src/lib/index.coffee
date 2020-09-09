@@ -4,6 +4,7 @@
 # See README.md for license and copyright
 ###
 conf = null
+normalizeUrl = require 'normalize-url'
 
 class Handler
 	constructor: (args) ->
@@ -15,7 +16,7 @@ class Handler
 	run: (req, res, next) ->
 		self = @
 		vhost = req.headers.host
-		uri = decodeURI req.url
+		uri = normalizeUrl req.url
 		if @conf.tsv.maintenance[vhost]
 			self.logger.info "Go to portal with maintenance error code #{vhost}"
 			return @setError res, '/', 503, 'Service Temporarily Unavailable'
@@ -184,7 +185,7 @@ class Handler
 			return res
 		urlc = @conf.tsv.portal()
 		if uri
-			urlc += '?url=' + new Buffer(encodeURI(uri)).toString('base64')
+			urlc += '?url=' + new Buffer.from(encodeURI(uri)).toString('base64')
 		if args
 			urlc += if uri then '&' else '?'
 			urlc += args
@@ -203,7 +204,7 @@ class Handler
 
 	setError: (res, uri, code, txt) ->
 		if @conf.tsv.useRedirectOnError
-			u = @conf.tsv.portal() + "?lmError=#{code}&url=" + new Buffer(encodeURI(uri)).toString('base64')
+			u = @conf.tsv.portal() + "?lmError=#{code}&url=" + new Buffer.from(encodeURI(uri)).toString('base64')
 			@logger.debug "Redirecting to #{u}"
 			if res.redirect?
 				res.redirect u
