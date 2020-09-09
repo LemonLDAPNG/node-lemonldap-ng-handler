@@ -1,6 +1,6 @@
 {
   "name": "lemonldap-ng-handler",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "LemonLDAP::NG handler for Node.js",
   "main": "lib/index",
   "maintainers": [
@@ -41,14 +41,14 @@
   "license": "GPL-2.0-or-later",
   "devDependencies": {
     "aes-js": "^3.1.2",
-    "file-cache-simple": "0.0.7",
+    "file-cache-simple": "^1.0.0",
     "grunt": "*",
     "grunt-contrib-clean": "*",
     "grunt-contrib-coffee": "*",
     "grunt-contrib-copy": "^1.0.0",
     "grunt-mocha-test": "^0.13.3",
     "inireader": "*",
-    "mocha": "*",
+    "mocha": "^8.1.3",
     "sha.js": "*"
   },
   "llng-compat": "2.0.5",
@@ -63,7 +63,8 @@
     "lemonldap-ng-conf": "0.5.1",
     "lemonldap-ng-logger": "0.5.1",
     "lemonldap-ng-session": "0.5.1",
-    "node-fastcgi": "^1.3.3"
+    "node-fastcgi": "^1.3.3",
+    "normalize-url": "^5.1.0"
   },
   "optionalDependencies": {
     "iconv": "^2.3.4",
