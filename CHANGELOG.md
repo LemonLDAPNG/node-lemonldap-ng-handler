@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 0.5.2
+ * Better URL normalization (see CVE-2020-24660)
+
 ## 0.5.1
  * Don't fail if configuration is not ready but return 503 (#4)
 
