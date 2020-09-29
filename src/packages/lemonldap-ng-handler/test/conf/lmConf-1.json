@@ -111,8 +111,8 @@
   },
   "globalStorage": "Apache::Session::File",
   "globalStorageOptions": {
-    "Directory": "test/sessions",
-    "LockDirectory": "test/sessions/lock",
+    "Directory": "packages/lemonldap-ng-handler/test/sessions",
+    "LockDirectory": "packages/lemonldap-ng-handler/test/sessions/lock",
     "generateModule": "Lemonldap::NG::Common::Apache::Session::Generate::SHA256"
   },
   "groups": {},

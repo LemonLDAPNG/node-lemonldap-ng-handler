@@ -20,11 +20,12 @@ class conf
 		try
 			m = require "./#{@type.toLowerCase()}"
 			@module = new m(this)
-		catch e
+		catch err
 			try
 				m = require "lemonldap-ng-conf-#{@type.toLowerCase()}"
 				@module = new m(this)
 			catch e
+				console.error err
 				console.error e
 				return null
 		#for k in ['available','lastCfg','lock','isLocked','unlock','store','load','delete']

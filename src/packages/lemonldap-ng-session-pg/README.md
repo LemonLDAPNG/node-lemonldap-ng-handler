@@ -1,6 +1,6 @@
-# $package
+# lemonldap-ng-session-pg
 
-$package is a component of [lemonldap-ng-handler](https://www.npmjs.com/package/lemonldap-ng-handler)
+lemonldap-ng-session-pg is a component of [lemonldap-ng-handler](https://www.npmjs.com/package/lemonldap-ng-handler)
 
 ## BUG REPORT AND OTHER ISSUES
 

@@ -1,26 +1,19 @@
 {
   "name": "lemonldap-ng-handler",
-  "version": "0.5.3",
-  "description": "LemonLDAP::NG handler for Node.js",
-  "main": "lib/index",
+  "license": "GPL-2.0-or-later",
+  "scripts": {
+    "build": "grunt",
+    "pretest": "./scripts/pretest",
+    "test": "grunt test"
+  },
+  "homepage": "https://lemonldap-ng.org",
   "maintainers": [
     {
       "name": "Xavier Guimard",
       "email": "yadd@debian.org"
     }
   ],
-  "homepage": "https://lemonldap-ng.org",
-  "directories": {
-    "lib": "lib",
-    "src": "src"
-  },
-  "files": [
-    "package.json",
-    "lib",
-    "CHANGELOG.md",
-    "LICENSE",
-    "README.md"
-  ],
+  "llng-compat": "2.0.9",
   "bugs": {
     "url": "https://gitlab.ow2.org/lemonldap-ng/lemonldap-ng/issues"
   },
@@ -38,48 +31,18 @@
   "authors": [
     "Xavier Guimard <yadd@debian.org>"
   ],
-  "license": "GPL-2.0-or-later",
   "devDependencies": {
     "aes-js": "^3.1.2",
     "file-cache-simple": "^1.0.0",
+    "fs-jetpack": "^3.1.0",
     "grunt": "*",
     "grunt-contrib-clean": "*",
     "grunt-contrib-coffee": "*",
     "grunt-contrib-copy": "^1.0.0",
     "grunt-mocha-test": "^0.13.3",
     "inireader": "*",
+    "lerna": "^3.22.1",
     "mocha": "^8.1.3",
     "sha.js": "*"
-  },
-  "llng-compat": "2.0.5",
-  "scripts": {
-    "build": "grunt",
-    "pretest": "./scripts/pretest",
-    "test": "grunt test"
-  },
-  "dependencies": {
-    "extend": "*",
-    "inireader": "^1.2.1",
-    "lemonldap-ng-conf": "0.5.3",
-    "lemonldap-ng-logger": "0.5.3",
-    "lemonldap-ng-session": "0.5.3",
-    "node-fastcgi": "^1.3.3",
-    "normalize-url": "^5.1.0"
-  },
-  "optionalDependencies": {
-    "iconv": "^2.3.4",
-    "ipaddr.js": "^1.9.1",
-    "lemonldap-ng-conf-dbi": "*",
-    "lemonldap-ng-conf-ldap": "*",
-    "lemonldap-ng-conf-mongodb": "*",
-    "lemonldap-ng-conf-yaml": "*",
-    "lemonldap-ng-logger-syslog": "*",
-    "lemonldap-ng-session-dbi": "*",
-    "lemonldap-ng-session-ldap": "*",
-    "lemonldap-ng-session-mysql": "*",
-    "lemonldap-ng-session-pg": "*",
-    "lemonldap-ng-session-redis": "*",
-    "lemonldap-ng-session-sqlite": "*",
-    "perl-dbi": "*"
   }
 }
