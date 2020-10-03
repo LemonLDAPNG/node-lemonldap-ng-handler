@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 0.5.4
+ * Switch to lerna
+
 ## 0.5.2
  * Better URL normalization (see CVE-2020-24660)
 
