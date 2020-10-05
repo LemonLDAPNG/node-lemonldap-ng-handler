@@ -4,7 +4,6 @@
 # See README.md for license and copyright
 ###
 conf = null
-normalizeUrl = require 'normalize-url'
 
 class Handler
 	constructor: (args) ->
@@ -16,7 +15,7 @@ class Handler
 	run: (req, res, next) ->
 		self = @
 		vhost = req.headers.host
-		uri = normalizeUrl req.url
+		uri = decodeURI req.url
 		if @conf.tsv.maintenance[vhost]
 			self.logger.info "Go to portal with maintenance error code #{vhost}"
 			return @setError res, '/', 503, 'Service Temporarily Unavailable'
