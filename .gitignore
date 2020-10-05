@@ -4,3 +4,4 @@ lib/
 !src/packages/
 !src/**/lib
 package-lock.json
+src/packages/lemonldap-ng-conf/test/cr.json
