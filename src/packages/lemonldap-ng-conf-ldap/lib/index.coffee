@@ -11,6 +11,7 @@ class ldapConf
 			unless args[a]
 				throw "Missing #{a} argument"
 		@ldapServer = if args.ldapServer.match(/^ldap/) then args.ldapServer else "ldap://#{args.ldapServer}"
+		@ldapCa = if args.ldapServer.match(/^ldaps/) then (args.ldapCAFile or '') else ''
 		@ldapConfBase = args.ldapConfBase
 		@dn = args.ldapBindDN
 		@pwd = args.ldapBindPassword
@@ -18,7 +19,14 @@ class ldapConf
 		@idAttr   = args.ldapAttributeId or 'cn'
 		@contentAttr = args.ldapAttributeContent or 'description'
 		@base = args.ldapConfBase
+		@caConf = {}
+		if @ldapCa != ''
+			try
+				caData = require('fs').readFileSync(@ldapCa)
+				@caConf = { ca: [ caData ] }
+			catch caError
 		@ldap = require('ldapjs').createClient
+			tlsOptions: @caConf
 			url: @ldapServer
 
 	available: ->
