@@ -1,6 +1,13 @@
 Changelog
 =========
 
+## 0.5.5
+ * LDAP: custom CA support
+ * Build deps: add missing iconv, ipaddr.js, random-bytes
+ * Fix URL normalizaion
+
+Thanks to Samuel Martin Moro to have fixed this points
+
 ## 0.5.4
  * Switch to lerna
 

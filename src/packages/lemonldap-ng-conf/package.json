@@ -10,7 +10,7 @@
     "lemonldap-ng-conf-dbi": "0.5.4"
   },
   "name": "lemonldap-ng-conf",
-  "version": "0.5.4",
+  "version": "0.5.5",
   "description": "LemonLDAP::NG handler for Node.js",
   "main": "lib/index",
   "maintainers": [
