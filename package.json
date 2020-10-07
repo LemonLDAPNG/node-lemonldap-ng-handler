@@ -13,7 +13,7 @@
       "email": "yadd@debian.org"
     }
   ],
-  "llng-compat": "1.9.7",
+  "llng-compat": "2.0.9",
   "bugs": {
     "url": "https://gitlab.ow2.org/lemonldap-ng/lemonldap-ng/issues"
   },
