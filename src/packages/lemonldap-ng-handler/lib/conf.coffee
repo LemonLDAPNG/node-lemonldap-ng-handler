@@ -10,6 +10,8 @@
 cipher = null
 sid = 0
 ExtdFunc = require './safelib'
+RE2 = require 're2'
+condMatch = new RE2 '^logout(?:_sso|_app|_app_sso|)(?:\s+(.*))?$', 'i'
 
 class HandlerConf
 	newSafe: () ->
@@ -131,7 +133,7 @@ class HandlerConf
 							else
 								self.tsv.locationCondition[vhost].push cond
 								self.tsv.locationProtection[vhost].push prot
-								self.tsv.locationRegexp[vhost].push(new RegExp url.replace /\(\?#.*?\)/,'')
+								self.tsv.locationRegexp[vhost].push(new RE2 url.replace /\(\?#.*?\)/,'')
 								self.tsv.locationCount[vhost]++
 						unless self.tsv.defaultCondition[vhost]
 							self.tsv.defaultCondition[vhost] = () -> 1
@@ -186,7 +188,7 @@ class HandlerConf
 						for a in t
 							self.tsv.vhostAlias[a] = vhost
 
-				self.tsv['cookieDetect'] = new RegExp "\\b#{self.tsv.cookieName}=([^;]+)"
+				self.tsv['cookieDetect'] = new RE2 "\\b#{self.tsv.cookieName}=([^;]+)"
 
 				1
 			.catch (e) ->
@@ -203,8 +205,9 @@ class HandlerConf
 		return [OK, 2] if cond == 'skip'
 
 		# TODO: manage app logout
-		if cond.match /^logout(?:_sso|_app|_app_sso|)(?:\s+(.*))?$/i
-			url = RegExp.$1
+		res = condMatch.exec cond
+		if res && res[1]
+			url = res[1]
 			if url
 				return [
 					(session) ->

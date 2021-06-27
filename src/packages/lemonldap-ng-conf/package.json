@@ -1,9 +1,10 @@
 {
   "dependencies": {
     "aes-js": "*",
-    "inireader": "*",
     "fs-jetpack": "*",
+    "inireader": "*",
     "random-bytes": "*",
+    "re2": "^1.15.9",
     "sha.js": "*"
   },
   "optionalDependencies": {

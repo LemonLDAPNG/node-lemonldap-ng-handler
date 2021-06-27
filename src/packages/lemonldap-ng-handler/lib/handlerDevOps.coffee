@@ -6,6 +6,7 @@
 ###
 
 Handler = require('./').class
+RE2 = require 're2'
 
 class HandlerDevOps extends Handler
 	constructor: (args) ->
@@ -90,7 +91,7 @@ class HandlerDevOps extends Handler
 								else
 									self.conf.tsv.locationCondition[vhost].push cond
 									self.conf.tsv.locationProtection[vhost].push prot
-									self.conf.tsv.locationRegexp[vhost].push(new RegExp url.replace /\(\?#.*?\)/,'')
+									self.conf.tsv.locationRegexp[vhost].push(new RE2 url.replace /\(\?#.*?\)/,'')
 									self.conf.tsv.locationCount[vhost]++
 							unless self.conf.tsv.defaultCondition[vhost]
 								self.conf.tsv.defaultCondition[vhost] = () -> 1
