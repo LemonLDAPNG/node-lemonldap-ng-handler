@@ -1,7 +1,4 @@
 node_modules/
-packages/
-lib/
-!src/packages/
-!src/**/lib
+packages/*/lib/
 package-lock.json
 src/packages/lemonldap-ng-conf/test/cr.json
