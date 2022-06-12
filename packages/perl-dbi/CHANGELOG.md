@@ -4,4 +4,4 @@
 
 ### Breaking change
 
- * perl-dbi is a wrapper around database-js because nodedbi is no more maintained
+ * perl-dbi is a wrapper around knex because nodedbi is no more maintained

@@ -1,16 +1,16 @@
 # perl-dbi
 
-perl-dbi is a wrapper around [database-js](https://github.com/mlaanderson/database-js#readme)
-that accept Perl DBI stype arguments.
+perl-dbi is a wrapper around [knex](http://knexjs.org/)
+that accept Perl DBI style arguments.
 
 To use it, you should install the related driver:
 ```shell
 npm install perl-dbi
-npm install database-js-postgres
+npm install pg
 # or
-npm install database-js-mysql
+npm install mysql
 # or
-npm install database-js-sqlite
+npm install sqlite3
 ```
 
 Example:
@@ -22,14 +22,6 @@ var conn = new PerlDBI({
   dbiUser:     'pguser',
   dbiPassword: 'pgpassword'
 });
-
-var stmt1 = conn.prepareStatement("SELECT * FROM city WHERE name = ?");
-stmt1.query("New York")
-  .then( function (results) {
-    console.log(results); // Display the results
-  ).catch( function (reason) {
-    console.log(reason); // Some problem while performing the query
-  } );
 ```
 
 perl-dbi is a component of [lemonldap-ng-handler](https://www.npmjs.com/package/lemonldap-ng-handler)
