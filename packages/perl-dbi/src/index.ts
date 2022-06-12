@@ -2,80 +2,71 @@
 /**
  * Typescript declarations
  */
-interface PerlDBI_Args {
+export interface PerlDBI_Args {
   dbiChain:    string;
   dbiUser:     string | undefined;
   dbiPassword: string | undefined;
 };
 
 const btype = {
-  SQLite: "sqlite",
-  Pg: "potgres",
-  mysql: "mysql"
+  SQLite: "sqlite3",
+  Pg: "pg",
+  mysql: "mysql",
+  Oracle: "oracledb",
 };
 
-type DB = "sqlite" | "postgres" | "mysql";
-
-interface DB_Args {
-  dbname?: string;
-  user?: string;
-  password?: string;
-  host?: string;
-  post?: string;
-  encoding?: string;
-}
+type DB = "sqlite3" | "pg" | "mysql" | "oracledb";
 
 const convert = {
-  database: 'dbname',
-  dbname: 'dbname',
+  database: 'database',
+  dbname: 'database',
   host: 'host',
   port: 'port',
-  encoding: 'encoding'
+  encoding: 'encoding',
+  sid: 'sid',
 };
 
-const Dbjs = require('database-js').Connection;
+import type {Knex} from 'knex';
 
-class PerlDBI extends Dbjs {
-  constructor(args: PerlDBI_Args) {
-    const dbArgs: DB_Args = {};
+import knex from 'knex';
 
-    if (!args.dbiChain.match(/^dbi:(SQLite|Pg|mysql):(.*)/)) {
-      throw new Error(`Invalid dbiChain: ${args.dbiChain}`);
-    }
-    const type: DB | undefined = btype[RegExp.$1 as keyof typeof btype] as DB;
-    if (!type) {
-    	throw new Error(`Unsupported database type: ${RegExp.$1}`);
-    }
-    RegExp.$2.split(/;/).map( (s: string) => {
-      let kv = s.match(/^(.*?)=(.*)$/);
-      if (kv) {
-        let k: string = convert[kv[1] as keyof typeof convert];
-	if (k && k !== 'type') {
-	  // @ts-ignore
-          dbArgs[k] = kv[2];
-	}
-	else {
-	  throw new Error(`Unknown DB argument ${k}`);
-	}
-      }
-    });
-    let chain: string = type + '://';
-    if (type === 'sqlite') {
-      if ( !dbArgs.dbname ) {
-        throw new Error('dbname should be defined');
-      }
-      if ( !/^(?:\.|\/)/.test(dbArgs.dbname) ) {
-        throw new Error("dbname must be a path");
-      }
-      chain += dbArgs.dbname;
-    } else {
-      chain += dbArgs.user + ':' + dbArgs.password +'@'
-        + (dbArgs.host ? dbArgs.host : 'localhost')
-	+ '/' + dbArgs.dbname;
-    }
-    console.debug(`Chain ${chain}`);
-    super(chain);
+export type PerlDBI_Client = Knex;
+
+export default function PerlDBI<PerlDBI_Client> (args: PerlDBI_Args) {
+
+  if (!args.dbiChain.match(/^dbi:(SQLite|Pg|mysql):(.*)/)) {
+    throw new Error(`Invalid dbiChain: ${args.dbiChain}`);
   }
+  const type: DB | undefined = btype[RegExp.$1 as keyof typeof btype] as DB;
+  if (!type) {
+  	throw new Error(`Unsupported database type: ${RegExp.$1}`);
+  }
+  let dbArgs: Knex.Config = {};
+  dbArgs.client = type;
+  dbArgs.connection = {};
+  RegExp.$2.split(/;/).map( (s: string) => {
+    let kv = s.match(/^(.*?)=(.*)$/);
+    if (kv) {
+      let k: string = convert[kv[1] as keyof typeof convert];
+      if (k && k !== 'type') {
+        if (type === 'sqlite3' && k === 'database') k='filename';
+        // @ts-ignore
+        dbArgs.connection[k] = kv[2];
+      }
+      else {
+        throw new Error(`Unknown DB argument ${k}`);
+      }
+    }
+  });
+  if (type === 'sqlite3') {
+    // @ts-ignore
+    if ( !dbArgs.connection.filename ) {
+      throw new Error('database should be defined');
+    }
+    // @ts-ignore
+    if ( !/^(?:\.|\/)/.test(dbArgs.connection.filename) ) {
+      throw new Error("database must be a path");
+    }
+  }
+  return knex(dbArgs);
 }
-
-export default PerlDBI;

@@ -17,6 +17,7 @@ function configure(esm) {
       typescript(),
       commonjs(),
     ],
+    external: ['knex'],
   }
 }
 export default [configure(false), configure(true)];
