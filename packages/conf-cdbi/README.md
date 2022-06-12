@@ -1,8 +1,8 @@
-# @LLNG/conf-dbi
+# @LLNG/conf-cdbi
 
-@LLNG/conf-dbi is a base class of @LLNG/conf-cdbi and @LLNG/conf-rdbi
+@LLNG/conf-cdbi is the database connector for CDBI storage
 
-@LLNG/conf-dbi is a component of [lemonldap-ng-handler](https://www.npmjs.com/package/lemonldap-ng-handler)
+@LLNG/conf-cdbi is a component of [lemonldap-ng-handler](https://www.npmjs.com/package/lemonldap-ng-handler)
 
 ## BUG REPORT AND OTHER ISSUES
 

@@ -1,0 +1,62 @@
+{
+  "name": "@LLNG/conf-cdbi",
+  "version": "0.6.0",
+  "description": "LLNG class for CDBI configuration access",
+  "main": "./lib/index.js",
+  "module": "./lib/index.mjs",
+  "exports": {
+    "import": "./lib/index.mjs",
+    "require": "./lib/index.js"
+  },
+  "maintainers": [
+    {
+      "name": "Yadd",
+      "email": "yadd@debian.org"
+    }
+  ],
+  "homepage": "https://lemonldap-ng.org",
+  "directories": {
+    "lib": "lib",
+    "src": "src"
+  },
+  "files": [
+    "package.json",
+    "lib",
+    "CHANGELOG.md",
+    "LICENSE",
+    "README.md"
+  ],
+  "dependencies": {
+    "@LLNG/conf-dbi": "^0.6.0"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^21.0.1",
+    "@rollup/plugin-typescript": "^8.3.2",
+    "database-js-sqlite": "^1.3.0",
+    "rollup": "^2.75.5",
+    "tslib": "^2.4.0",
+    "typescript": "^4.6.4"
+  },
+  "bugs": {
+    "url": "https://gitlab.ow2.org/lemonldap-ng/lemonldap-ng/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LemonLDAPNG/node-lemonldap-ng-handler.git"
+  },
+  "keywords": [
+    "Lemonldap::NG",
+    "SSO",
+    "SAML",
+    "OpenID-Connect",
+    "SSOaaS"
+  ],
+  "authors": [
+    "Yadd <yadd@debian.org>"
+  ],
+  "license": "GPL-2.0-or-later",
+  "llng-compat": "2.0.5",
+  "scripts": {
+    "build": "rollup -c"
+  }
+}
