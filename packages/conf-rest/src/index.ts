@@ -1,0 +1,86 @@
+import fetch from 'node-fetch';
+
+export type REST_Args = {
+  baseUrl: string;
+  user?: string;
+  password?: string;
+}
+
+
+class RESTConf {
+  baseUrl: string;
+  user: string | undefined;
+  password: string | undefined;
+
+  constructor (args: REST_Args) {
+    if(!args.baseUrl) throw new Error('baseUrl parameter is required in REST configuration');
+    
+    if (!args.baseUrl.match(/(https?):\/\/([^\/:]+)(?::(\d+))?(.*)/))
+      throw new Error(`Bad URL ${args.baseUrl}`);
+
+    this.baseUrl = args.baseUrl.replace(/\/+$/,'');
+    if (args.user) {
+      this.user = args.user;
+      if(!args.password) throw new Error('password required');
+      this.password = args.password;
+    }
+  }
+
+  available() {
+    return new Promise<number[]>( (resolve, reject) => {
+      reject('Not implemented for now');
+    });
+  }
+
+  lastCfg() {
+    return new Promise<number>( (resolve, reject) => {
+      this.get('latest')
+        .then( res => {
+          if(res.cfgNum) {
+            resolve(res.cfgNum);
+          } else {
+            reject('No configuration available');
+          }
+        })
+        .catch( e => reject(e) );
+    });
+  }
+
+  load(cfgNum: number, fields: string[] = []) {
+    return new Promise<number>( (resolve, reject) => {
+      this.get(`${cfgNum}?full=1`)
+        .then( res => resolve(res) )
+        .catch( e => reject(e) );
+    });
+  }
+
+  store() {
+    return new Promise<boolean>( (resolve, reject) => {
+      reject('Not implemented for now');
+    });
+  }
+
+  get(query: string) {
+    return new Promise<any>( (resolve, reject) => {
+      const headers: {Accept: string, Authorization?: string}
+        = {'Accept': 'application/json'};
+      if (this.user) {
+        headers.Authorization = 'Basic ' + Buffer.from(`${this.user}:${this.password}`).toString('base64');
+      }
+      fetch(`${this.baseUrl}/${query}`, {
+        method: 'get',
+        headers,
+      }).then( response => {
+        if(response.status !== 200) {
+          reject(response.status)
+        } else {
+          return response.json()
+        }
+      })
+      .then( response => resolve(response) )
+      .catch( err => reject(err) );
+    });
+  }
+}
+
+export default RESTConf;
