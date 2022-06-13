@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import {LLNG_Conf} from '@LLNG/types';
 
 export type FileArgs = {
   dirName: string;
@@ -51,7 +52,7 @@ class FileConf {
   }
 
   load( cfgNum: number, fields: string[] = [] ) {
-    return new Promise<object> ( (resolve, reject) => {
+    return new Promise<LLNG_Conf> ( (resolve, reject) => {
       let filename = path.join(this.dirName, `lmConf-${cfgNum.toString()}.json`);
       fs.access(filename, fs.constants.R_OK, (err) => {
         if(err) {
@@ -73,15 +74,13 @@ class FileConf {
     });
   }
 
-  store(fields: object) {
+  store(fields: LLNG_Conf) {
     return new Promise<boolean> ( (resolve, reject) => {
       const mask = process.umask(0o027);
       const data = JSON.stringify(fields);
-      // @ts-ignore
       fs.writeFile( path.join(this.dirName, `lmConf-${fields.cfgNum.toString()}.json`), data, (err) => {
         process.umask(mask);
         if (err) {
-          // @ts-ignore
           reject(`Unable to write lmConf-${fields.cfgNum.toString()}.json`);
         }
         else {

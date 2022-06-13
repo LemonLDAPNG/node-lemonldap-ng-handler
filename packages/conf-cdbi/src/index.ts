@@ -1,11 +1,11 @@
 import type { DBI_Args, Schema } from '@LLNG/conf-dbi';
+import {LLNG_Conf} from '@LLNG/types';
 
 import DBI from '@LLNG/conf-dbi';
 
 class CDBI extends DBI {
 
-  store(fields: object) {
-    // @ts-ignore: configuration not transcripted into typescript
+  store(fields: LLNG_Conf) {
     let cfgNum: number = fields.cfgNum;
     let data = JSON.stringify(fields);
     return new Promise<boolean>((resolve,reject) => {
@@ -32,7 +32,7 @@ class CDBI extends DBI {
   }
 
   load(cfgNum: number, fields: string[] = ['*']) {
-    return new Promise<object>((resolve,reject) => {
+    return new Promise<LLNG_Conf>((resolve,reject) => {
       this.db
         .select('data')
         .from(this.table)

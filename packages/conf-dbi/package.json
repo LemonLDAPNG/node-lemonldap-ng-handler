@@ -30,7 +30,7 @@
     "perl-dbi": "^0.6.0"
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^21.0.1",
+    "@rollup/plugin-commonjs": "^22.0.0",
     "@rollup/plugin-typescript": "^8.3.2",
     "rollup": "^2.75.5",
     "sqlite3": "^5.0.8",

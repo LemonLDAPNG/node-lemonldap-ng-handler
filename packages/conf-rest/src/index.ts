@@ -1,4 +1,5 @@
 import fetch from 'node-fetch';
+import {LLNG_Conf} from '@LLNG/types';
 
 export type REST_Args = {
   baseUrl: string;
@@ -35,7 +36,7 @@ class RESTConf {
   lastCfg() {
     return new Promise<number>( (resolve, reject) => {
       this.get('latest')
-        .then( res => {
+        .then( (res: LLNG_Conf) => {
           if(res.cfgNum) {
             resolve(res.cfgNum);
           } else {
@@ -47,21 +48,21 @@ class RESTConf {
   }
 
   load(cfgNum: number, fields: string[] = []) {
-    return new Promise<number>( (resolve, reject) => {
+    return new Promise<LLNG_Conf>( (resolve, reject) => {
       this.get(`${cfgNum}?full=1`)
         .then( res => resolve(res) )
         .catch( e => reject(e) );
     });
   }
 
-  store() {
+  store(fields: LLNG_Conf) {
     return new Promise<boolean>( (resolve, reject) => {
       reject('Not implemented for now');
     });
   }
 
   get(query: string) {
-    return new Promise<any>( (resolve, reject) => {
+    return new Promise<LLNG_Conf>( (resolve, reject) => {
       const headers: {Accept: string, Authorization?: string}
         = {'Accept': 'application/json'};
       if (this.user) {
@@ -74,10 +75,13 @@ class RESTConf {
         if(response.status !== 200) {
           reject(response.status)
         } else {
-          return response.json()
+          return response.json() as Promise<LLNG_Conf>;
         }
       })
-      .then( response => resolve(response) )
+      .then( (value) => {
+        if(typeof value !== 'object') return reject('Bad JSON response');
+        resolve(value as LLNG_Conf);
+      })
       .catch( err => reject(err) );
     });
   }
