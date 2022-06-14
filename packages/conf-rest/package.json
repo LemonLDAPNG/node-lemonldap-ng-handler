@@ -29,13 +29,6 @@
   "dependencies": {
     "node-fetch": "^3.2.6"
   },
-  "devDependencies": {
-    "@rollup/plugin-commonjs": "^22.0.0",
-    "@rollup/plugin-typescript": "^8.3.3",
-    "@types/node": "^17.0.42",
-    "jest-mock-server": "^0.0.5",
-    "rollup": "^2.75.6"
-  },
   "bugs": {
     "url": "https://gitlab.ow2.org/lemonldap-ng/lemonldap-ng/issues"
   },

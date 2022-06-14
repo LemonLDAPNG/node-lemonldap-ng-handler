@@ -1,12 +1,12 @@
 {
-  "name": "@LLNG/conf-dbi",
+  "name": "@LLNG/conf-file",
   "version": "0.6.0",
-  "description": "LLNG base class for *DBI configuration access",
+  "description": "LLNG class for File configuration access",
   "main": "./lib/index.js",
   "module": "./lib/index.mjs",
   "exports": {
-    "import": "./lib/index.mjs",
-    "require": "./lib/index.js"
+    "import": "./index.mjs",
+    "require": "./index.js"
   },
   "maintainers": [
     {
@@ -15,20 +15,13 @@
     }
   ],
   "homepage": "https://lemonldap-ng.org",
-  "directories": {
-    "lib": "lib",
-    "src": "src"
-  },
   "files": [
     "package.json",
-    "lib",
+    "index*",
     "CHANGELOG.md",
     "LICENSE",
     "README.md"
   ],
-  "dependencies": {
-    "perl-dbi": "^0.6.0"
-  },
   "bugs": {
     "url": "https://gitlab.ow2.org/lemonldap-ng/lemonldap-ng/issues"
   },

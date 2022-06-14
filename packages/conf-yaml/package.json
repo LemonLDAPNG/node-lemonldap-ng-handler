@@ -29,14 +29,6 @@
   "dependencies": {
     "js-yaml": "^4.1.0"
   },
-  "devDependencies": {
-    "@rollup/plugin-commonjs": "^22.0.0",
-    "@rollup/plugin-typescript": "^8.3.3",
-    "@types/js-yaml": "^4.0.5",
-    "@types/node": "^17.0.42",
-    "rimraf": "^3.0.2",
-    "rollup": "^2.75.6"
-  },
   "bugs": {
     "url": "https://gitlab.ow2.org/lemonldap-ng/lemonldap-ng/issues"
   },

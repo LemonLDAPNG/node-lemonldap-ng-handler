@@ -1,7 +1,7 @@
 {
-  "name": "@LLNG/conf-dbi",
+  "name": "@LLNG/conf-ldap",
   "version": "0.6.0",
-  "description": "LLNG base class for *DBI configuration access",
+  "description": "LLNG class for LDAP configuration access",
   "main": "./lib/index.js",
   "module": "./lib/index.mjs",
   "exports": {
@@ -27,7 +27,7 @@
     "README.md"
   ],
   "dependencies": {
-    "perl-dbi": "^0.6.0"
+    "ldapjs": "^2.3.3"
   },
   "bugs": {
     "url": "https://gitlab.ow2.org/lemonldap-ng/lemonldap-ng/issues"
