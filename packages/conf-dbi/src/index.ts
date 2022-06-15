@@ -1,3 +1,4 @@
+import PerlDBI from 'perl-dbi';
 import type {PerlDBI_Args, PerlDBI_Client} from 'perl-dbi';
 
 export type DBI_Args = PerlDBI_Args & { dbiTable: string | undefined }
@@ -10,8 +11,6 @@ export type Schema = {
   field: string;
   value: string;
 }
-
-import PerlDBI from 'perl-dbi';
 
 class DBI {
   db: PerlDBI_Client;

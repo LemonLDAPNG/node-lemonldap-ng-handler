@@ -1,7 +1,7 @@
 {
-  "name": "@LLNG/constants",
+  "name": "@LLNG/session-dbi",
   "version": "0.6.0",
-  "description": "LLNG class for File configuration access",
+  "description": "LLNG class for DBI session access",
   "main": "./lib/index.js",
   "module": "./lib/index.mjs",
   "exports": {
@@ -17,11 +17,14 @@
   "homepage": "https://lemonldap-ng.org",
   "files": [
     "package.json",
-    "index*",
+    "lib",
     "CHANGELOG.md",
     "LICENSE",
     "README.md"
   ],
+  "dependencies": {
+    "perl-dbi": "^0.6.0"
+  },
   "bugs": {
     "url": "https://gitlab.ow2.org/lemonldap-ng/lemonldap-ng/issues"
   },

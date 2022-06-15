@@ -1,27 +1,25 @@
 {
-  "name": "@LLNG/constants",
-  "version": "0.6.0",
-  "description": "LLNG class for File configuration access",
-  "main": "./lib/index.js",
-  "module": "./lib/index.mjs",
-  "exports": {
-    "import": "./lib/index.mjs",
-    "require": "./lib/index.js"
-  },
+  "name": "@LLNG/conf-mongodb",
+  "version": "0.5.4",
+  "description": "LemonLDAP::NG handler for Node.js",
+  "main": "lib/index",
   "maintainers": [
     {
-      "name": "Yadd",
+      "name": "Xavier Guimard",
       "email": "yadd@debian.org"
     }
   ],
   "homepage": "https://lemonldap-ng.org",
   "files": [
     "package.json",
-    "index*",
+    "lib",
     "CHANGELOG.md",
     "LICENSE",
     "README.md"
   ],
+  "dependencies": {
+    "mongodb": "^4.0.7"
+  },
   "bugs": {
     "url": "https://gitlab.ow2.org/lemonldap-ng/lemonldap-ng/issues"
   },
@@ -37,11 +35,13 @@
     "SSOaaS"
   ],
   "authors": [
-    "Yadd <yadd@debian.org>"
+    "Xavier Guimard <yadd@debian.org>"
   ],
   "license": "GPL-2.0-or-later",
   "llng-compat": "2.0.5",
   "scripts": {
-    "build": "rollup -c"
+    "build": "grunt",
+    "pretest": "./scripts/pretest",
+    "test": "grunt test"
   }
 }

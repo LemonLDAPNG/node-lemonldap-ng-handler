@@ -1,14 +1,7 @@
 {
+  "extends": "../../tsconfig-build.json",
   "compilerOptions": {
-    "strict": true,
-    "module": "esnext",
-    "target": "es2015",
-    "esModuleInterop": true,
-    "moduleResolution": "node",
-    "lib": ["esnext"],
-    "outDir": "lib",
-    "sourceMap": true,
-    "declaration": true
+    "outDir": "lib"
   },
   "include": ["src/**/*", "test/**/*"]
 }
