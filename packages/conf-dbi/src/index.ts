@@ -12,7 +12,7 @@ export type Schema = {
   value: string;
 }
 
-class DBI {
+abstract class DBI {
   db: PerlDBI_Client;
   table: string;
 

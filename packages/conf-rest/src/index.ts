@@ -1,5 +1,5 @@
 import fetch from 'node-fetch';
-import {LLNG_Conf} from '@LLNG/types';
+import { LLNG_Conf, Conf_Accessor } from '@LLNG/types';
 
 export type REST_Args = {
   baseUrl: string;
@@ -8,7 +8,7 @@ export type REST_Args = {
 }
 
 
-class RESTConf {
+class RESTConf implements Conf_Accessor {
   baseUrl: string;
   user: string | undefined;
   password: string | undefined;

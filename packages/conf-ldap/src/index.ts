@@ -10,15 +10,15 @@ export type LDAP_Args = {
 };
 
 import ldapjs from 'ldapjs';
-import {LLNG_Conf} from '@LLNG/types';
-import type {SearchCallbackResponse, SearchEntry, SearchOptions} from 'ldapjs';
+import { LLNG_Conf, Conf_Accessor } from '@LLNG/types';
+import type { SearchCallbackResponse, SearchEntry, SearchOptions } from 'ldapjs';
 import fs from 'fs';
 
 import type {Client as LDAPClient} from 'ldapjs';
 
 const requiredArgs = ['ldapServer','ldapConfBase','ldapBindDN','ldapBindPassword'];
 
-class LDAPConf {
+class LDAPConf implements Conf_Accessor {
 
   /* properties */
   ldapServer: string;
@@ -140,6 +140,12 @@ class LDAPConf {
         })
       });
     });
+  }
+
+  store(conf: LLNG_Conf) {
+    return new Promise<boolean>( (resolve, reject) => {
+      reject('TODO');
+    })
   }
 }
 

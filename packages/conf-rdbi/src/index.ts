@@ -1,11 +1,11 @@
 import type { DBI_Args, Schema } from '@LLNG/conf-dbi';
-import {LLNG_Conf} from '@LLNG/types';
-import {hashParameters} from '@LLNG/constants';
+import { LLNG_Conf, Conf_Accessor } from '@LLNG/types';
+import { hashParameters } from '@LLNG/constants';
 import DBI from '@LLNG/conf-dbi';
 
 type Serialized = { [key: string]: string | number | boolean };
 
-class CDBI extends DBI {
+class CDBI extends DBI implements Conf_Accessor {
 
   store(conf: LLNG_Conf) {
     let cfgNum: number = conf.cfgNum;

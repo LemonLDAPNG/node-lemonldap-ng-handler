@@ -2,11 +2,11 @@ import fs from 'fs';
 import path from 'path';
 import yaml from 'js-yaml';
 import FileConf from '@LLNG/conf-file';
-import type {LLNG_Conf} from '@LLNG/types';
+import type { LLNG_Conf, Conf_Accessor } from '@LLNG/types';
 
 import type {FileArgs} from '@LLNG/conf-file';
 
-class YAMLConf extends FileConf {
+class YAMLConf extends FileConf implements Conf_Accessor {
   dirName: string;
 
   constructor(args: FileArgs) {

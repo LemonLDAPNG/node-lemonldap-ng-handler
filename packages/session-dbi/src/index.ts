@@ -1,6 +1,6 @@
 import PerlDBI from 'perl-dbi';
 import type {PerlDBI_Client,PerlDBI_Args} from 'perl-dbi';
-import type {Apache_Session, LLNG_Session} from '@LLNG/types';
+import type {Apache_Session, LLNG_Session, Session_Accessor} from '@LLNG/types';
 type SessionDBI_Args = {
   DataSource: string;
   UserName: string | undefined;
@@ -15,7 +15,7 @@ type SessionDBI_Args = {
   LockPassword: string | undefined;
 };
 
-class DBISession {
+class DBISession implements Session_Accessor{
   db: PerlDBI_Client;
   table: string;
 

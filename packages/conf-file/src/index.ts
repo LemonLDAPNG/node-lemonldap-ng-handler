@@ -1,12 +1,12 @@
 import fs from 'fs';
 import path from 'path';
-import {LLNG_Conf} from '@LLNG/types';
+import { LLNG_Conf, Conf_Accessor } from '@LLNG/types';
 
 export type FileArgs = {
   dirName: string;
 };
 
-class FileConf {
+class FileConf implements Conf_Accessor {
   dirName: string;
 
   constructor(args: FileArgs) {

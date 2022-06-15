@@ -1,6 +1,6 @@
 import { MongoClient } from 'mongodb';
-import type {Db, Collection, Document, FindOptions} from 'mongodb';
-import type {LLNG_Conf} from '@LLNG/types';
+import type { Db, Collection, Document, FindOptions } from 'mongodb';
+import type { LLNG_Conf, Conf_Accessor } from '@LLNG/types';
 
 interface MongoDB_Conf extends Document {
   cfgNum: number;
@@ -42,7 +42,7 @@ export type Mongo_Args = {
   [ key: typeof ref[number] ]: string | number | undefined;
 };
 
-class MongoConf {
+class MongoConf implements Conf_Accessor {
   colName: string;
   db: Db | undefined;
   col: Collection<LLNG_Conf> | undefined;
