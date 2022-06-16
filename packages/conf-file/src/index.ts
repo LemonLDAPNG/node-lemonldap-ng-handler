@@ -40,7 +40,7 @@ class FileConf implements Conf_Accessor {
     return new Promise<number>( (resolve, reject) => {
       this.available().then( (av: number[]) => {
         if(av.length > 0) {
-          // @ts-ignore
+          // @ts-ignore: av contains only numbers, not undefined
           resolve(av.pop());
         } else {
           reject('No configuration available');

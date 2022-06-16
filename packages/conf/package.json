@@ -1,18 +1,7 @@
 {
-  "dependencies": {
-    "aes-js": "*",
-    "fs-jetpack": "*",
-    "inireader": "*",
-    "random-bytes": "*",
-    "re2": "^1.15.9",
-    "sha.js": "*"
-  },
-  "optionalDependencies": {
-    "lemonldap-ng-conf-dbi": "0.5.4"
-  },
-  "name": "lemonldap-ng-conf",
-  "version": "0.5.5",
-  "description": "LemonLDAP::NG handler for Node.js",
+  "name": "@LLNG/conf",
+  "version": "0.6.0",
+  "description": "LemonLDAP::NG configuration loader",
   "main": "lib/index",
   "maintainers": [
     {
@@ -21,10 +10,6 @@
     }
   ],
   "homepage": "https://lemonldap-ng.org",
-  "directories": {
-    "lib": "lib",
-    "src": "src"
-  },
   "files": [
     "package.json",
     "lib",
@@ -32,6 +17,20 @@
     "LICENSE",
     "README.md"
   ],
+  "dependencies": {
+    "@LLNG/crypto": "^0.6.0",
+    "ini": "^3.0.0"
+  },
+  "optionalDependencies": {
+    "@LLNG/conf-cdbi": "^0.6.0",
+    "@LLNG/conf-file": "^0.6.0",
+    "@LLNG/conf-ldap": "^0.6.0",
+    "@LLNG/conf-mongodb": "^0.6.0",
+    "@LLNG/conf-rdbi": "^0.6.0",
+    "@LLNG/conf-rest": "^0.6.0",
+    "@LLNG/conf-yaml": "^0.6.0",
+    "@LLNG/crypto": "^0.6.0"
+  },
   "bugs": {
     "url": "https://gitlab.ow2.org/lemonldap-ng/lemonldap-ng/issues"
   },

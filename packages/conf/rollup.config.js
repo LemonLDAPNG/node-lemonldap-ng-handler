@@ -13,7 +13,7 @@ function configure(esm) {
           sourcemap: true,
           exports: "auto",
        },
-    external: ['@LLNG/conf-dbi'],
+    external: ['ini', 'fs', '@LLNG/crypto'],
     plugins: [
       typescript(),
       commonjs(),
