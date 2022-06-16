@@ -1,23 +1,3 @@
-import commonjs from "@rollup/plugin-commonjs";
-import typescript from "@rollup/plugin-typescript"
+import config from '../../rollup.template.js';
 
-function configure(esm) {
-  return {
-    input: 'src/index.ts',
-    output: esm
-     ? { format: 'es', dir: 'lib', entryFileNames: '[name].mjs', sourcemap: true }
-     : {
-          format: 'cjs',
-          dir: 'lib',
-          entryFileNames: '[name].js',
-          sourcemap: true,
-          exports: "auto",
-       },
-    plugins: [
-      typescript(),
-      commonjs(),
-    ],
-    external: ['knex'],
-  }
-}
-export default [configure(false), configure(true)];
+export default config(['knex']);
