@@ -37,7 +37,6 @@ afterAll(clean);
 test('able to search', (done) => {
   let conn = PerlDBI({dbiChain});
   conn.select('cfgNum').from('lmconfig').orderBy('cfgNum').then(res => {
-    console.error('res',res);
     expect(res[0].cfgNum).toEqual(0);
     conn.destroy();
     done();

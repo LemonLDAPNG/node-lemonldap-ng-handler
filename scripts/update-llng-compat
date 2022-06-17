@@ -46,6 +46,6 @@ my $h  = {};
 foreach (@tests) {
     $h->{$_} = $cr->encrypt($_);
 }
-open $f, '>', 'src/packages/lemonldap-ng-conf/test/cr.json' or die $!;
+open $f, '>', 'packages/crypto/src/__testData__/cr.json' or die $!;
 print $f JSON->new->pretty->encode($h);
 close $f;
