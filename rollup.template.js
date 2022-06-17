@@ -1,5 +1,5 @@
 import commonjs from "@rollup/plugin-commonjs";
-import typescript from "@rollup/plugin-typescript"
+import typescript from "@rollup/plugin-typescript";
 
 function configure(esm, external) {
   return {
