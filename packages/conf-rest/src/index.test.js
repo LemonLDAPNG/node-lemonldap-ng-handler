@@ -1,8 +1,6 @@
 const {MockServer} = require('jest-mock-server');
 const REST = require('..');
 
-let restConf;
-let url;
 const server = new MockServer();
 
 beforeAll( () => server.start() );
