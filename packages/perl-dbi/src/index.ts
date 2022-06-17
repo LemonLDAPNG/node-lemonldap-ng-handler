@@ -67,6 +67,7 @@ export default function PerlDBI<PerlDBI_Client> (args: PerlDBI_Args) {
     if ( !/^(?:\.|\/)/.test(dbArgs.connection.filename) ) {
       throw new Error("database must be a path");
     }
+    dbArgs.useNullAsDefault = true;
   }
   return knex(dbArgs);
 }
