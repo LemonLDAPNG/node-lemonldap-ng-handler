@@ -15,7 +15,7 @@ type SessionDBI_Args = {
   LockPassword: string | undefined;
 };
 
-class DBISession implements Session_Accessor{
+class DBISession implements Session_Accessor {
   db: PerlDBI_Client;
   table: string;
 

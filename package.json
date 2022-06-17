@@ -47,6 +47,7 @@
     "jest-mock-server": "^0.0.5",
     "ldap-server-mock": "^5.0.0",
     "lerna": "^5.1.4",
+    "redis-mock": "^0.56.3",
     "rimraf": "^3.0.2",
     "rollup": "^2.75.5",
     "sqlite3": "^5.0.8",
