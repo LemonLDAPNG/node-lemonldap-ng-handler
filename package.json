@@ -2,9 +2,8 @@
   "name": "lemonldap-ng-handler",
   "license": "GPL-3.0",
   "scripts": {
-    "build": "grunt",
-    "pretest": "./scripts/pretest",
-    "test": "grunt test"
+    "build": "lerna run build",
+    "test": "jest"
   },
   "homepage": "https://lemonldap-ng.org",
   "maintainers": [
@@ -44,6 +43,7 @@
     "jest": "^28.1.0",
     "jest-mock-server": "^0.0.5",
     "ldap-server-mock": "^5.0.0",
+    "lerna": "^5.1.4",
     "rimraf": "^3.0.2",
     "rollup": "^2.75.5",
     "sqlite3": "^5.0.8",

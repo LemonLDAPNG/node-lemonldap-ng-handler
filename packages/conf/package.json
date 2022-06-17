@@ -51,8 +51,6 @@
   "license": "GPL-2.0-or-later",
   "llng-compat": "2.0.5",
   "scripts": {
-    "build": "grunt",
-    "pretest": "./scripts/pretest",
-    "test": "grunt test"
+    "build": "rollup -c"
   }
 }
