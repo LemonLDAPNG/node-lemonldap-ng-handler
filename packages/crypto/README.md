@@ -21,9 +21,5 @@ expect(decryptedString).toEqual(data)
 
 ```
 
-@LLNG/conf-cdbi is a component of [lemonldap-ng-handler](https://www.npmjs.com/package/lemonldap-ng-handler)
-
-## BUG REPORT AND OTHER ISSUES
-
-Use OW2 system to report bug or ask for features:
-[LLNG OW2 GitLab](https://gitlab.ow2.org/lemonldap-ng/lemonldap-ng/issues)
+@LLNG/conf-cdbi is a component of [lemonldap-ng-handler](https://www.npmjs.com/package/lemonldap-ng-handler),
+a Node.js handler for [LemonLDAP::NG WebSSO](https://lemonldap-ng.org).

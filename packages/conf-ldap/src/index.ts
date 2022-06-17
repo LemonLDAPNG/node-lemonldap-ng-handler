@@ -11,10 +11,8 @@ export type LDAP_Args = {
 
 import ldapjs from 'ldapjs';
 import { LLNG_Conf, Conf_Accessor } from '@LLNG/types';
-import type { SearchCallbackResponse, SearchEntry, SearchOptions } from 'ldapjs';
+import type { SearchCallbackResponse, SearchEntry, SearchOptions, Client as LDAPClient } from 'ldapjs';
 import fs from 'fs';
-
-import type {Client as LDAPClient} from 'ldapjs';
 
 const requiredArgs = ['ldapServer','ldapConfBase','ldapBindDN','ldapBindPassword'];
 
