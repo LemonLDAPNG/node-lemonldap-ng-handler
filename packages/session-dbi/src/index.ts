@@ -1,21 +1,17 @@
 import PerlDBI from 'perl-dbi';
 import type {PerlDBI_Client,PerlDBI_Args} from 'perl-dbi';
 import type {Apache_Session, LLNG_Session, Session_Accessor} from '@LLNG/types';
-type SessionDBI_Args = {
+export type SessionDBI_Args = {
   DataSource: string;
   UserName: string | undefined;
   Password: string | undefined;
   TableName: string | undefined;
-  Commit: string | undefined;
+  Commit: number | undefined;
   // For Apache::Session::Browseable::*
   Index: string | undefined;
-  // For Apache::Session::*MySQL
-  LockDataSource: string | undefined;
-  LockUserName: string | undefined;
-  LockPassword: string | undefined;
 };
 
-class DBISession implements Session_Accessor {
+abstract class DBISession implements Session_Accessor {
   db: PerlDBI_Client;
   table: string;
 

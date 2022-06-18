@@ -36,6 +36,8 @@ class Conf {
     if(!confSection.type) throw new Error('Configuration.type is missing in lemonldap-ng.ini');
     import(`@LLNG/conf-${confSection.type.toLowerCase()}`).then( (mod) => {
       this.module = new mod.default(confSection);
+    }).catch( e => {
+      throw new Error(e);
     });
   }
 

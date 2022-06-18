@@ -2,7 +2,12 @@
   "name": "@LLNG/conf-mongodb",
   "version": "0.5.4",
   "description": "LemonLDAP::NG handler for Node.js",
-  "main": "lib/index",
+  "main": "./lib/index.js",
+  "module": "./lib/index.mjs",
+  "exports": {
+    "import": "./lib/index.mjs",
+    "require": "./lib/index.js"
+  },
   "maintainers": [
     {
       "name": "Xavier Guimard",

@@ -1,7 +1,7 @@
 {
-  "name": "node-lemonldap-ng-handler",
-  "version": "0.5.4",
-  "description": "LemonLDAP::NG handler for Node.js",
+  "name": "@LLNG/session",
+  "version": "0.6.0",
+  "description": "LemonLDAP::NG session loader",
   "main": "./lib/index.js",
   "module": "./lib/index.mjs",
   "exports": {
@@ -23,7 +23,16 @@
     "README.md"
   ],
   "dependencies": {
-    "lemonldap-ng-handler": "^0.5.4"
+    "@LLNG/crypto": "^0.6.0",
+    "ini": "^3.0.0",
+    "limited-cache": "^2.0.0"
+  },
+  "optionalDependencies": {
+    "@LLNG/session-dbi": "^0.6.0",
+    "@LLNG/session-file": "^0.6.0",
+    "@LLNG/session-ldap": "^0.6.0",
+    "@LLNG/session-redis": "^0.6.0",
+    "@LLNG/session-rest": "^0.6.0"
   },
   "bugs": {
     "url": "https://gitlab.ow2.org/lemonldap-ng/lemonldap-ng/issues"
@@ -43,5 +52,8 @@
     "Xavier Guimard <yadd@debian.org>"
   ],
   "license": "GPL-2.0-or-later",
-  "llng-compat": "2.0.5"
+  "llng-compat": "2.0.5",
+  "scripts": {
+    "build": "rollup -c"
+  }
 }
