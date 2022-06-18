@@ -1,7 +1,7 @@
 {
-  "name": "@LLNG/constants",
+  "name": "@LLNG/safelib",
   "version": "0.6.0",
-  "description": "lemonkdap-ng mani constants",
+  "description": "lemonldap-ng safe library",
   "main": "./lib/index.js",
   "module": "./lib/index.mjs",
   "exports": {
@@ -43,5 +43,9 @@
   "llng-compat": "2.0.5",
   "scripts": {
     "build": "rollup -c"
+  },
+  "dependencies": {
+    "iconv": "^3.0.1",
+    "ipaddr.js": "^2.0.1"
   }
 }

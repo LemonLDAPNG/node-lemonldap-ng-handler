@@ -1,8 +1,11 @@
+import Crypto from '@LLNG/crypto';
+
 /* LemonLDAP::NG configuration */
 
 /* Lemonldap::NG configuration (stored into database */
 declare type LLNG_Conf = {
   cfgNum: number;
+  cipher: Crypto | undefined;
   [key: string]: object | any[] | string | number | boolean;
 }
 
@@ -55,7 +58,11 @@ export type IniSection_Configuration = IniSection & {
   [key: string]: string | number | object;
 };
 
-export type LLNG_IniSection = 'all' | 'configuration' | 'portal' | 'manager' | 'handler';
+export type IniSection_NodeHandler = IniSection & {
+  nodeVhosts: string;
+};
+
+export type LLNG_IniSection = 'all' | 'configuration' | 'portal' | 'manager' | 'handler' | 'node-handler';
 
 export type LLNG_IniFile = {
   all: IniSection;
@@ -63,4 +70,5 @@ export type LLNG_IniFile = {
   portal?: IniSection;
   handler?: IniSection;
   manager?: IniSection;
+  'node-handler'?: IniSection;
 }

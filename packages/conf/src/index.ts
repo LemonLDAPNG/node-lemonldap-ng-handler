@@ -8,6 +8,11 @@ import {
   IniSection,
 } from '@LLNG/types';
 
+type getConf_Args = {
+  cfgNum?: number;
+  raw?: boolean;
+};
+
 import fs from 'fs';
 import ini from 'ini';
 import crypto from '@LLNG/crypto';
@@ -30,7 +35,7 @@ class Conf {
     });
   }
 
-  getConf(args = {cfgNum: 0, raw: false}) {
+  getConf(args: getConf_Args) {
     return new Promise<LLNG_Conf>( (resolve, reject) => {
       if( this.module === undefined ) return reject('Conf backend not initialized, please wait');
       this.module.lastCfg().then( (cn: number) => {
