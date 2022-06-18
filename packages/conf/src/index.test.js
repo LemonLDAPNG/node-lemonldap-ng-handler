@@ -20,7 +20,7 @@ afterAll(() => {
 test('read file conf', (done) => {
   const confAccessor = new Llngconf({confFile: iniTmp})
   setTimeout( () => {
-    confAccessor.getConf().then(conf => {
+    confAccessor.getConf({}).then(conf => {
       expect(conf.cfgNum).toEqual(1);
       expect(
         conf.cipher.decrypt(
