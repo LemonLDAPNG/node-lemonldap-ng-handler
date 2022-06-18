@@ -20,8 +20,9 @@ let sessionConn;
 
 beforeAll( (done) => {
   clean();
-  sessionConn = new session('Apache::Session::File', {
-    Directory: __dirname,
+  sessionConn = new session({
+    storageModule: 'Apache::Session::File', 
+    storageModuleOptions: { Directory: __dirname, },
     cacheModule: 'Cache::FileCache',
     cacheModuleOptions: {
       default_expires_in: 2,

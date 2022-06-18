@@ -9,7 +9,8 @@
     }
   ],
   "scripts": {
-    "build": "lerna run build",
+    "clean": "rimraf packages/*/lib",
+    "build": "npm run clean && lerna run build",
     "test": "jest"
   },
   "llng-compat": "2.0.11",
