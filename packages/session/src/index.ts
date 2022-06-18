@@ -1,24 +1,33 @@
-import { LLNG_Session, Session_Accessor } from '@LLNG/types';
+import { LLNG_Session, Session_Accessor, IniSection_Configuration } from '@LLNG/types';
 import { LimitedCache, LimitedCacheInstance } from 'limited-cache';
 import nodePersist from 'node-persist';
+import path from 'path';
+import os from 'os';
 
 class Session {
   backend: Session_Accessor | undefined;
   inMemoryCache: LimitedCacheInstance<LLNG_Session>;
   localCache: typeof nodePersist | undefined;
 
-  constructor( type: string, opts: object = {} ) {
+  constructor( type: string, opts: IniSection_Configuration ) {
     import(`@LLNG/session-${this.aliases(type)}`).then( mod => {
       this.backend = new mod.default(opts);
     }).catch( e => {
       throw new Error(`Unable to load ${type}: ${e}`);
     });
-    nodePersist.init({
-      dir: '/tmp/node-llng-cache',
-      ttl: 600000,
-    }).then( () => {
-      this.localCache = nodePersist;
-    });
+    if (opts.localStorage) {
+      let dir = opts.localStorageOptions && opts.localStorageOptions.cache_root
+        ? opts.localStorageOptions.cache_root + '.node-llng-cache'
+        : path.join(os.tmpdir(), 'node-llng-cache');
+      nodePersist.init({
+        dir,
+        ttl: opts.localStorageOptions && opts.localStorageOptions.default_expires_in
+          ? opts.localStorageOptions.default_expires_in * 1000
+          : 600000,
+      }).then( () => {
+        this.localCache = nodePersist;
+      });
+    }
     this.inMemoryCache = LimitedCache<LLNG_Session>({maxCacheSize: 100, maxCacheTime: 120000});
   }
 
@@ -64,6 +73,7 @@ class Session {
       if( this.backend === undefined ) return reject('Please wait for initialization');
       this.backend.update(data).then( res => {
         this.inMemoryCache.set( data._session_id, data );
+        if(this.localCache) this.localCache.set( data._session_id, data );
         resolve(res);
       })
       .catch( e => {

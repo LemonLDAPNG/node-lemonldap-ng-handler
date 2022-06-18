@@ -32,3 +32,35 @@ export interface Session_Accessor {
   get(id: string): Promise<LLNG_Session>;
   update(data: LLNG_Session): Promise<boolean>;
 }
+
+/* local config */
+
+export type LocalConf = {
+  confFile: string | undefined;
+  [key: string]: string | number | boolean | object | undefined;
+};
+
+export type IniSection = {
+  [key: string]: string | number | object;
+}
+
+export type IniSection_Configuration = IniSection & {
+  type: string;
+  localStorage?: string;
+  localStorage?: string;
+  localStorageOptions?: {
+    cache_root?: string;
+    default_expires_in?: number;
+  },
+  [key: string]: string | number | object;
+};
+
+export type LLNG_IniSection = 'all' | 'configuration' | 'portal' | 'manager' | 'handler';
+
+export type LLNG_IniFile = {
+  all: IniSection;
+  configuration: IniSection_Configuration;
+  portal?: IniSection;
+  handler?: IniSection;
+  manager?: IniSection;
+}

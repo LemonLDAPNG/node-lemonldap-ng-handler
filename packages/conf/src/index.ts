@@ -1,27 +1,16 @@
-import type { LLNG_Conf, Conf_Accessor } from '@LLNG/types';
+import {
+  LLNG_Conf,
+  Conf_Accessor,
+  LocalConf,
+  IniSection_Configuration,
+  LLNG_IniSection,
+  LLNG_IniFile,
+  IniSection,
+} from '@LLNG/types';
 
 import fs from 'fs';
 import ini from 'ini';
 import crypto from '@LLNG/crypto';
-
-export type LocalConf = {
-  confFile: string | undefined;
-  [key: string]: string | number | boolean | undefined;
-};
-
-type IniSection = {
-  [key: string]: string | number;
-}
-
-type IniSection_Configuration = IniSection & {
-  type: string;
-}
-
-type LLNG_IniSection = 'all' | 'configuration' | 'portal' | 'manager' | 'handler';
-
-export type LLNG_IniFile = {
-  [key in LLNG_IniSection]: IniSection | undefined;
-}
 
 class Conf {
   localConf: LocalConf;
