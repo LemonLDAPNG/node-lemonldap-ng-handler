@@ -35,7 +35,7 @@ class Conf {
     });
   }
 
-  getConf(args: getConf_Args) {
+  getConf(args: getConf_Args = {}) {
     return new Promise<LLNG_Conf>( (resolve, reject) => {
       if( this.module === undefined ) return reject('Conf backend not initialized, please wait');
       this.module.lastCfg().then( (cn: number) => {
