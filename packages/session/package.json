@@ -25,12 +25,14 @@
   "dependencies": {
     "@LLNG/crypto": "^0.6.0",
     "ini": "^3.0.0",
-    "limited-cache": "^2.0.0"
+    "limited-cache": "^2.0.0",
+    "node-persist": "^3.1.0"
   },
   "optionalDependencies": {
-    "@LLNG/session-dbi": "^0.6.0",
     "@LLNG/session-file": "^0.6.0",
     "@LLNG/session-ldap": "^0.6.0",
+    "@LLNG/session-mysql": "^0.6.0",
+    "@LLNG/session-postgres": "^0.6.0",
     "@LLNG/session-redis": "^0.6.0",
     "@LLNG/session-rest": "^0.6.0"
   },

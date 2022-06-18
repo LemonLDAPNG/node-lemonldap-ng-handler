@@ -1,10 +1,11 @@
 import { LLNG_Session, Session_Accessor } from '@LLNG/types';
-
 import { LimitedCache, LimitedCacheInstance } from 'limited-cache';
+import nodePersist from 'node-persist';
 
 class Session {
   backend: Session_Accessor | undefined;
-  cache: LimitedCacheInstance<LLNG_Session>;
+  inMemoryCache: LimitedCacheInstance<LLNG_Session>;
+  localCache: typeof nodePersist | undefined;
 
   constructor( type: string, opts: object = {} ) {
     import(`@LLNG/session-${this.aliases(type)}`).then( mod => {
@@ -12,7 +13,13 @@ class Session {
     }).catch( e => {
       throw new Error(`Unable to load ${type}: ${e}`);
     });
-    this.cache = LimitedCache<LLNG_Session>({maxCacheSize: 100});
+    nodePersist.init({
+      dir: '/tmp/node-llng-cache',
+      ttl: 600000,
+    }).then( () => {
+      this.localCache = nodePersist;
+    });
+    this.inMemoryCache = LimitedCache<LLNG_Session>({maxCacheSize: 100, maxCacheTime: 120000});
   }
 
   aliases(type: string) {
@@ -25,17 +32,29 @@ class Session {
   get(id: string) {
     return new Promise<LLNG_Session>( (resolve, reject) => {
       if( this.backend === undefined ) return reject('Please wait for initialization');
-      let lsession = this.cache.get(id);
-      if (lsession) {
-        resolve(lsession);
-      } else {
+      const backendGet = ( id: string, resolve: Function, reject: Function ): void => {
+        // @ts-ignore: this.backend is defined
         this.backend.get(id).then( session => {
-          this.cache.set(id, session);
+          this.inMemoryCache.set(id, session);
+          if (this.localCache) this.localCache.set(id, session);
           resolve(session);
         })
         .catch( e => {
           reject(e);
         });
+      }
+      let lsession = this.inMemoryCache.get(id);
+      if (lsession) {
+        resolve(lsession);
+      } else {
+        if (this.localCache) {
+          this.localCache.get(id).then( res => {
+            if (res) {
+              resolve(res);
+            }
+            else backendGet( id, resolve, reject);
+          });
+        } else backendGet( id, resolve, reject);
       }
     });
   }
@@ -44,7 +63,7 @@ class Session {
     return new Promise<boolean>( (resolve, reject) => {
       if( this.backend === undefined ) return reject('Please wait for initialization');
       this.backend.update(data).then( res => {
-        this.cache.set( data._session_id, data );
+        this.inMemoryCache.set( data._session_id, data );
         resolve(res);
       })
       .catch( e => {
