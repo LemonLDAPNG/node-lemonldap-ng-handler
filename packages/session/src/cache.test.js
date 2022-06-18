@@ -22,8 +22,8 @@ beforeAll( (done) => {
   clean();
   sessionConn = new session('Apache::Session::File', {
     Directory: __dirname,
-    localStorage: 'Cache::FileCache',
-    localStorageOptions: {
+    cacheModule: 'Cache::FileCache',
+    cacheModuleOptions: {
       default_expires_in: 2,
       cache_root: cache,
     },

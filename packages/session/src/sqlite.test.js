@@ -29,7 +29,10 @@ beforeAll( async () => {
     a_session: '{"_session_id": "aaaaaaaaaaaa", "f1": "field 1"}',
   }).into('sessions');
   conn.destroy();
-  sessionConn = new session('Apache::Session::Browseable::SQLite', {DataSource: dbiChain});
+  sessionConn = new session({
+    storageModule: 'Apache::Session::Browseable::SQLite',
+    storageModuleOptions: {DataSource: dbiChain},
+  });
 });
 
 afterAll(() => {

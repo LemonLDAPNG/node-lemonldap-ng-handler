@@ -1,28 +1,36 @@
-import { LLNG_Session, Session_Accessor, IniSection_Configuration } from '@LLNG/types';
+import { LLNG_Session, Session_Accessor, Backend_Options } from '@LLNG/types';
 import { LimitedCache, LimitedCacheInstance } from 'limited-cache';
 import nodePersist from 'node-persist';
 import path from 'path';
 import os from 'os';
+
+type Session_Args = {
+  storageModule: string;
+  storageModuleOptions: Backend_Options;
+  cacheModule?: string;
+  cacheModuleOptions?: Backend_Options;
+};
 
 class Session {
   backend: Session_Accessor | undefined;
   inMemoryCache: LimitedCacheInstance<LLNG_Session>;
   localCache: typeof nodePersist | undefined;
 
-  constructor( type: string, opts: IniSection_Configuration ) {
-    import(`@LLNG/session-${this.aliases(type)}`).then( mod => {
-      this.backend = new mod.default(opts);
+  constructor( opts: Session_Args ) {
+    import(`@LLNG/session-${this.aliases(opts.storageModule)}`).then( mod => {
+      this.backend = new mod.default(opts.storageModuleOptions);
     }).catch( e => {
-      throw new Error(`Unable to load ${type}: ${e}`);
+      throw new Error(`Unable to load ${opts.storageModule}: ${e}`);
     });
-    if (opts.localStorage) {
-      let dir = opts.localStorageOptions && opts.localStorageOptions.cache_root
-        ? opts.localStorageOptions.cache_root + '.node-llng-cache'
+    if (opts.cacheModule) {
+      let dir = opts.cacheModuleOptions && opts.cacheModuleOptions.cache_root
+        ? opts.cacheModuleOptions.cache_root + '.node-llng-cache'
         : path.join(os.tmpdir(), 'node-llng-cache');
       nodePersist.init({
         dir,
-        ttl: opts.localStorageOptions && opts.localStorageOptions.default_expires_in
-          ? opts.localStorageOptions.default_expires_in * 1000
+        ttl: opts.cacheModuleOptions && opts.cacheModuleOptions.default_expires_in
+          // @ts-ignore: opts.cacheModuleOptions.default_expires_in is a number
+          ? opts.cacheModuleOptions.default_expires_in * 1000
           : 600000,
       }).then( () => {
         this.localCache = nodePersist;

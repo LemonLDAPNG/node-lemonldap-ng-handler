@@ -12,7 +12,10 @@ let sessionConn;
 
 
 beforeAll( () => {
-  sessionConn = new session('Apache::Session::File', {Directory: __dirname});
+  sessionConn = new session({
+    storageModule: 'Apache::Session::File',
+    storageModuleOptions: {Directory: __dirname},
+  });
 });
 
 afterAll(() => {
