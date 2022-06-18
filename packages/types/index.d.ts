@@ -2,10 +2,18 @@ import Crypto from '@LLNG/crypto';
 
 /* LemonLDAP::NG configuration */
 
+/* Backends options */
+declare type Backend_Options = {
+  [k: string]: string | number | boolean | { [k: string]: string | boolean | number },
+};
+
 /* Lemonldap::NG configuration (stored into database */
 declare type LLNG_Conf = {
   cfgNum: number;
   cipher: Crypto | undefined;
+  globalStorage: string | undefined;
+  globalStorageOptions: Backend_Options;
+  exportedHeaders?: { [k: string]: string };
   [key: string]: object | any[] | string | number | boolean;
 }
 
@@ -21,6 +29,7 @@ export interface Conf_Accessor {
 /* LemonLDAP::Session */
 export interface LLNG_Session {
   _session_id: string;
+  _logout?: string;
   [key: string]: string | number | boolean;
 }
 
@@ -44,13 +53,13 @@ export type LocalConf = {
 };
 
 export type IniSection = {
+  localStorage?: string;
+  localStorage?: string;
   [key: string]: string | number | object;
 }
 
 export type IniSection_Configuration = IniSection & {
   type: string;
-  localStorage?: string;
-  localStorage?: string;
   localStorageOptions?: {
     cache_root?: string;
     default_expires_in?: number;
