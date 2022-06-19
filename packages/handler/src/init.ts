@@ -14,6 +14,12 @@ type handlerConf = LocalConf & {
   [ k: string ]: any;
 };
 
+export type Handler_Args = {
+  configStorage: LocalConf | undefined;
+  type: string | undefined;
+  [key: string]: string | number | boolean | object | undefined;
+};
+
 let sid = 0;
 
 const requiredFields = [
@@ -55,9 +61,12 @@ abstract class HandlerInit {
 		vhostOptions: {},
   };
 
-  constructor(args: LocalConf) {
+  constructor(args: Handler_Args) {
     this.localConf = args;
-    this.confAcc = new Conf(args);
+    if (!args.configStorage) args.configStorage = {};
+    args.configStorage.localStorage || (args.configStorage.localStorage = args.localStorage);
+    args.configStorage.localStorageOptions || (args.configStorage.localStorageOptions = args.localStorageOptions);
+    this.confAcc = new Conf(args.configStorage);
     let handlerConf = this.confAcc.getLocalConf('handler', true);
     let nodeHandlerConf = <IniSection_NodeHandler>this.confAcc.getLocalConf('node-handler', false);
     [handlerConf, nodeHandlerConf].forEach( iniSection => {
@@ -71,30 +80,32 @@ abstract class HandlerInit {
   }
 
   reload() {
-    return new Promise<void>( (resolve, reject) => {
+    return new Promise<boolean>( (resolve, reject) => {
       let ucFirst = (s: string) => {
         return s.charAt(0).toUpperCase() + s.slice(1);
       };
-      this.confAcc.getConf({}).then( conf => {
-        requiredFields.forEach( k => {
-          // @ts-ignore: all fields not declared
-          this.tsv[k] = conf[k];
-        });
-        Object.keys(this.localConf).forEach( k => {
-          conf[k] = this.localConf[k];
-        });
-        ['https', 'port', 'maintenance'].forEach( k => {
-          if (conf[k] !== undefined) {
-            this.tsv[k] = { _: conf[k] };
-            if (conf.vhostOptions) {
-              let name = `vhost${ucFirst(k)}`;
-              Object.keys(conf.vhostOptions).forEach( (vhost: string) => {
-                // @ts-ignore: this is a number
-                let val: number = conf.vhostOptions[vhost][name];
-                if (val > 0) this.tsv[k][vhost] = val;
-              });
+      this.confAcc.ready.then( () => {
+        this.confAcc.getConf({}).then( conf => {
+          requiredFields.forEach( k => {
+            // @ts-ignore: all fields not declared
+            this.tsv[k] = conf[k];
+          });
+          Object.keys(this.localConf).forEach( k => {
+            conf[k] = this.localConf[k];
+          });
+          ['https', 'port', 'maintenance'].forEach( k => {
+            if (conf[k] !== undefined) {
+              this.tsv[k] = { _: conf[k] };
+              if (conf.vhostOptions) {
+                let name = `vhost${ucFirst(k)}`;
+                Object.keys(conf.vhostOptions).forEach( (vhost: string) => {
+                  // @ts-ignore: this is a number
+                  let val: number = conf.vhostOptions[vhost][name];
+                  if (val > 0) this.tsv[k][vhost] = val;
+                });
+              }
             }
-          }
+          });
           if(!conf.portal) throw new Error('portal should be defined');
           //if ( conf.portal.match(/[\$\(&\|"']/) ) {
           //  this.tsv.portal = self.conditionSubs(conf.portal)[0];
@@ -193,11 +204,13 @@ abstract class HandlerInit {
             });
           }
           this.tsv.cookieDetect = new RE2(`"\\b${this.tsv.cookieName}=([^;]+)`);
-
+          this.sessionAcc.ready.then(() => {
+            resolve(true)
+          });
+        })
+        .catch( e => {
+          reject(`Unable to get configuration: ${e}`);
         });
-      })
-      .catch( e => {
-        reject(`Unable to get configuration: ${e}`);
       });
     });
   }

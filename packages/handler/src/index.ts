@@ -1,6 +1,7 @@
 import express from 'express';
 import http from 'http';
-import LemonldapNGHandler, {Handler_Args, FastCGI_Opts} from './handler-main';
+import {Handler_Args} from './init';
+import LemonldapNGHandler, {FastCGI_Opts} from './handler-main';
 
 let currentHandler: LemonldapNGHandler;
 let currentClass = LemonldapNGHandler;

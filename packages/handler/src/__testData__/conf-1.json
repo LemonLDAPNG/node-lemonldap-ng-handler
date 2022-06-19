@@ -1,0 +1,176 @@
+{
+   "key": "azertyyuio",
+   "applicationList" : {
+      "1sample" : {
+         "catname" : "Sample applications",
+         "test1" : {
+            "options" : {
+               "description" : "A simple application displaying authenticated user",
+               "display" : "auto",
+               "logo" : "demo.png",
+               "name" : "Application Test 1",
+               "uri" : "http://test1.example.com/"
+            },
+            "type" : "application"
+         },
+         "test2" : {
+            "options" : {
+               "description" : "The same simple application displaying authenticated user",
+               "display" : "auto",
+               "logo" : "thumbnail.png",
+               "name" : "Application Test 2",
+               "uri" : "http://test2.example.com/"
+            },
+            "type" : "application"
+         },
+         "type" : "category"
+      },
+      "2administration" : {
+         "catname" : "Administration",
+         "manager" : {
+            "options" : {
+               "description" : "Configure LemonLDAP::NG WebSSO",
+               "display" : "auto",
+               "logo" : "configure.png",
+               "name" : "WebSSO Manager",
+               "uri" : "http://manager.example.com/manager.html"
+            },
+            "type" : "application"
+         },
+         "notifications" : {
+            "options" : {
+               "description" : "Explore WebSSO notifications",
+               "display" : "auto",
+               "logo" : "database.png",
+               "name" : "Notifications explorer",
+               "uri" : "http://manager.example.com/notifications.html"
+            },
+            "type" : "application"
+         },
+         "sessions" : {
+            "options" : {
+               "description" : "Explore WebSSO sessions",
+               "display" : "auto",
+               "logo" : "database.png",
+               "name" : "Sessions explorer",
+               "uri" : "http://manager.example.com/sessions.html"
+            },
+            "type" : "application"
+         },
+         "type" : "category"
+      },
+      "3documentation" : {
+         "catname" : "Documentation",
+         "localdoc" : {
+            "options" : {
+               "description" : "Documentation supplied with LemonLDAP::NG",
+               "display" : "on",
+               "logo" : "help.png",
+               "name" : "Local documentation",
+               "uri" : "http://manager.example.com/doc/"
+            },
+            "type" : "application"
+         },
+         "officialwebsite" : {
+            "options" : {
+               "description" : "Official LemonLDAP::NG Website",
+               "display" : "on",
+               "logo" : "network.png",
+               "name" : "Official Website",
+               "uri" : "http://lemonldap-ng.org/"
+            },
+            "type" : "application"
+         },
+         "type" : "category"
+      }
+   },
+   "authentication" : "Demo",
+   "cfgAuthor" : "The LemonLDAP::NG team",
+   "cfgDate" : "1627287638",
+   "cfgNum" : 1,
+   "cfgVersion" : "2.0.13",
+   "cookieName" : "lemonldap",
+   "demoExportedVars" : {
+      "cn" : "cn",
+      "mail" : "mail",
+      "uid" : "uid"
+   },
+   "domain" : "example.com",
+   "exportedHeaders" : {
+      "test1.example.com" : {
+         "Auth-Groups" : "$groups",
+         "Auth-User" : "$uid"
+      },
+      "test2.example.com" : {
+         "Auth-Groups" : "$groups",
+         "Auth-User" : "$uid"
+      }
+   },
+   "exportedVars" : {},
+   "globalStorage" : "Apache::Session::File",
+   "globalStorageOptions" : {
+      "Directory" : "__SESSIONDIR__",
+      "LockDirectory" : "__SESSIONDIR__/lock",
+      "generateModule" : "Lemonldap::NG::Common::Apache::Session::Generate::SHA256"
+   },
+   "groups" : {},
+   "localSessionStorage" : "Cache::FileCache",
+   "localSessionStorageOptions" : {
+      "cache_depth" : 3,
+      "cache_root" : "__CACHEDIR__",
+      "default_expires_in" : 600,
+      "directory_umask" : "007",
+      "namespace" : "lemonldap-ng-sessions"
+   },
+   "locationRules" : {
+      "auth.example.com" : {
+         "(?#checkUser)^/checkuser" : "inGroup(\"timelords\")",
+         "(?#errors)^/lmerror/" : "accept",
+         "default" : "accept"
+      },
+      "manager.example.com" : {
+         "(?#Configuration)^/(.*?\\.(fcgi|psgi)/)?(manager\\.html|confs|prx/|$)" : "inGroup(\"timelords\")",
+         "(?#Notifications)/(.*?\\.(fcgi|psgi)/)?notifications" : "inGroup(\"timelords\") or $uid eq \"rtyler\"",
+         "(?#Sessions)/(.*?\\.(fcgi|psgi)/)?sessions" : "inGroup(\"timelords\") or $uid eq \"rtyler\"",
+         "default" : "inGroup(\"timelords\") or $uid eq \"rtyler\""
+      },
+      "test1.example.com" : {
+         "^/logout" : "logout_sso",
+         "default" : "accept"
+      },
+      "test2.example.com" : {
+         "^/logout" : "logout_sso",
+         "default" : "accept"
+      }
+   },
+   "loginHistoryEnabled" : 1,
+   "macros" : {
+      "UA" : "$ENV{HTTP_USER_AGENT}",
+      "_whatToTrace" : "$_auth eq 'SAML' ? lc($_user.'@'.$_idpConfKey) : $_auth eq 'OpenIDConnect' ? lc($_user.'@'.$_oidc_OP) : lc($_user)"
+   },
+   "mailUrl" : "http://auth.example.com/resetpwd",
+   "notification" : 1,
+   "notificationStorage" : "File",
+   "notificationStorageOptions" : {
+      "dirName" : "__NOTIFICATIONDIR__"
+   },
+   "passwordDB" : "Demo",
+   "persistentStorage" : "Apache::Session::File",
+   "persistentStorageOptions" : {
+      "Directory" : "__PSESSIONDIR__",
+      "LockDirectory" : "__PSESSIONDIR__/lock"
+   },
+   "portal" : "http://auth.example.com/",
+   "portalSkin" : "bootstrap",
+   "portalSkinBackground" : "1280px-Cedar_Breaks_National_Monument_partially.jpg",
+   "registerDB" : "Demo",
+   "registerUrl" : "http://auth.example.com/register",
+   "reloadUrls" : {
+      "localhost" : "http://reload.example.com/reload"
+   },
+   "securedCookie" : 0,
+   "sessionDataToRemember" : {},
+   "timeout" : 72000,
+   "userDB" : "Same",
+   "whatToTrace" : "_whatToTrace"
+}

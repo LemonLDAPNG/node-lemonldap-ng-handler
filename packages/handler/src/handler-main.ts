@@ -1,5 +1,5 @@
 import { LocalConf, LLNG_Session } from '@LLNG/types';
-import HandlerInit from './init';
+import HandlerInit, {Handler_Args} from './init';
 import express from 'express';
 import http from 'http';
 import normalizeUrl from 'normalize-url';
@@ -11,10 +11,6 @@ export type FastCGI_Opts = {
   port: number | undefined;
   ip: string | undefined;
 }
-
-export type Handler_Args = LocalConf & {
-  type: string | undefined;
-};
 
 class LemonldapNGHandler extends HandlerInit {
   init() {

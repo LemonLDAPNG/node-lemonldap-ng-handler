@@ -50,7 +50,7 @@ export interface Session_Accessor {
 /* local config */
 
 export type LocalConf = {
-  confFile: string | undefined;
+  confFile?: string | undefined;
   [key: string]: string | number | boolean | object | undefined;
 };
 
