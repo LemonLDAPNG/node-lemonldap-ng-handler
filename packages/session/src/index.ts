@@ -15,27 +15,39 @@ class Session {
   backend: Session_Accessor | undefined;
   inMemoryCache: LimitedCacheInstance<LLNG_Session>;
   localCache: typeof nodePersist | undefined;
+  ready: Promise<boolean>;
 
   constructor( opts: Session_Args ) {
-    import(`@LLNG/session-${this.aliases(opts.storageModule)}`).then( mod => {
-      this.backend = new mod.default(opts.storageModuleOptions);
-    }).catch( e => {
-      throw new Error(`Unable to load ${opts.storageModule}: ${e}`);
+    this.ready = new Promise( (gresolve, greject) => {
+      Promise.all([
+        new Promise( (resolve, reject) => {
+          import(`@LLNG/session-${this.aliases(opts.storageModule)}`).then( mod => {
+            this.backend = new mod.default(opts.storageModuleOptions);
+            resolve(true);
+          }).catch( e => {
+            reject(`Unable to load ${opts.storageModule}: ${e}`);
+          });
+        }),
+        new Promise( (resolve, reject) => {
+          if (opts.cacheModule) {
+            let dir = opts.cacheModuleOptions && opts.cacheModuleOptions.cache_root
+              ? opts.cacheModuleOptions.cache_root + '.node-llng-cache'
+              : path.join(os.tmpdir(), 'node-llng-cache');
+            nodePersist.init({
+              dir,
+              ttl: opts.cacheModuleOptions && opts.cacheModuleOptions.default_expires_in
+                // @ts-ignore: opts.cacheModuleOptions.default_expires_in is a number
+                ? opts.cacheModuleOptions.default_expires_in * 1000
+                : 600000,
+            }).then( () => {
+              this.localCache = nodePersist;
+              resolve(true);
+            });
+          } else resolve(true);
+        }),
+      ]).then( () => gresolve(true))
+        .catch( e => greject(e) );
     });
-    if (opts.cacheModule) {
-      let dir = opts.cacheModuleOptions && opts.cacheModuleOptions.cache_root
-        ? opts.cacheModuleOptions.cache_root + '.node-llng-cache'
-        : path.join(os.tmpdir(), 'node-llng-cache');
-      nodePersist.init({
-        dir,
-        ttl: opts.cacheModuleOptions && opts.cacheModuleOptions.default_expires_in
-          // @ts-ignore: opts.cacheModuleOptions.default_expires_in is a number
-          ? opts.cacheModuleOptions.default_expires_in * 1000
-          : 600000,
-      }).then( () => {
-        this.localCache = nodePersist;
-      });
-    }
     this.inMemoryCache = LimitedCache<LLNG_Session>({maxCacheSize: 100, maxCacheTime: 120000});
   }
 

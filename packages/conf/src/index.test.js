@@ -19,7 +19,7 @@ afterAll(() => {
 
 test('read file conf', (done) => {
   const confAccessor = new Llngconf({confFile: iniTmp})
-  setTimeout( () => {
+  confAccessor.ready.then( () => {
     confAccessor.getConf({}).then(conf => {
       expect(conf.cfgNum).toEqual(1);
       expect(
@@ -29,5 +29,5 @@ test('read file conf', (done) => {
       ).toEqual('foobar');
       done();
     });
-  }, 1000)
+  })
 });

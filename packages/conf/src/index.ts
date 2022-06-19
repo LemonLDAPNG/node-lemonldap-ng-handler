@@ -20,6 +20,7 @@ import crypto from '@LLNG/crypto';
 class Conf {
   localConf: LocalConf;
   module: Conf_Accessor | undefined;
+  ready: Promise<boolean>;
 
   constructor(args: LocalConf = {confFile: undefined}) {
     // @ts-ignore: confFile not yet defined
@@ -28,10 +29,13 @@ class Conf {
     let confSection = <IniSection_Configuration>this.getLocalConf('configuration', false);
     if(confSection === undefined) throw new Error('Unknown error');
     if(!confSection.type) throw new Error('Configuration.type is missing in lemonldap-ng.ini');
-    import(`@LLNG/conf-${confSection.type.toLowerCase()}`).then( (mod) => {
-      this.module = new mod.default(confSection);
-    }).catch( e => {
-      throw new Error(e);
+    this.ready = new Promise<boolean>( (resolve, reject) => {
+      import(`@LLNG/conf-${confSection.type.toLowerCase()}`).then( (mod) => {
+        this.module = new mod.default(confSection);
+        resolve(true);
+      }).catch( e => {
+        reject(e);
+      });
     });
   }
 
@@ -43,7 +47,10 @@ class Conf {
         if (!args.cfgNum) return reject("No configuration available");
         // @ts-ignore: this.module is defined
         this.module.load(args.cfgNum).then( rawConf => {
-          if( typeof rawConf.key !== 'string' || !rawConf.key ) throw new Error('Key not defined in configuration');
+          if( !rawConf.key || typeof rawConf.key !== 'string') {
+            console.error('Key not defined in configuration');
+            rawConf.key = '';
+          }
           if (!args.raw) rawConf.cipher = new crypto(rawConf.key);
           resolve(rawConf);
         });

@@ -29,7 +29,9 @@ beforeAll( (done) => {
       cache_root: cache,
     },
   });
-  setTimeout(done, 1000);
+  sessionConn.ready.then( () => {
+    done()
+  });
 });
 
 afterAll(() => {
