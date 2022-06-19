@@ -30,6 +30,8 @@ export interface Conf_Accessor {
 export interface LLNG_Session {
   _session_id: string;
   _logout?: string;
+  _utime: number;
+  _lastSeen?: number;
   [key: string]: string | number | boolean;
 }
 
