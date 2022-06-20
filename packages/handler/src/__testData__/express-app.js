@@ -14,6 +14,12 @@ const defer = new Promise( (resolve, reject) => {
     app.get('/', (req, res) => {
       res.status(200).send("Hello World!");
     });
+    app.get('/dwho', (req, res) => {
+      res.status(200).send("For dwho only!");
+    });
+    app.get('/deny', (req, res) => {
+      res.status(200).send("Should never be displayed!");
+    });
     resolve(app);
   });
 

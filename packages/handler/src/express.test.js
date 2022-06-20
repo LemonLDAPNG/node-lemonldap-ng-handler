@@ -28,7 +28,7 @@ beforeAll((done) => {
   fs.mkdirSync(sessionsDir);
   const date = new SafeLib({cipher: new Crypto('azertyyuio')}).date();
   const perlTimestamp = Math.round(Date.now()/1000).toString();
-  content = fs.readFileSync(sessionSrc, 'utf-8');
+  content = JSON.parse(fs.readFileSync(sessionSrc, 'utf-8'));
   ['_lastAuthnUTime','_utime'].forEach(k => { content[k] = perlTimestamp } );
   ['_updateTime','_startTime'].forEach(k => { content[k] = date } );
   fs.writeFileSync( path.join(sessionsDir, 'dwhosession'), JSON.stringify(content) );
@@ -57,11 +57,7 @@ test("It should redirect unauthentified requests", done => {
 });
 
 test('It should accept authentified requests', done => {
-  request.agent(app)
-    .host('test1.example.com')
-    .get("/")
-    .set('Cookie', ['lemonldap=dwhosession'])
-    .send()
+  agent()
     .expect(200)
     .end( (err, res) => {
       if (err) return done(err);
@@ -69,3 +65,38 @@ test('It should accept authentified requests', done => {
       done();
     });
 });
+
+test('It should reject /deny', done => {
+  agent('dwho','/deny')
+    .expect(403)
+    .end( (err, res) => {
+      if (err) return done(err);
+      done();
+    });
+});
+
+test('It should accept /dwho for dwho', done => {
+  agent('dwho','/dwho')
+    .expect(200)
+    .end( (err, res) => {
+      if (err) return done(err);
+      done();
+    });
+});
+
+test('It should deny /dwho for rtyler', done => {
+  agent('rtyler','/dwho')
+    .expect(403)
+    .end( (err, res) => {
+      if (err) return done(err);
+      done();
+    });
+});
+
+const agent = (id = 'dwho', path = '/', host = 'test1.example.com') => {
+  return request.agent(app)
+    .host(host)
+    .get(path)
+    .set('Cookie', [`lemonldap=${id}session`])
+    .send();
+}

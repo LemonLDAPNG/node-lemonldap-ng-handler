@@ -44,8 +44,8 @@
    },
    "locationRules" : {
       "test1.example.com" : {
-	 "^/dwho": "$uid == 'dwho'",
-	 "^/deny": "deny",
+         "^/dwho": "$uid == 'dwho'",
+         "^/deny": "deny",
          "default" : "accept"
       },
       "test2.example.com" : {
