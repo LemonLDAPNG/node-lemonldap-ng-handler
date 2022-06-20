@@ -6,6 +6,7 @@ import normalizeUrl from 'normalize-url';
 import url from 'url';
 import vm from 'vm';
 import RE2 from 're2';
+import {TSV} from './tsv';
 
 const condMatch = new RE2('^logout(?:_sso|_app|_app_sso|)(?:\s+(.*))?$', 'i');
 
@@ -44,25 +45,25 @@ abstract class HandlerInit {
   sessionAcc?: Session;
   vhostList: string[];
   safe: { [vhost: string]: SafeLib } = {};
-  tsv: { [k: string]: any } = {
-		defaultCondition: {},
-		defaultProtection: {},
-		forgeHeaders: {},
-		headerList: {},
-		https: {},
-		locationCondition: {},
-		//locationConditionText: {},
-		locationCount: {},
-		locationProtection: {},
-		locationRegexp: {},
-		maintenance: {},
-		port: {},
-		portal: () => '',
-		vhostAlias: {},
-		vhostOptions: {},
-  };
+  tsv: TSV;
 
   constructor(args: Handler_Args) {
+    // @ts-ignore
+    this.tsv = {
+	    defaultCondition: {},
+	    defaultProtection: {},
+	    forgeHeaders: {},
+	    headerList: {},
+	    https: {},
+	    locationCondition: {},
+	    locationCount: {},
+	    locationProtection: {},
+	    locationRegexp: {},
+	    maintenance: {},
+	    port: {},
+	    portal: () => '',
+	    vhostAlias: {},
+    };
     this.localConf = args;
     if (!args.configStorage) args.configStorage = {};
     args.configStorage.localStorage || (args.configStorage.localStorage = args.localStorage);
@@ -94,14 +95,16 @@ abstract class HandlerInit {
           Object.keys(this.localConf).forEach( k => {
             conf[k] = this.localConf[k];
           });
-          ['https', 'port', 'maintenance'].forEach( k => {
+          ['https', 'port', 'maintenance'].forEach( (k) => {
             if (conf[k] !== undefined) {
+              // @ts-ignore; k is in TSV type
               this.tsv[k] = { _: conf[k] };
               if (conf.vhostOptions) {
                 let name = `vhost${ucFirst(k)}`;
                 Object.keys(conf.vhostOptions).forEach( (vhost: string) => {
-                  // @ts-ignore: this is a number
+                  // @ts-ignore: val is a number
                   let val: number = conf.vhostOptions[vhost][name];
+                  // @ts-ignore; k is in TSV type
                   if (val > 0) this.tsv[k][vhost] = val;
                 });
               }
@@ -139,8 +142,8 @@ abstract class HandlerInit {
             this.tsv.locationCount[vhost] = 0;
             ['locationRegexp', 'locationProtection', 'locationCondition']
               .forEach( k => {
-                if (this.tsv[k][vhost] === undefined)
-                  this.tsv[k][vhost] = []
+                // @ts-ignore: fields declared in TSV type
+                if (this.tsv[k][vhost] === undefined) this.tsv[k][vhost] = []
               });
             if (!this.safe[vhost]) this.safe[vhost] = new SafeLib(conf);
 
@@ -161,7 +164,7 @@ abstract class HandlerInit {
             });
             if (!this.tsv.defaultCondition[vhost]) {
               this.tsv.defaultCondition[vhost] = () => true;
-              this.tsv.defaultProtection = false;
+              this.tsv.defaultProtection[vhost] = 0;
             }
 
           });

@@ -109,8 +109,8 @@ class LemonldapNGHandler extends HandlerInit {
   isUnprotected( req: express.Request | http.IncomingMessage, uri: string ) {
     let vhost = this.resolveAlias(req);
     if (!this.tsv.defaultCondition[vhost]) return false;
-    for( let i=0; i < this.tsv.locationRegexp.length; i++ ) {
-      if ( this.tsv.locationRegexp.test(uri) )
+    for( let i=0; i < this.tsv.locationRegexp[vhost].length; i++ ) {
+      if ( this.tsv.locationRegexp[vhost][i].test(uri) )
         return this.tsv.locationProtection[vhost][i];
     }
     return this.tsv.defaultProtection[vhost];
