@@ -2,7 +2,7 @@
   "dependencies": {
     "lemonldap-ng-handler": "latest"
   },
-  "name": "node-lemonldap-ng-handler",
+  "name": "old-node-lemonldap-ng-handler",
   "version": "0.5.4",
   "description": "LemonLDAP::NG handler for Node.js",
   "main": "lib/index",

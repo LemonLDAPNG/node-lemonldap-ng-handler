@@ -39,31 +39,5 @@
     "Xavier Guimard <yadd@debian.org>"
   ],
   "license": "GPL-2.0-or-later",
-  "llng-compat": "2.0.5",
-  "dependencies": {
-    "extend": "*",
-    "inireader": "^1.2.1",
-    "lemonldap-ng-conf": "0.5.4",
-    "lemonldap-ng-logger": "0.5.4",
-    "lemonldap-ng-session": "0.5.4",
-    "node-fastcgi": "^1.3.3",
-    "normalize-url": "^5.1.0",
-    "re2": "^1.15.9"
-  },
-  "optionalDependencies": {
-    "iconv": "^2.3.4",
-    "ipaddr.js": "^1.9.1",
-    "lemonldap-ng-conf-dbi": "*",
-    "lemonldap-ng-conf-ldap": "*",
-    "lemonldap-ng-conf-mongodb": "*",
-    "lemonldap-ng-conf-yaml": "*",
-    "lemonldap-ng-logger-syslog": "*",
-    "lemonldap-ng-session-dbi": "*",
-    "lemonldap-ng-session-ldap": "*",
-    "lemonldap-ng-session-mysql": "*",
-    "lemonldap-ng-session-pg": "*",
-    "lemonldap-ng-session-redis": "*",
-    "lemonldap-ng-session-sqlite": "*",
-    "perl-dbi": "*"
-  }
+  "llng-compat": "2.0.5"
 }
