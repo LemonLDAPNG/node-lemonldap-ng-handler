@@ -65,8 +65,6 @@ class LemonldapNGHandler extends HandlerInit {
     } else {
       this.goToPortal( res, this.selfUri(<string>vhost, <string>uri));
     }
-
-    return this.setError(res, '/', 400, 'Bad request');
   }
 
   selfUri( vhost: string, uri: string ) {
@@ -140,14 +138,16 @@ class LemonldapNGHandler extends HandlerInit {
           )
         ) {
           reject(`Session ${id} expired`);
-        } else if (
-          this.tsv.timeoutActivity &&
-          // @ts-ignore: session._lastSeen is defined
-          (now - session._lastSeen) > 60
-        ) {
-          session._lastSeen = now;
-          // @ts-ignore this.sessionAcc is defined here
-          this.sessionAcc.update(session);
+        } else {
+          if (
+            this.tsv.timeoutActivity &&
+            // @ts-ignore: session._lastSeen is defined
+            (now - session._lastSeen) > 60
+          ) {
+            session._lastSeen = now;
+            // @ts-ignore this.sessionAcc is defined here
+            this.sessionAcc.update(session);
+          }
           resolve(session);
         }
       }).catch( e => {

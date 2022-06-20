@@ -203,7 +203,7 @@ abstract class HandlerInit {
               }
             });
           }
-          this.tsv.cookieDetect = new RE2(`"\\b${this.tsv.cookieName}=([^;]+)`);
+          this.tsv.cookieDetect = new RE2(`\\b${this.tsv.cookieName}=([^;]+)`);
           this.sessionAcc.ready.then(() => {
             resolve(true)
           });

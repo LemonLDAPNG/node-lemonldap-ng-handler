@@ -1,0 +1,28 @@
+{
+  "_whatToTrace": "dwho",
+  "_lastAuthnUTime": 1655707351,
+  "authenticationLevel": 1,
+  "_url": "http://test1.example.com:19876/",
+  "_session_kind": "SSO",
+  "cn": "Doctor Who",
+  "hGroups": {
+    "timelords": {
+      "name": "timelords"
+    },
+    "users": {
+      "name": "users"
+    }
+  },
+  "uid": "dwho",
+  "_startTime": "20220620084231",
+  "_session_id": "__sid__",
+  "_updateTime": "20220620084232",
+  "mail": "dwho@badwolf.org",
+  "_utime": 1655707351,
+  "_auth": "Demo",
+  "_user": "dwho",
+  "groups": "users; timelords",
+  "ipAddr": "127.0.0.1",
+  "_language": "en",
+  "_userDB": "Demo"
+}

@@ -1,5 +1,6 @@
 import commonjs from "@rollup/plugin-commonjs";
 import typescript from "@rollup/plugin-typescript";
+//import {terser} from "rollup-plugin-terser";
 
 function configure(esm, external) {
   return {
@@ -14,10 +15,13 @@ function configure(esm, external) {
           exports: "auto",
        },
     external: external,
-    plugins: [
-      typescript(),
-      commonjs(),
-    ],
+    plugins: esm
+     ? [ typescript(), commonjs(), ]
+     : [
+         typescript(),
+         commonjs(),
+         //terser(),
+     ]
   }
 }
 function setExternal(external) {
