@@ -65,6 +65,7 @@ class LemonldapNGHandler extends HandlerInit {
           this.setError( res, '/', 500, 'Server error');
         });
       }).catch( e => {
+        /* Expired session */
         this.goToPortal(res, this.selfUri(<string>vhost, <string>uri));
       });
     } else {
@@ -184,7 +185,7 @@ class LemonldapNGHandler extends HandlerInit {
     try {
       let i = 0;
       // @ts-ignore
-      req.headers['Lm-Remote-User'] = session[tsv.whatToTrace];
+      req.headers['Lm-Remote-User'] = session[this.tsv.whatToTrace];
       this.tsv.forgeHeaders[vhost](session).forEach( (v: string, k: string) => {
         i++;
         req.headers[k] = v;

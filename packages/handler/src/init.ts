@@ -30,6 +30,7 @@ const requiredFields = [
   'customFunctions',
   'httpOnly',
   'securedCookie',
+  'timeout',
   'timeoutActivity',
   'useRedirectOnError',
   'useRedirectOnForbidden',

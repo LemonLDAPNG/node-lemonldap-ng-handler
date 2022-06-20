@@ -11,6 +11,7 @@
   "scripts": {
     "clean": "rimraf packages/*/lib",
     "build": "npm run clean && lerna run build",
+    "test:coverage": "jest --coverage",
     "test": "jest"
   },
   "llng-compat": "2.0.11",
@@ -28,6 +29,10 @@
     "OpenID-Connect",
     "SSOaaS"
   ],
+  "jest": {
+    "collectCoverageFrom": ["packages/*/lib/*.js", "!packages/*-rest/lib/*.js"],
+    "testPathIgnorePatterns" : ["<rootDir>.*/node_modules/"]
+  },
   "authors": [
     "Xavier Guimard <yadd@debian.org>"
   ],
