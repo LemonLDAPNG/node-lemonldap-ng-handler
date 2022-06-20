@@ -82,6 +82,15 @@ class LemonldapNGHandler extends HandlerInit {
     fcgiOpt.mode || (fcgiOpt.mode = 'fcgi');
     fcgiOpt.port || (fcgiOpt.port = 9090);
     fcgiOpt.ip || (fcgiOpt.ip = 'localhost');
+
+    let srv: typeof http = fcgiOpt.mode === 'fcgi' ? require('node-fastcgi') : http;
+    srv.createServer( (req, res) => {
+      let next = () => {
+        res.writeHead( 200, req.headers );
+      }
+      let response = this.run(req, res, next);
+    })
+    .listen( fcgiOpt.port, fcgiOpt.ip );
   }
 
   setError( res: http.ServerResponse, uri: string, code: number, txt: string) {
@@ -163,7 +172,7 @@ class LemonldapNGHandler extends HandlerInit {
   }
 
   grant( req: express.Request | http.IncomingMessage, uri: string, session: LLNG_Session ) {
-    return new Promise( (resolve, reject) => {
+    return new Promise<boolean>( (resolve, reject) => {
       let vhost = this.resolveAlias(req);
       if(!this.tsv.defaultCondition[vhost]) {
         return reject(`No configuration found for ${vhost} (or not listed in Node.js virtualHosts)`);
@@ -201,6 +210,7 @@ class LemonldapNGHandler extends HandlerInit {
         }
       });
     } catch(e) {
+      console.error(`Headers maybe not sent: ${e}`);
       return;
     }
   }

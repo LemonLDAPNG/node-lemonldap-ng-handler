@@ -45,4 +45,5 @@ export declare type TSV = {
 
   /* DevOps */
   loopBackUrl: string | undefined;
+  lastVhostUpdate: { [k: vhost]: number };
 };

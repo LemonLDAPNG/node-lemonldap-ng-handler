@@ -30,8 +30,13 @@
     "SSOaaS"
   ],
   "jest": {
-    "collectCoverageFrom": ["packages/*/lib/*.js", "!packages/*-rest/lib/*.js"],
-    "testPathIgnorePatterns" : ["<rootDir>.*/node_modules/"]
+    "collectCoverageFrom": [
+      "packages/*/lib/*.js",
+      "!packages/*-rest/lib/*.js"
+    ],
+    "testPathIgnorePatterns": [
+      "<rootDir>.*/node_modules/"
+    ]
   },
   "authors": [
     "Xavier Guimard <yadd@debian.org>"
