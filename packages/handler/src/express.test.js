@@ -56,6 +56,16 @@ test("It should redirect unauthentified requests", done => {
   });
 });
 
+test("It should redirect unexistent sessions", done => {
+  agent('bar','/deny')
+    .expect(302)
+    .end( (err, res) => {
+      if (err) return done(err);
+      expect(res.headers.location).toMatch(new RegExp('^http://auth.example.com/\\?url='));
+      done();
+    });
+});
+
 test('It should accept authentified requests', done => {
   agent()
     .expect(200)
@@ -89,6 +99,18 @@ test('It should deny /dwho for rtyler', done => {
     .expect(403)
     .end( (err, res) => {
       if (err) return done(err);
+      done();
+    });
+});
+
+test('It should send headers and remove cookie', done => {
+  agent('dwho', '/headers')
+    .expect(200)
+    .end( (err, res) => {
+      if (err) return done(err);
+      let headers = JSON.parse(res.text);
+      expect(headers['Auth-User']).toEqual('dwho');
+      expect(headers['cookie']).toEqual('');
       done();
     });
 });

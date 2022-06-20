@@ -48,7 +48,7 @@ abstract class HandlerInit {
   tsv: TSV;
 
   constructor(args: Handler_Args) {
-    // @ts-ignore
+    // @ts-ignore: some values will be initialized later
     this.tsv = {
 	    defaultCondition: {},
 	    defaultProtection: {},

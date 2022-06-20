@@ -17,6 +17,9 @@ const defer = new Promise( (resolve, reject) => {
     app.get('/dwho', (req, res) => {
       res.status(200).send("For dwho only!");
     });
+    app.get('/headers', (req, res) => {
+      res.status(200).send(JSON.stringify(req.headers));
+    });
     app.get('/deny', (req, res) => {
       res.status(200).send("Should never be displayed!");
     });

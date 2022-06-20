@@ -186,17 +186,18 @@ class LemonldapNGHandler extends HandlerInit {
       let i = 0;
       // @ts-ignore
       req.headers['Lm-Remote-User'] = session[this.tsv.whatToTrace];
-      this.tsv.forgeHeaders[vhost](session).forEach( (v: string, k: string) => {
+      let map = this.tsv.forgeHeaders[vhost](session);
+      Object.keys(map).forEach( (k: string) => {
         i++;
-        req.headers[k] = v;
-        req.rawHeaders.push(k, v)
+        req.headers[k] = map[k];
+        req.rawHeaders.push(k, map[k])
 
 				// req.redirect is defined when running under express. If not
 				// we are running as FastCGI server
         // @ts-ignore
         if(!req.redirect) {
           req.headers["Headername#{i}"] = k;
-          req.headers["Headervalue#{i}"] = v;
+          req.headers["Headervalue#{i}"] = map[k];
         }
       });
     } catch(e) {

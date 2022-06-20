@@ -7,18 +7,18 @@ export declare type TSV = {
   /* Cookies */
   cookieName: string;
   cookieDetect: RE2;
-  cda: boolean | undefined;
-  httpOnly: boolean | undefined;
+  cda?: boolean;
+  httpOnly?: boolean;
   securedCookie: number;
 
   /* Session */
   timeout: number;
-  timeoutActivity: number | undefined;
+  timeoutActivity?: number;
   whatToTrace: string;
 
   /* Error management */
-  useRedirectOnError: boolean | undefined;
-  useRedirectOnForbidden: boolean | undefined;
+  useRedirectOnError?: boolean;
+  useRedirectOnForbidden?: boolean;
 
   /* */
   cipher: Crypto;
