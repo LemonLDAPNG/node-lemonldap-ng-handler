@@ -52,12 +52,17 @@ class LemonldapNGHandler extends HandlerInit {
     let id = this.fetchId(req);
     if (id !== '') {
       this.retrieveSession(id).then( session => {
-        this.grant(req, <string>uri, session).then( () => {
-          this.sendHeaders(req, session);
-          this.hideCookie(req);
-          next();
+        this.grant(req, <string>uri, session).then( (grantResult) => {
+          if(grantResult) {
+            this.sendHeaders(req, session);
+            this.hideCookie(req);
+            next();
+          } else {
+            this.forbidden(req, res, session);
+          }
         }).catch( e => {
-          this.forbidden(req, res, session);
+          console.error(e);
+          this.setError( res, '/', 500, 'Server error');
         });
       }).catch( e => {
         this.goToPortal(res, this.selfUri(<string>vhost, <string>uri));
