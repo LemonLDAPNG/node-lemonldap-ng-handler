@@ -26,7 +26,7 @@ class Conf {
     // @ts-ignore: confFile not yet defined
     this.localConf = args
     this.localConf.cfgNum = 0
-    let confSection = <IniSection_Configuration>(
+    const confSection = <IniSection_Configuration>(
       this.getLocalConf('configuration', false)
     )
     if (confSection === undefined) throw new Error('Unknown error')
@@ -70,7 +70,7 @@ class Conf {
         this.localConf.confFile =
           process.env.LLNG_DEFAULTCONFFILE ||
           '/etc/lemonldap-ng/lemonldap-ng.ini'
-      let iniContent = <LLNG_IniFile>(
+      const iniContent = <LLNG_IniFile>(
         ini.parse(
           fs
             .readFileSync(this.localConf.confFile, 'utf-8')
@@ -79,7 +79,7 @@ class Conf {
       )
       if (iniContent === undefined)
         throw new Error('Unable to get data from lemonldap-ng.ini')
-      let res: IniSection = loadDefault && iniContent.all ? iniContent.all : {}
+      const res: IniSection = loadDefault && iniContent.all ? iniContent.all : {}
       if (iniContent[section] === undefined) return res
       Object.keys(iniContent[section] as IniSection).forEach(k => {
         // @ts-ignore: iniContent[section] isn't undefined

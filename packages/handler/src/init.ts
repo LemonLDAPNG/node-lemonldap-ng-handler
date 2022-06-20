@@ -7,8 +7,6 @@ import {
   LLNG_Session,
   IniSection_NodeHandler
 } from '@LLNG/types'
-import normalizeUrl from 'normalize-url'
-import url from 'url'
 import vm from 'vm'
 import RE2 from 're2'
 import { TSV } from './tsv'
@@ -76,8 +74,8 @@ abstract class HandlerInit {
     args.configStorage.localStorageOptions ||
       (args.configStorage.localStorageOptions = args.localStorageOptions)
     this.confAcc = new Conf(args.configStorage)
-    let handlerConf = this.confAcc.getLocalConf('handler', true)
-    let nodeHandlerConf = <IniSection_NodeHandler>(
+    const handlerConf = this.confAcc.getLocalConf('handler', true)
+    const nodeHandlerConf = <IniSection_NodeHandler>(
       this.confAcc.getLocalConf('node-handler', false)
     )
     ;[handlerConf, nodeHandlerConf].forEach(iniSection => {
@@ -93,7 +91,7 @@ abstract class HandlerInit {
 
   reload () {
     return new Promise<boolean>((resolve, reject) => {
-      let ucFirst = (s: string) => {
+      const ucFirst = (s: string) => {
         return s.charAt(0).toUpperCase() + s.slice(1)
       }
       this.confAcc.ready.then(() => {
@@ -112,10 +110,10 @@ abstract class HandlerInit {
                 // @ts-ignore; k is in TSV type
                 this.tsv[k] = { _: conf[k] }
                 if (conf.vhostOptions) {
-                  let name = `vhost${ucFirst(k)}`
+                  const name = `vhost${ucFirst(k)}`
                   Object.keys(conf.vhostOptions).forEach((vhost: string) => {
                     // @ts-ignore: val is a number
-                    let val: number = conf.vhostOptions[vhost][name]
+                    const val: number = conf.vhostOptions[vhost][name]
                     // @ts-ignore; k is in TSV type
                     if (val > 0) this.tsv[k][vhost] = val
                   })
@@ -163,7 +161,7 @@ abstract class HandlerInit {
               if (!this.safe[vhost]) this.safe[vhost] = new SafeLib(conf)
 
               // @ts-ignore conf.locationRules[vhost] exists
-              let rules = conf.locationRules[vhost]
+              const rules = conf.locationRules[vhost]
               Object.keys(rules).forEach(url => {
                 let cond, prot
                 ;[cond, prot] = this.conditionSub(rules[url], this.safe[vhost])
@@ -192,7 +190,7 @@ abstract class HandlerInit {
             if (conf.exportedHeaders !== undefined) {
               Object.keys(conf.exportedHeaders).forEach((vhost: string) => {
                 // @ts-ignore
-                let headers = <{ [k: string]: string }>(
+                const headers = <{ [k: string]: string }>(
                   // @ts-ignore: conf.exportedHeaders[vhost] is defined
                   conf.exportedHeaders[vhost]
                 )
@@ -242,17 +240,17 @@ abstract class HandlerInit {
   }
 
   conditionSub (cond: string, ctx: SafeLib | undefined): [Function, number] {
-    let OK = () => true
-    let NOK = () => false
+    const OK = () => true
+    const NOK = () => false
     if (cond === 'accept') return [OK, 0]
     if (cond === 'deny') return [NOK, 0]
     if (cond === 'unprotect') return [OK, 1]
     if (cond === 'skip') return [OK, 2]
 
     // TODO: manage app logout
-    let res = condMatch.exec(cond)
+    const res = condMatch.exec(cond)
     if (res && res[1]) {
-      let url = res[1]
+      const url = res[1]
       if (url) {
         return [
           (session: LLNG_Session) => {

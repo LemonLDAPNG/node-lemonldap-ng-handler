@@ -27,11 +27,14 @@ class ExtdFunc {
   }
 
   iso2unicode (s: string) {
-    return iconv.decode(Buffer.from(s,'binary'), 'iso-8859-1')
+    return iconv.decode(Buffer.from(s, 'binary'), 'iso-8859-1')
   }
 
   basic (login: string, pwd: string) {
-    return 'Basic ' + iconv.encode(`${login}:${pwd}`,'iso-8859-1').toString('base64')
+    return (
+      'Basic ' +
+      iconv.encode(`${login}:${pwd}`, 'iso-8859-1').toString('base64')
+    )
   }
 
   groupMatch (
@@ -39,13 +42,13 @@ class ExtdFunc {
     attr: string,
     value: string
   ) {
-    let match = new RegExp(value).test
+    const match = new RegExp(value).test
     Object.keys(groups).forEach(k => {
       if (groups[k][attr]) {
         if (typeof groups[k][attr] === 'string') {
           if (match(<string>groups[k][attr])) return true
         } else {
-          ;(<string[]>groups[k][attr]).forEach(val => {
+          (<string[]>groups[k][attr]).forEach(val => {
             if (match(val)) return true
           })
         }
@@ -56,7 +59,7 @@ class ExtdFunc {
 
   isInNet6 (ip: string, net: string) {
     net = net.replace(/^(.*)\/(.*)/, '$1')
-    let bits = parseInt(RegExp.$2)
+    const bits = parseInt(RegExp.$2)
     return ipaddrJs.parse(ip).match(ipaddrJs.parse(net), bits)
   }
 
@@ -66,13 +69,13 @@ class ExtdFunc {
     timeCorrection: string,
     defaultAccess: number = 0
   ) {
-    let tc = parseInt(timeCorrection)
-    let d = new Date()
-    let hourPos = d.getDay() * 24 + d.getHours() + tc
-    let div = syntax === 'octetstring' ? 3 : 4
-    let pos = Math.trunc(hourPos / div)
-    let v1 = Math.pow(2, hourPos % div)
-    let v2 = logonHours.substr(pos, 1)
+    const tc = parseInt(timeCorrection)
+    const d = new Date()
+    const hourPos = d.getDay() * 24 + d.getHours() + tc
+    const div = syntax === 'octetstring' ? 3 : 4
+    const pos = Math.trunc(hourPos / div)
+    const v1 = Math.pow(2, hourPos % div)
+    const v2 = logonHours.substr(pos, 1)
     let v3: number
     if (/\d/.test(v2)) {
       v3 = parseInt(v2)
@@ -84,9 +87,9 @@ class ExtdFunc {
   }
 
   date (): string {
-    let d = new Date()
+    const d = new Date()
     let s = ''
-    let a = [
+    const a = [
       d.getFullYear(),
       d.getMonth() + 1,
       d.getDate(),
@@ -103,11 +106,11 @@ class ExtdFunc {
   checkDate (start: number = 0, end: number, defaultAccess: boolean = false) {
     const conv = (n: number): string =>
       (typeof n === 'string' ? n : n.toString()).substring(0, 14)
-    let s = conv(start)
-    let e = conv(end)
+    const s = conv(start)
+    const e = conv(end)
     if (!s && !e) return defaultAccess
     end || (end = 999999999999999)
-    let d = this.date()
+    const d = this.date()
     return d >= s && d <= e
   }
 
@@ -116,8 +119,8 @@ class ExtdFunc {
   }
 
   token (...args: string[]) {
-    let time = Math.trunc(Date.now() / 1000) // Perl time
-    let ar = Array.from(args)
+    const time = Math.trunc(Date.now() / 1000) // Perl time
+    const ar = Array.from(args)
     return this.encrypt(`${time}:${ar.join(':')}`)
   }
 

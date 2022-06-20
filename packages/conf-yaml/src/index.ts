@@ -20,7 +20,7 @@ class YAMLConf extends FileConf implements Conf_Accessor {
         if (err) {
           reject(err)
         } else {
-          let res: number[] = []
+          const res: number[] = []
           files.map(file => {
             if (/lmConf-(\d+)\.yaml/.test(file)) res.push(parseInt(RegExp.$1))
           })
@@ -33,7 +33,10 @@ class YAMLConf extends FileConf implements Conf_Accessor {
 
   load (cfgNum: number, fields: string[] = []) {
     return new Promise<LLNG_Conf>((resolve, reject) => {
-      let filename = path.join(this.dirName, `lmConf-${cfgNum.toString()}.yaml`)
+      const filename = path.join(
+        this.dirName,
+        `lmConf-${cfgNum.toString()}.yaml`
+      )
       fs.access(filename, fs.constants.R_OK, err => {
         if (err) {
           reject(`Unable to read ${filename}: ${err}`)

@@ -32,7 +32,7 @@ class Session {
         }),
         new Promise((resolve, reject) => {
           if (opts.cacheModule) {
-            let dir =
+            const dir =
               opts.cacheModuleOptions && opts.cacheModuleOptions.cache_root
                 ? opts.cacheModuleOptions.cache_root + '.node-llng-cache'
                 : path.join(os.tmpdir(), 'node-llng-cache')
@@ -90,7 +90,7 @@ class Session {
             reject(e)
           })
       }
-      let lsession = this.inMemoryCache.get(id)
+      const lsession = this.inMemoryCache.get(id)
       if (lsession) {
         resolve(lsession)
       } else {

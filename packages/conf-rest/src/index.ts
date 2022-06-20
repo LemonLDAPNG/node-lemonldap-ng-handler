@@ -16,7 +16,7 @@ class RESTConf implements Conf_Accessor {
     if (!args.baseUrl)
       throw new Error('baseUrl parameter is required in REST configuration')
 
-    if (!args.baseUrl.match(/(https?):\/\/([^\/:]+)(?::(\d+))?(.*)/))
+    if (!args.baseUrl.match(/(https?):\/\/([^/:]+)(?::(\d+))?(.*)/))
       throw new Error(`Bad URL ${args.baseUrl}`)
 
     this.baseUrl = args.baseUrl.replace(/\/+$/, '')

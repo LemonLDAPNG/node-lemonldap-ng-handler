@@ -7,7 +7,7 @@ import LemonldapNGHandlerDevOps from './handlerDevOps'
 let currentHandler: LemonldapNGHandler
 let currentClass: typeof LemonldapNGHandler | typeof LemonldapNGHandlerDevOps
 
-let knownHandlers = {
+const knownHandlers = {
   Main: LemonldapNGHandler,
   DevOps: LemonldapNGHandlerDevOps
 }

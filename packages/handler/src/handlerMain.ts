@@ -1,5 +1,5 @@
-import { LocalConf, LLNG_Session } from '@LLNG/types'
-import HandlerInit, { Handler_Args } from './init'
+import { LLNG_Session } from '@LLNG/types'
+import HandlerInit from './init'
 import express from 'express'
 import http from 'http'
 import normalizeUrl from 'normalize-url'
@@ -25,14 +25,14 @@ class LemonldapNGHandler extends HandlerInit {
     res: http.ServerResponse,
     next: Function
   ) {
-    let vhost = req.headers.host
+    const vhost = req.headers.host
     if (vhost === undefined) {
       this.setError(res, '/', 400, 'Bad request')
       return
     }
 
     /* 1 - get data */
-    let normalizedUrl = normalizeUrl(vhost + req.url)
+    const normalizedUrl = normalizeUrl(vhost + req.url)
     let uri = urlParse(normalizedUrl).path
     if (!uri) uri = '/'
 
@@ -42,14 +42,14 @@ class LemonldapNGHandler extends HandlerInit {
     }
 
     /* 3 - check if current URI is protected */
-    let protection = this.isUnprotected(req, uri)
+    const protection = this.isUnprotected(req, uri)
     if (protection === 2) {
       next()
       return
     }
 
     /* 4 - search for LLNG cookie */
-    let id = this.fetchId(req)
+    const id = this.fetchId(req)
     if (id !== '') {
       this.retrieveSession(id)
         .then(session => {
@@ -91,21 +91,21 @@ class LemonldapNGHandler extends HandlerInit {
     fcgiOpt.port || (fcgiOpt.port = 9090)
     fcgiOpt.ip || (fcgiOpt.ip = 'localhost')
 
-    let srv: typeof http =
+    const srv: typeof http =
       fcgiOpt.mode === 'fcgi' ? require('node-fastcgi') : http
     srv
       .createServer((req, res) => {
-        let next = () => {
+        const next = () => {
           res.writeHead(200, req.headers)
         }
-        let response = this.run(req, res, next)
+        this.run(req, res, next)
       })
       .listen(fcgiOpt.port, fcgiOpt.ip)
   }
 
   setError (res: http.ServerResponse, uri: string, code: number, txt: string) {
     if (this.tsv.useRedirectOnError) {
-      let url = this.tsv.portal() + `?lmError=${code.toString()}&url=`
+      const url = this.tsv.portal() + `?lmError=${code.toString()}&url=`
       //+ (new Buffer.from(encodeURI(uri))).toString('base64');
       // @ts-ignore: res.redirect may exist
       if (res.redirect) {
@@ -126,7 +126,7 @@ class LemonldapNGHandler extends HandlerInit {
   }
 
   isUnprotected (req: express.Request | http.IncomingMessage, uri: string) {
-    let vhost = this.resolveAlias(req)
+    const vhost = this.resolveAlias(req)
     if (!this.tsv.defaultCondition[vhost]) return false
     for (let i = 0; i < this.tsv.locationRegexp[vhost].length; i++) {
       if (this.tsv.locationRegexp[vhost][i].test(uri))
@@ -137,13 +137,13 @@ class LemonldapNGHandler extends HandlerInit {
 
   resolveAlias (req: express.Request | http.IncomingMessage) {
     // @ts-ignore: req.headers.host has already been tested
-    let vhost = req.headers.host.replace(/:.*$/, '')
+    const vhost = req.headers.host.replace(/:.*$/, '')
     return this.tsv.vhostAlias[vhost] || vhost
   }
 
   fetchId (req: express.Request | http.IncomingMessage) {
     if (req.headers.cookie) {
-      let res = this.tsv.cookieDetect.exec(req.headers.cookie)
+      const res = this.tsv.cookieDetect.exec(req.headers.cookie)
       if (res && res[1] != '0') return res[1]
     }
     return ''
@@ -156,7 +156,7 @@ class LemonldapNGHandler extends HandlerInit {
       this.sessionAcc
         .get(id)
         .then((session: LLNG_Session) => {
-          let now = (Date.now() / 1000) | 0
+          const now = (Date.now() / 1000) | 0
           if (
             now - session._utime > this.tsv.timeout ||
             (this.tsv.timeoutActivity &&
@@ -190,7 +190,7 @@ class LemonldapNGHandler extends HandlerInit {
     session: LLNG_Session
   ) {
     return new Promise<boolean>((resolve, reject) => {
-      let vhost = this.resolveAlias(req)
+      const vhost = this.resolveAlias(req)
       if (!this.tsv.defaultCondition[vhost]) {
         return reject(
           `No configuration found for ${vhost} (or not listed in Node.js virtualHosts)`
@@ -214,12 +214,12 @@ class LemonldapNGHandler extends HandlerInit {
     req: express.Request | http.IncomingMessage,
     session: LLNG_Session
   ) {
-    let vhost = this.resolveAlias(req)
+    const vhost = this.resolveAlias(req)
     try {
       let i = 0
       // @ts-ignore
       req.headers['Lm-Remote-User'] = session[this.tsv.whatToTrace]
-      let map = this.tsv.forgeHeaders[vhost](session)
+      const map = this.tsv.forgeHeaders[vhost](session)
       Object.keys(map).forEach((k: string) => {
         i++
         req.headers[k] = map[k]
@@ -229,8 +229,8 @@ class LemonldapNGHandler extends HandlerInit {
         // we are running as FastCGI server
         // @ts-ignore
         if (!req.redirect) {
-          req.headers['Headername#{i}'] = k
-          req.headers['Headervalue#{i}'] = map[k]
+          req.headers[`Headername${i}`] = k
+          req.headers[`Headervalue${i}`] = map[k]
         }
       })
     } catch (e) {
@@ -249,8 +249,6 @@ class LemonldapNGHandler extends HandlerInit {
     res: http.ServerResponse,
     session: LLNG_Session
   ) {
-    // @ts-ignore
-    let uri = req.uri
     if (session._logout) {
       this.goToPortal(res, session._logout, 'logout=1')
     } else {
@@ -263,7 +261,7 @@ class LemonldapNGHandler extends HandlerInit {
       this.setError(res, uri, 503, 'Waiting for configuration')
       return
     }
-    let urlc =
+    const urlc =
       this.tsv.portal() +
       (uri
         ? // @ts-ignore

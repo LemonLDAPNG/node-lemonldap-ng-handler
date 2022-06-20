@@ -27,7 +27,7 @@ class LemonldapNGHandlerDevOps extends LemonldapNGHandler {
     uri: string,
     session: LLNG_Session
   ) {
-    let vhost = this.resolveAlias(req)
+    const vhost = this.resolveAlias(req)
     if (
       this.tsv.defaultCondition[vhost] &&
       Date.now() / 1000 - this.tsv.lastVhostUpdate[vhost] < 600
@@ -35,18 +35,18 @@ class LemonldapNGHandlerDevOps extends LemonldapNGHandler {
       // @ts-ignore
       return <Promise<boolean>>super.grant(req, uri, session)
     }
-    let base =
+    const base =
       // @ts-ignore: cgiParams is tested
       req.cgiParams && req.cgiParams.RULES_URL
         ? // @ts-ignore: same
           req.cgiParams.RULES_URL
         : (this.tsv.loopBackUrl || 'http://127.0.0.1') + '/rules.json'
-    if (!/^(https?):\/\/([^\/:]+)(?::(\d+))?(.*)$/.test(base)) {
+    if (!/^(https?):\/\/([^/:]+)(?::(\d+))?(.*)$/.test(base)) {
       return new Promise<boolean>((resolve, reject) =>
         reject(`Bad loopBackUrl ${base}`)
       )
     }
-    let lvOpts: Vhost_Config = {
+    const lvOpts: Vhost_Config = {
       prot: RegExp.$1,
       host: RegExp.$2,
       path: RegExp.$4,
@@ -83,10 +83,10 @@ class LemonldapNGHandlerDevOps extends LemonldapNGHandler {
       if (!lvOpts.lb) vhost = lvOpts.host
       delete lvOpts.lb
       lvOpts.headers = { Host: vhost }
-      let http = require(lvOpts.prot)
+      const http = require(lvOpts.prot)
       // @ts-ignore, property no more needed but required before
       delete lvOpts.prot
-      let req = http.request(lvOpts, (resp: http.ServerResponse) => {
+      const req = http.request(lvOpts, (resp: http.ServerResponse) => {
         let str = ''
         resp.on('data', chunk => {
           str += chunk
@@ -107,12 +107,12 @@ class LemonldapNGHandlerDevOps extends LemonldapNGHandler {
             return resolve(true)
           }
           try {
-            let vhostConfig = JSON.parse(str)
+            const vhostConfig = JSON.parse(str)
             // @ts-expect-error: TODO
             this.safe[vhost] = new SafeLib({ cipher: this.tsv.cipher })
             if (vhostConfig.rules && typeof vhostConfig.rules === 'object') {
               Object.keys(vhostConfig.rules).forEach((url: string) => {
-                let rule = new String(vhostConfig.rules[url]).valueOf()
+                const rule = new String(vhostConfig.rules[url]).valueOf()
                 let cond, prot
                 ;[cond, prot] = this.conditionSub(rule, this.safe[vhost])
                 if (url === 'default') {
@@ -136,7 +136,7 @@ class LemonldapNGHandlerDevOps extends LemonldapNGHandler {
               vhostConfig.headers &&
               typeof vhostConfig.headers === 'object'
             ) {
-              let sub = Object.keys(vhostConfig.headers)
+              const sub = Object.keys(vhostConfig.headers)
                 .map(name => {
                   this.tsv.headerList[vhost].push(name)
                   return `'${name}': ${this.substitute(

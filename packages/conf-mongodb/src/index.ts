@@ -2,11 +2,6 @@ import { MongoClient } from 'mongodb'
 import { Db, Collection, Document } from 'mongodb'
 import { LLNG_Conf, Conf_Accessor } from '@LLNG/types'
 
-interface MongoDB_Conf extends Document {
-  cfgNum: number
-  [key: string]: object | any[] | string | number | boolean
-}
-
 const ref = [
   'host',
   'auth_mechanism',
@@ -48,9 +43,9 @@ class MongoConf implements Conf_Accessor {
   col: Collection<LLNG_Conf> | undefined
 
   constructor (args: Mongo_Args) {
-    let dbName: string = args.dbName || 'llConfDB'
-    let host = args.host || 'localhost'
-    let port = args.port
+    const dbName: string = args.dbName || 'llConfDB'
+    const host = args.host || 'localhost'
+    const port = args.port
       ? typeof args.port === 'string'
         ? parseInt(args.port)
         : args.port
@@ -58,16 +53,16 @@ class MongoConf implements Conf_Accessor {
     this.colName = args.collectionName || 'configuration'
     let url = `mongodb://${host}:${port}/?`
     ref.forEach(name => {
-      let tmp = name.split('_')
+      const tmp = name.split('_')
       let nam2 = tmp.shift()
       tmp.forEach((s: string) => {
         nam2 += s[0].toUpperCase() + s.slice(1)
       })
-      let opt = args[name] != null ? args[name] : nam2 ? args[nam2] : null
+      const opt = args[name] != null ? args[name] : nam2 ? args[nam2] : null
       if (opt !== null) url += `${nam2}=${opt}&`
     })
     url = url.replace(/&$/, '')
-    let mongo = new MongoClient(url)
+    const mongo = new MongoClient(url)
     mongo
       .connect()
       .then(() => {
@@ -83,7 +78,7 @@ class MongoConf implements Conf_Accessor {
   available () {
     return new Promise<number[]>((resolve, reject) => {
       if (!this.col) return reject('MongoDB not initialized please wait')
-      let res: number[] = []
+      const res: number[] = []
       this.col
         .find(
           {},
@@ -117,7 +112,7 @@ class MongoConf implements Conf_Accessor {
         .then(res => {
           if (res !== null) {
             Object.keys(res).forEach(k => {
-              let v = res[k]
+              const v = res[k]
               if (typeof v === 'string' && v.match(/^{/)) {
                 res[k] = JSON.parse(v)
               }

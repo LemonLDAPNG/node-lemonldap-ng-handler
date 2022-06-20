@@ -1,12 +1,11 @@
-import { DBI_Args, Schema } from '@LLNG/conf-dbi'
 import { LLNG_Conf, Conf_Accessor } from '@LLNG/types'
 
 import DBI from '@LLNG/conf-dbi'
 
 class CDBI extends DBI implements Conf_Accessor {
   store (fields: LLNG_Conf) {
-    let cfgNum: number = fields.cfgNum
-    let data = JSON.stringify(fields)
+    const cfgNum: number = fields.cfgNum
+    const data = JSON.stringify(fields)
     return new Promise<boolean>((resolve, reject) => {
       this.lastCfg().then(lastCfg => {
         if (cfgNum == lastCfg) {

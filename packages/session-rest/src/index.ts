@@ -1,5 +1,5 @@
 import fetch from 'node-fetch'
-import { Apache_Session, LLNG_Session, Session_Accessor } from '@LLNG/types'
+import { LLNG_Session, Session_Accessor } from '@LLNG/types'
 type SessionREST_Args = {
   baseUrl: string
   user?: string
@@ -15,7 +15,7 @@ class RESTSession implements Session_Accessor {
     if (!args.baseUrl)
       throw new Error('baseUrl parameter is required in REST configuration')
 
-    if (!args.baseUrl.match(/(https?):\/\/([^\/:]+)(?::(\d+))?(.*)/))
+    if (!args.baseUrl.match(/(https?):\/\/([^/:]+)(?::(\d+))?(.*)/))
       throw new Error(`Bad URL ${args.baseUrl}`)
 
     this.baseUrl = args.baseUrl.replace(/\/+$/, '')

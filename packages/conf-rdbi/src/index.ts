@@ -1,4 +1,3 @@
-import { DBI_Args, Schema } from '@LLNG/conf-dbi'
 import { LLNG_Conf, Conf_Accessor } from '@LLNG/types'
 import { hashParameters } from '@LLNG/constants'
 import DBI from '@LLNG/conf-dbi'
@@ -7,7 +6,7 @@ type Serialized = { [key: string]: string | number | boolean }
 
 class CDBI extends DBI implements Conf_Accessor {
   store (conf: LLNG_Conf) {
-    let cfgNum: number = conf.cfgNum
+    const cfgNum: number = conf.cfgNum
     return new Promise<boolean>((resolve, reject) => {
       this.lastCfg().then(lastCfg => {
         this.db
@@ -17,8 +16,8 @@ class CDBI extends DBI implements Conf_Accessor {
                 .where('cfgNum', '=', lastCfg)
                 .del()
             }
-            let tmp = this.serialize(conf)
-            let fields: object[] = []
+            const tmp = this.serialize(conf)
+            const fields: object[] = []
             Object.keys(tmp).forEach(k => {
               fields.push({ cfgNum: cfgNum, field: k, value: tmp[k] })
             })
@@ -40,7 +39,7 @@ class CDBI extends DBI implements Conf_Accessor {
           if (rows.length === 0) {
             reject(`Configuration ${cfgNum} not found`)
           } else {
-            let res: Serialized = {}
+            const res: Serialized = {}
             rows.map((row: { field: string; value: string }) => {
               res[row.field] = row.value
             })
@@ -54,7 +53,7 @@ class CDBI extends DBI implements Conf_Accessor {
   }
 
   serialize (cfg: LLNG_Conf) {
-    let res: Serialized = {}
+    const res: Serialized = {}
     Object.keys(cfg).forEach(k => {
       // @ts-expect-error TS2322: Type 'string | number | boolean | object' is not assignable to type 'string | number | boolean'
       res[k] = k.match(hashParameters) ? JSON.stringify(cfg[k]) : cfg[k]
@@ -64,7 +63,7 @@ class CDBI extends DBI implements Conf_Accessor {
 
   unserialize (cfg: Serialized) {
     // @ts-expect-error TS2741: Property 'cfgNum' is missing in type '{}' but required in type 'LLNG_Conf'
-    let res: LLNG_Conf = {}
+    const res: LLNG_Conf = {}
     Object.keys(cfg).forEach(k => {
       try {
         // @ts-expect-error TS2345: Argument of type 'string | number | boolean' is not assignable to parameter of type 'string'

@@ -31,7 +31,7 @@ import knex from 'knex'
 
 export type PerlDBI_Client = Knex
 
-export default function PerlDBI<PerlDBI_Client> (args: PerlDBI_Args) {
+export default function PerlDBI (args: PerlDBI_Args): PerlDBI_Client {
   if (!args.dbiChain.match(/^dbi:(SQLite|Pg|mysql):(.*)/)) {
     throw new Error(`Invalid dbiChain: ${args.dbiChain}`)
   }
@@ -39,11 +39,11 @@ export default function PerlDBI<PerlDBI_Client> (args: PerlDBI_Args) {
   if (!type) {
     throw new Error(`Unsupported database type: ${RegExp.$1}`)
   }
-  let dbArgs: Knex.Config = {}
+  const dbArgs: Knex.Config = {}
   dbArgs.client = type
   dbArgs.connection = {}
   RegExp.$2.split(/;/).map((s: string) => {
-    let kv = s.match(/^(.*?)=(.*)$/)
+    const kv = s.match(/^(.*?)=(.*)$/)
     if (kv) {
       let k: string = convert[kv[1] as keyof typeof convert]
       if (k && k !== 'type') {

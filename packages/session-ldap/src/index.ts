@@ -1,6 +1,6 @@
 import fs from 'fs'
 import ldapjs from 'ldapjs'
-import { Apache_Session, LLNG_Session, Session_Accessor } from '@LLNG/types'
+import { LLNG_Session, Session_Accessor } from '@LLNG/types'
 type SessionLDAP_Args = {
   ldapServer: string
   ldapConfBase: string
@@ -11,12 +11,7 @@ type SessionLDAP_Args = {
   ldapAttributeContent: string | undefined
   ldapCAFile: string | undefined
 }
-import {
-  SearchCallbackResponse,
-  SearchEntry,
-  SearchOptions,
-  Client as LDAPClient
-} from 'ldapjs'
+import { SearchOptions, Client as LDAPClient } from 'ldapjs'
 
 const defaultValues = {
   ldapObjectClass: 'applicationProcess',
@@ -36,7 +31,7 @@ class LDAPSession implements Session_Accessor {
   idAttr: string
 
   constructor (args: SessionLDAP_Args) {
-    ;['ldapServer', 'ldapConfBase'].forEach(k => {
+    ['ldapServer', 'ldapConfBase'].forEach(k => {
       if (!args[<keyof SessionLDAP_Args>k])
         throw new Error(`Missing ${k} argument`)
     })
@@ -61,7 +56,7 @@ class LDAPSession implements Session_Accessor {
     }
     this.ldap = ldapjs.createClient({
       tlsOptions: caConf,
-      url: args.ldapServer
+      url: ldapServer
     })
     this.ldap.bind(args.ldapBindDN || '', args.ldapBindPassword || '', err => {
       if (err) throw new Error(`LDAP bind failed: ${err}`)
@@ -70,7 +65,7 @@ class LDAPSession implements Session_Accessor {
 
   get (id: string) {
     return new Promise<LLNG_Session>((resolve, reject) => {
-      let opt: SearchOptions = {
+      const opt: SearchOptions = {
         filter: `(objectClass=${this.class}`,
         scope: 'base',
         attributes: [this.contentAttr]
@@ -79,13 +74,13 @@ class LDAPSession implements Session_Accessor {
         let data: string
         if (err) return reject(err)
         res.on('searchEntry', entry => {
-          let tmp = entry.object[this.contentAttr]
+          const tmp = entry.object[this.contentAttr]
           data = <string>entry.object[typeof tmp === 'object' ? tmp[0] : tmp]
         })
         res.on('error', err => {
           reject(`LDAP search failed: ${err}`)
         })
-        res.on('end', res => {
+        res.on('end', () => {
           try {
             resolve(JSON.parse(data))
           } catch (e) {

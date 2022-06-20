@@ -133,17 +133,17 @@ class LDAPConf implements Conf_Accessor {
             // @ts-ignore: cfgNum initialized later
             const conf: LLNG_Conf = {}
             res.on('searchEntry', (entry: SearchEntry) => {
-              let tmp = entry.object[this.contentAttr]
+              const tmp = entry.object[this.contentAttr]
               data = typeof tmp === 'object' ? tmp : [tmp]
             })
             res.on('error', err => reject(`LDAP search failed: ${err}`))
-            res.on('end', result => {
+            res.on('end', () => {
               data.forEach((confLine: string) => {
                 if (!confLine.match(/^\{(.*?)\}(.*)/)) {
                   return reject(`Bad conf line: ${confLine}`)
                 }
-                let k = RegExp.$1
-                let v = RegExp.$2
+                const k = RegExp.$1
+                const v = RegExp.$2
                 if (v.match !== null && v.match(/^{/)) {
                   conf[k] = JSON.parse(v)
                 } else {

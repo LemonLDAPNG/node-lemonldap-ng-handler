@@ -11,4 +11,4 @@ class MySQLSession extends DBISession {
   }
 }
 
-export default DBISession
+export default MySQLSession

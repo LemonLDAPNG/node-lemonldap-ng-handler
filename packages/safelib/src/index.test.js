@@ -39,5 +39,5 @@ test('encode_base64', () => {
 })
 
 test('iso/utf8', () => {
-  expect(safeLib.iso2unicode(safeLib.unicode2iso("é:à"))).toEqual("é:à");
-});
+  expect(safeLib.iso2unicode(safeLib.unicode2iso('é:à'))).toEqual('é:à')
+})

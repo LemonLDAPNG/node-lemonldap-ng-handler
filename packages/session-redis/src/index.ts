@@ -1,5 +1,5 @@
 import { createClient, RedisClientType } from 'redis'
-import { Apache_Session, LLNG_Session, Session_Accessor } from '@LLNG/types'
+import { LLNG_Session, Session_Accessor } from '@LLNG/types'
 type SessionRedis_Args = {
   server: string | undefined
   user: string | undefined
@@ -34,7 +34,7 @@ class RedisSession implements Session_Accessor {
           console.debug('Connected to redis server')
         })
         .catch(e => {
-          throw new Error('Connection failed')
+          throw new Error('Connection failed: ' + e)
         })
     }
   }
@@ -42,7 +42,7 @@ class RedisSession implements Session_Accessor {
   get (id: string) {
     return new Promise<LLNG_Session>(async (resolve, reject) => {
       try {
-        let data = await this.client.get(id)
+        const data = await this.client.get(id)
         if (data !== undefined) {
           resolve(JSON.parse(data!))
         } else {
