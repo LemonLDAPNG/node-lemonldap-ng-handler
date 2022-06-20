@@ -99,7 +99,7 @@ abstract class HandlerInit {
       this.confAcc.ready.then(() => {
         this.confAcc
           .getConf({})
-          .then(conf => {
+          .then((conf: LLNG_Conf) => {
             requiredFields.forEach(k => {
               // @ts-ignore: all fields not declared
               this.tsv[k] = conf[k]
@@ -234,7 +234,7 @@ abstract class HandlerInit {
               resolve(true)
             })
           })
-          .catch(e => {
+          .catch((e: string) => {
             reject(`Unable to get configuration: ${e}`)
           })
       })

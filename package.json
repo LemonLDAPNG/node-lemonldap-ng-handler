@@ -12,6 +12,7 @@
     "clean": "rimraf packages/*/lib",
     "build": "npm run clean && lerna run build",
     "test:coverage": "jest --coverage",
+    "test:watch": "jest --watch",
     "test": "jest"
   },
   "llng-compat": "2.0.11",

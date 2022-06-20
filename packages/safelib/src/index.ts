@@ -1,7 +1,7 @@
 import Crypto from '@LLNG/crypto'
 import { LLNG_Conf } from '@LLNG/types'
 import vm from 'vm'
-import { Iconv } from 'iconv'
+import iconv from 'iconv-lite'
 import express from 'express'
 import http from 'http'
 import ipaddrJs from 'ipaddr.js'
@@ -23,15 +23,15 @@ class ExtdFunc {
   }
 
   unicode2iso (s: string) {
-    return new Iconv('UTF-8', 'ISO-8859-1').convert(s)
+    return iconv.encode(s, 'iso-8859-1').toString('binary')
   }
 
   iso2unicode (s: string) {
-    return new Iconv('ISO-8859-1', 'UTF-8').convert(s)
+    return iconv.decode(Buffer.from(s,'binary'), 'iso-8859-1')
   }
 
   basic (login: string, pwd: string) {
-    return 'Basic ' + this.unicode2iso(`${login}:${pwd}`).toString('base64')
+    return 'Basic ' + iconv.encode(`${login}:${pwd}`,'iso-8859-1').toString('base64')
   }
 
   groupMatch (

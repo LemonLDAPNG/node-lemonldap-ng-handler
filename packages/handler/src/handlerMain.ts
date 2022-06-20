@@ -155,7 +155,7 @@ class LemonldapNGHandler extends HandlerInit {
         return reject('Server not ready, please wait')
       this.sessionAcc
         .get(id)
-        .then(session => {
+        .then((session: LLNG_Session) => {
           let now = (Date.now() / 1000) | 0
           if (
             now - session._utime > this.tsv.timeout ||
@@ -178,7 +178,7 @@ class LemonldapNGHandler extends HandlerInit {
             resolve(session)
           }
         })
-        .catch(e => {
+        .catch((e: string) => {
           reject(`Session ${id} can't be found in store: ${e}`)
         })
     })

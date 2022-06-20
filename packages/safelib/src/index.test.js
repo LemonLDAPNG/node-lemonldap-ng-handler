@@ -37,3 +37,7 @@ test('token', () => {
 test('encode_base64', () => {
   expect(safeLib.encode_base64('aaa')).toEqual('YWFh')
 })
+
+test('iso/utf8', () => {
+  expect(safeLib.iso2unicode(safeLib.unicode2iso("é:à"))).toEqual("é:à");
+});
