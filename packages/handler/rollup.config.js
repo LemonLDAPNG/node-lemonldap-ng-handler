@@ -2,8 +2,19 @@ import commonjs from "@rollup/plugin-commonjs";
 import {nodeResolve} from '@rollup/plugin-node-resolve';
 import typescript from "@rollup/plugin-typescript";
 import {terser} from "rollup-plugin-terser";
+import copy from 'rollup-plugin-copy'
 
 const alwaysExt = ['@LLNG/conf', '@LLNG/session', '@LLNG/safelib', 'vm', 're2', 'url', 'http'];
+
+const commonPlugins = [
+  typescript(),
+  commonjs(),
+  copy({
+    targets: [
+      { src: '../../CHANGELOG.md', dest: './' },
+    ],
+  }),
+]
 
 function configure(esm, external) {
   return {
@@ -20,13 +31,9 @@ function configure(esm, external) {
     // normalize-url is a pure ES module
     external: esm ? [...alwaysExt, 'normalize-url'] : alwaysExt,
     plugins: esm
-     ? [
-         typescript(),
-         commonjs(),
-       ]
+     ? commonPlugins
      : [
-         typescript(),
-         commonjs(),
+         ...commonPlugins,
          nodeResolve(),
          terser(),
        ],

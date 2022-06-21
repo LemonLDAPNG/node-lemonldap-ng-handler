@@ -1,7 +1,20 @@
 Changelog
 =========
 
+## 0.6.0
+
+ * Rewrite to Typescript and then find and fix a lot of bugs
+ * Fix SQL support for Node.js >= 14
+ * BREACKING CHANGES:
+   * SQL stack changed: [perl-dbi](./packages/perl-dbi/README.md) is now based
+     on [Knex](https://www.npmjs.com/package/knex). If you are using a SQL
+     database, you have to install the related module:
+     * PostgreSQL: [pg](https://www.npmjs.com/package/pg)
+     * MySQL: [mysql](https://www.npmjs.com/package/mysql)
+     * Oracle: [oracledb]](https://www.npmjs.com/package/oracledb)
+
 ## 0.5.5
+
  * LDAP: custom CA support
  * Build deps: add missing iconv, ipaddr.js, random-bytes
  * Fix URL normalizaion
