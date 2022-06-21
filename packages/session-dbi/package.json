@@ -45,6 +45,7 @@
   "license": "GPL-2.0-or-later",
   "llng-compat": "2.0.5",
   "scripts": {
+    "test": "jest",
     "build": "rollup -c"
   }
 }

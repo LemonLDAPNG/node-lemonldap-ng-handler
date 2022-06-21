@@ -1,6 +1,7 @@
 import commonjs from "@rollup/plugin-commonjs";
 import {nodeResolve} from '@rollup/plugin-node-resolve';
 import typescript from "@rollup/plugin-typescript";
+import cleaner from 'rollup-plugin-cleaner'
 
 function configure(esm, external) {
   return {
@@ -21,6 +22,7 @@ function configure(esm, external) {
          commonjs(),
        ]
      : [
+         cleaner({ targets: ['./lib']}),
          typescript(),
          commonjs(),
          nodeResolve(),

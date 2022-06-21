@@ -55,7 +55,6 @@ class CDBI extends DBI implements Conf_Accessor {
   serialize (cfg: LLNG_Conf) {
     const res: Serialized = {}
     Object.keys(cfg).forEach(k => {
-      // @ts-expect-error TS2322: Type 'string | number | boolean | object' is not assignable to type 'string | number | boolean'
       res[k] = k.match(hashParameters) ? JSON.stringify(cfg[k]) : cfg[k]
     })
     return res

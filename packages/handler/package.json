@@ -49,6 +49,9 @@
   "license": "GPL-2.0-or-later",
   "llng-compat": "2.0.5",
   "scripts": {
-    "build": "rollup -c"
+    "test": "jest",
+    "build": "npm run check && npm run rollup",
+    "check": "tsc --noEmit",
+    "rollup": "rollup -c"
   }
 }
