@@ -240,8 +240,8 @@ class LemonldapNGHandler extends HandlerInit {
   }
 
   hideCookie (req: express.Request | http.IncomingMessage) {
-    // @ts-ignore: req.headers.cookie is defined in this step
-    req.headers.cookie = req.headers.cookie.replace(this.tsv.cookieDetect, '')
+    if (req.headers.cookie)
+      req.headers.cookie = req.headers.cookie.replace(this.tsv.cookieDetect, '')
   }
 
   forbidden (

@@ -11,9 +11,14 @@ const lmconfSrc = path.join(__dirname, '__testData__', 'conf-1.json')
 const lmconfTmp = path.join(__dirname, '__testData__', 'lmConf-1.json')
 const sessionsDir = path.join(__dirname, '__testData__', 'sessions')
 const sessionSrc = path.join(__dirname, '__testData__', 'session.json')
+
+const cipher = new SafeLib({
+  cipher: new Crypto('azertyyuio')
+})
+
 let app
 
-beforeAll(done => {
+beforeAll(() => {
   // build lemonldap-ng.ini
   let content = ini.parse(fs.readFileSync(iniSrc, 'utf-8'))
   content.configuration.dirName = path.join(__dirname, '__testData__')
@@ -27,7 +32,7 @@ beforeAll(done => {
 
   // build sessions
   fs.mkdirSync(sessionsDir)
-  const date = new SafeLib({ cipher: new Crypto('azertyyuio') }).date()
+  const date = cipher.date()
   const perlTimestamp = Math.round(Date.now() / 1000).toString()
   content = JSON.parse(fs.readFileSync(sessionSrc, 'utf-8'))
   ;['_lastAuthnUTime', '_utime'].forEach(k => {
@@ -45,96 +50,136 @@ beforeAll(done => {
     path.join(sessionsDir, 'rtylersession'),
     JSON.stringify(content)
   )
-
-  // load express app
-  let mod = require('./__testData__/express-app.js')
-  mod
-    .then(res => {
-      app = res
-      done()
-    })
-    .catch(e => {
-      throw new Error(e)
-    })
 })
 
 afterAll(() => {
   fs.rmSync(iniTmp)
   fs.rmSync(lmconfTmp)
-  fs.rmSync(sessionsDir, { recursive: true })
+  fs.rmSync(sessionsDir, {
+    recursive: true
+  })
 })
 
-test('It should redirect unauthentified requests', done => {
-  request(app)
-    .get('/')
-    .then(response => {
-      expect(response.status).toEqual(302)
-      expect(response.headers.location).toMatch(
-        new RegExp('^http://auth.example.com/\\?url=')
-      )
-      done()
-    })
+describe('Main', () => {
+  beforeAll(done => {
+    // load express app
+    let mod = require('./__testData__/express-app.js')
+    mod
+      .then(res => {
+        app = res
+        done()
+      })
+      .catch(e => {
+        throw new Error(e)
+      })
+  })
+  test('It should redirect unauthentified requests', done => {
+    request(app)
+      .get('/')
+      .then(response => {
+        expect(response.status).toEqual(302)
+        expect(response.headers.location).toMatch(
+          new RegExp('^http://auth.example.com/\\?url=')
+        )
+        done()
+      })
+  })
+
+  test('It should redirect unexistent sessions', done => {
+    agent('bar', '/deny')
+      .expect(302)
+      .end((err, res) => {
+        if (err) return done(err)
+        expect(res.headers.location).toMatch(
+          new RegExp('^http://auth.example.com/\\?url=')
+        )
+        done()
+      })
+  })
+
+  test('It should accept authentified requests', done => {
+    agent()
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err)
+        expect(res.text).toEqual('Hello World!')
+        done()
+      })
+  })
+
+  test('It should reject /deny', done => {
+    agent('dwho', '/deny')
+      .expect(403)
+      .end((err, res) => {
+        if (err) return done(err)
+        done()
+      })
+  })
+
+  test('It should accept /dwho for dwho', done => {
+    agent('dwho', '/dwho')
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err)
+        done()
+      })
+  })
+
+  test('It should deny /dwho for rtyler', done => {
+    agent('rtyler', '/dwho')
+      .expect(403)
+      .end((err, res) => {
+        if (err) return done(err)
+        done()
+      })
+  })
+
+  test('It should send headers and remove cookie', done => {
+    agent('dwho', '/headers')
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err)
+        let headers = JSON.parse(res.text)
+        expect(headers['Auth-User']).toEqual('dwho')
+        expect(headers['cookie']).toEqual('')
+        done()
+      })
+  })
 })
 
-test('It should redirect unexistent sessions', done => {
-  agent('bar', '/deny')
-    .expect(302)
-    .end((err, res) => {
-      if (err) return done(err)
-      expect(res.headers.location).toMatch(
-        new RegExp('^http://auth.example.com/\\?url=')
-      )
-      done()
-    })
-})
-
-test('It should accept authentified requests', done => {
-  agent()
-    .expect(200)
-    .end((err, res) => {
-      if (err) return done(err)
-      expect(res.text).toEqual('Hello World!')
-      done()
-    })
-})
-
-test('It should reject /deny', done => {
-  agent('dwho', '/deny')
-    .expect(403)
-    .end((err, res) => {
-      if (err) return done(err)
-      done()
-    })
-})
-
-test('It should accept /dwho for dwho', done => {
-  agent('dwho', '/dwho')
-    .expect(200)
-    .end((err, res) => {
-      if (err) return done(err)
-      done()
-    })
-})
-
-test('It should deny /dwho for rtyler', done => {
-  agent('rtyler', '/dwho')
-    .expect(403)
-    .end((err, res) => {
-      if (err) return done(err)
-      done()
-    })
-})
-
-test('It should send headers and remove cookie', done => {
-  agent('dwho', '/headers')
-    .expect(200)
-    .end((err, res) => {
-      if (err) return done(err)
-      let headers = JSON.parse(res.text)
-      expect(headers['Auth-User']).toEqual('dwho')
-      expect(headers['cookie']).toEqual('')
-      done()
-    })
+describe('handlerServiceToken', () => {
+  beforeEach(done => {
+    const mod = require('./__testData__/express-app-st.js')
+    mod
+      .then(res => {
+        app = res
+        done()
+      })
+      .catch(e => {
+        throw new Error(e)
+      })
+  })
+  it('should works with user', done => {
+    agent('dwho', '/headers')
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err)
+        let headers = JSON.parse(res.text)
+        expect(headers['Auth-User']).toEqual('dwho')
+        expect(headers['cookie']).toEqual('')
+        done()
+      })
+  })
+  it('should accept valid token', done => {
+    agentSt(cipher.token('dwhosession', 'test1.example.com'), '/headers')
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err)
+        let headers = JSON.parse(res.text)
+        expect(headers['Auth-User']).toEqual('dwho')
+        done()
+      })
+  })
 })
 
 const agent = (id = 'dwho', path = '/', host = 'test1.example.com') => {
@@ -143,5 +188,14 @@ const agent = (id = 'dwho', path = '/', host = 'test1.example.com') => {
     .host(host)
     .get(path)
     .set('Cookie', [`lemonldap=${id}session`])
+    .send()
+}
+
+const agentSt = (token, path = '/', host = 'test1.example.com') => {
+  return request
+    .agent(app)
+    .host(host)
+    .get(path)
+    .set({ 'X-Llng-Token': token })
     .send()
 }
