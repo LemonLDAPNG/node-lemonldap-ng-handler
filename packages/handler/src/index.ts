@@ -3,13 +3,15 @@ import http from 'http'
 import { Handler_Args } from './init'
 import LemonldapNGHandler, { FastCGI_Opts } from './handlerMain'
 import LemonldapNGHandlerDevOps from './handlerDevOps'
+import LemonldapNGHandlerServiceToken from './handlerServiceToken'
 
 let currentHandler: LemonldapNGHandler
 let currentClass: typeof LemonldapNGHandler | typeof LemonldapNGHandlerDevOps
 
 const knownHandlers = {
   Main: LemonldapNGHandler,
-  DevOps: LemonldapNGHandlerDevOps
+  DevOps: LemonldapNGHandlerDevOps,
+  ServiceToken: LemonldapNGHandlerServiceToken
 }
 
 export const init = (args: Handler_Args) => {

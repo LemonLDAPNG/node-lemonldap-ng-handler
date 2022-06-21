@@ -11,7 +11,7 @@ Changelog
      database, you have to install the related module:
      * PostgreSQL: [pg](https://www.npmjs.com/package/pg)
      * MySQL: [mysql](https://www.npmjs.com/package/mysql)
-     * Oracle: [oracledb]](https://www.npmjs.com/package/oracledb)
+     * Oracle: [oracledb](https://www.npmjs.com/package/oracledb)
 
 ## 0.5.5
 
