@@ -18,14 +18,14 @@ declare type LLNG_Conf = {
   globalStorage: string | undefined
   globalStorageOptions: Backend_Options
   exportedHeaders?: { [k: string]: string }
-  [key: string]: object | any[] | string | number | boolean
+  [key: string]: any
 }
 
 export interface Conf_Accessor {
   available(): Promise<number[]>
   lastCfg(): Promise<number>
   store(conf: LLNG_Conf): Promise<boolean>
-  load(cfgNum: number, fields: string[] = []): Promise<LLNG_Conf>
+  load(cfgNum: number, fields: string[]): Promise<LLNG_Conf>
 }
 
 /* Sessions interfaces */
@@ -36,7 +36,7 @@ export interface LLNG_Session {
   _logout?: string
   _utime: number
   _lastSeen?: number
-  [key: string]: string | number | boolean
+  [key: string]: string | number | boolean | undefined
 }
 
 /* Sessions stored into sessions DB (Apache::Session format) */
@@ -60,8 +60,8 @@ export type LocalConf = {
 
 export type IniSection = {
   localStorage?: string
-  localStorage?: string
-  [key: string]: string | number | object
+  localStorageOptions?: object
+  [key: string]: string | number | object | undefined
 }
 
 export type IniSection_Configuration = IniSection & {
@@ -70,7 +70,7 @@ export type IniSection_Configuration = IniSection & {
     cache_root?: string
     default_expires_in?: number
   }
-  [key: string]: string | number | object
+  [key: string]: string | number | object | undefined
 }
 
 export type IniSection_NodeHandler = IniSection & {
