@@ -5,7 +5,7 @@ import {terser} from "rollup-plugin-terser";
 import copy from 'rollup-plugin-copy'
 import cleaner from 'rollup-plugin-cleaner'
 
-const alwaysExt = ['@LLNG/conf', '@LLNG/session', '@LLNG/safelib', 'vm', 're2', 'url', 'http'];
+const alwaysExt = ['@LLNG/conf', '@LLNG/logger', '@LLNG/session', '@LLNG/safelib', 'vm', 're2', 'url', 'http'];
 
 const commonPlugins = [
   typescript(),

@@ -3,8 +3,6 @@ import HandlerInit from './init'
 import express from 'express'
 import http from 'http'
 import normalizeUrl from 'normalize-url'
-import nodeUrl from 'url'
-const urlParse = nodeUrl.parse
 
 export type FastCGI_Opts = {
   mode: string | undefined
@@ -27,40 +25,39 @@ class LemonldapNGHandler extends HandlerInit {
   ) {
     const vhost = req.headers.host
     if (vhost === undefined) {
+      this.userLogger.error('Request without Host header')
       this.setError(res, '/', 400, 'Bad request')
       return
     }
 
     /* 1 - get data */
-    const normalizedUrl = normalizeUrl(vhost + req.url)
-    let uri = urlParse(normalizedUrl).path
-    if (!uri) uri = '/'
+    const uri = new URL(normalizeUrl(vhost + req.url)).pathname || '/'
 
     /* 2 - check for maintenance mode */
-    if (this.tsv.maintenance[vhost]) {
-      this.setError(res, '/', 503, 'Service Temporarily Unavailable')
-    }
+    if (this.tsv.maintenance[vhost])
+      return this.setError(res, '/', 503, 'Service Temporarily Unavailable')
 
     /* 3 - check if current URI is protected */
     const protection = this.isUnprotected(req, uri)
-    if (protection === 2) {
-      next()
-      return
-    }
+    if (protection === 2) return next()
 
     /* 4 - search for LLNG cookie */
     const id = this.fetchId(req)
     if (id !== '') {
       this.retrieveSession(id)
         .then(session => {
+          const user = session[this.tsv.whatToTrace]
+          this.userLogger.debug(`User ${user} identified`)
           this.grant(req, <string>uri, session)
             .then(grantResult => {
               if (grantResult) {
                 this.sendHeaders(req, session)
                 this.hideCookie(req)
                 next()
+                this.userLogger.info(`${vhost}: user ${user} was granted access to ${uri}`)
               } else {
                 this.forbidden(req, res, session)
+                this.userLogger.notice(`${vhost}: user ${user} was denied access to ${uri}`)
               }
             })
             .catch(e => {

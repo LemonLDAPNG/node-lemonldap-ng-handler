@@ -1,11 +1,13 @@
 import Conf from '@LLNG/conf'
 import Session from '@LLNG/session'
 import SafeLib from '@LLNG/safelib'
+import Logger from '@LLNG/logger'
 import {
   LocalConf,
   LLNG_Conf,
   LLNG_Session,
-  IniSection_NodeHandler
+  IniSection_NodeHandler,
+  LLNG_Logger
 } from '@LLNG/types'
 import vm from 'vm'
 import RE2 from 're2'
@@ -45,10 +47,13 @@ const requiredFields = [
 abstract class HandlerInit {
   confAcc: Conf
   localConf: handlerConf
-  sessionAcc?: Session
+  // @ts-ignore: defined later
+  sessionAcc: Session
   vhostList: string[]
   safe: { [vhost: string]: SafeLib } = {}
   tsv: TSV
+  // @ts-ignore: defined later
+  userLogger: LLNG_Logger
 
   constructor (args: Handler_Args) {
     // @ts-ignore: some values will be initialized later
@@ -163,8 +168,10 @@ abstract class HandlerInit {
               // @ts-ignore conf.locationRules[vhost] exists
               const rules = conf.locationRules[vhost]
               Object.keys(rules).forEach(url => {
-                let cond, prot
-                ;[cond, prot] = this.conditionSub(rules[url], this.safe[vhost])
+                const [cond, prot] = this.conditionSub(
+                  rules[url],
+                  this.safe[vhost]
+                )
                 if (url === 'default') {
                   this.tsv.defaultCondition[vhost] = cond
                   this.tsv.defaultProtection[vhost] = prot
@@ -230,6 +237,15 @@ abstract class HandlerInit {
             this.tsv.cookieDetect = new RE2(`\\b${this.tsv.cookieName}=([^;]+)`)
             this.sessionAcc.ready.then(() => {
               resolve(true)
+              Logger(conf, true)
+              .then(logger => {
+                this.userLogger = logger
+                resolve(true)
+              })
+              .catch(e => {
+                console.error('Logger error', e)
+                throw new Error(e)
+              })
             })
           })
           .catch((e: string) => {

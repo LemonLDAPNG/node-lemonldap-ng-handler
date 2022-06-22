@@ -13,9 +13,12 @@ export default (conf: LLNG_Conf, userLogger: boolean) => {
   const wantedLogger: string = (userLogger && conf.userLogger
     ? conf.userLogger
     : conf.logger
+    ? conf.logger
+    : 'std'
   )
     .replace(/^Lemonldap::NG::Common::Logger::/i, '')
     .toLowerCase()
+
   // @ts-ignore: this test avoids error
   if (knownLoggers[wantedLogger]) {
     return Promise.resolve(
