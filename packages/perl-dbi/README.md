@@ -23,6 +23,7 @@ var conn = new PerlDBI({
   dbiPassword: 'pgpassword'
 });
 ```
+then use it like a [knex](http://knexjs.org/) object
 
 perl-dbi is a component of [lemonldap-ng-handler](https://www.npmjs.com/package/lemonldap-ng-handler),
 a Node.js handler for [LemonLDAP::NG WebSSO](https://lemonldap-ng.org).
