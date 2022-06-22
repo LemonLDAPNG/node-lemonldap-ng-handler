@@ -81,6 +81,7 @@
     "typescript": "^4.6.4"
   },
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "!packages/node-lemonldap-ng-handler"
   ]
 }
