@@ -1,4 +1,4 @@
-import { LLNG_Session, Session_Accessor } from '@LLNG/types'
+import { LLNG_Session, Session_Accessor } from '@lemonldap-ng/types'
 type SessionFile_Args = {
   Directory: string
 }

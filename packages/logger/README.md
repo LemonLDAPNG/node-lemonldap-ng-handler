@@ -1,17 +1,17 @@
-# @LLNG/logger
+# @lemonldap-ng/logger
 
-@LLNG/logger is the main logger
+@lemonldap-ng/logger is the main logger
 
 ## Synopsis
 
 ```typescript
-import Logger from '@LLNG/logger'
-import {LLNG_Conf} from '@LLNG/types' // typescript only
+import Logger from '@lemonldap-ng/logger'
+import {LLNG_Conf} from '@lemonldap-ng/types' // typescript only
 
 const userLogger = true
 
 const conf: LLNG_Conf = {
-  // use @LLNG/conf to get it
+  // use @lemonldap-ng/conf to get it
   userLogger: 'Lemonldap::NG::Common::Logger::Syslog',
 }
 
@@ -20,5 +20,5 @@ Logger(conf, userLogger).then( userLogger => {
 })
 ```
 
-@LLNG/logger is a component of [lemonldap-ng-handler](https://www.npmjs.com/package/lemonldap-ng-handler),
+@lemonldap-ng/logger is a component of [lemonldap-ng-handler](https://www.npmjs.com/package/lemonldap-ng-handler),
 a Node.js handler for [LemonLDAP::NG WebSSO](https://lemonldap-ng.org).

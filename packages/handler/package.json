@@ -23,9 +23,9 @@
     "README.md"
   ],
   "dependencies": {
-    "@LLNG/conf": "^0.6.0",
-    "@LLNG/logger": "^0.6.0",
-    "@LLNG/session": "^0.6.0",
+    "@lemonldap-ng/conf": "^0.6.0",
+    "@lemonldap-ng/logger": "^0.6.0",
+    "@lemonldap-ng/session": "^0.6.0",
     "node-fastcgi": "^1.3.3",
     "normalize-url": "^7.0.3",
     "re2": "^1.17.7"

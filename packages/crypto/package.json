@@ -1,5 +1,5 @@
 {
-  "name": "@LLNG/crypto",
+  "name": "@lemonldap-ng/crypto",
   "version": "0.6.0",
   "description": "LemonLDAP::NG crypto class",
   "main": "./lib/index.js",

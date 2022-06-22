@@ -1,5 +1,5 @@
 import { createClient, RedisClientType } from 'redis'
-import { LLNG_Session, Session_Accessor } from '@LLNG/types'
+import { LLNG_Session, Session_Accessor } from '@lemonldap-ng/types'
 type SessionRedis_Args = {
   server: string | undefined
   user: string | undefined

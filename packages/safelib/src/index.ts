@@ -1,5 +1,5 @@
-import Crypto from '@LLNG/crypto'
-import { LLNG_Conf } from '@LLNG/types'
+import Crypto from '@lemonldap-ng/crypto'
+import { LLNG_Conf } from '@lemonldap-ng/types'
 import vm from 'vm'
 import iconv from 'iconv-lite'
 import express from 'express'
@@ -132,7 +132,7 @@ class ExtdFunc {
 class SafeLib extends ExtdFunc {
   constructor (conf: LLNG_Conf) {
     if (conf.cipher === undefined)
-      throw new Error('a @LLNG/cripto object is required')
+      throw new Error('a @lemonldap-ng/cripto object is required')
     super(conf.cipher)
     vm.createContext(this)
   }

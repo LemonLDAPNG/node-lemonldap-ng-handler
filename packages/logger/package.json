@@ -1,7 +1,7 @@
 {
-  "name": "@LLNG/logger",
+  "name": "@lemonldap-ng/logger",
   "version": "0.6.0",
-  "description": "LLNG class for loggers",
+  "description": "lemonldap-ng class for loggers",
   "main": "./lib/index.js",
   "module": "./lib/index.mjs",
   "exports": {

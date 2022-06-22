@@ -1,10 +1,10 @@
 import fs from 'fs'
 import path from 'path'
 import yaml from 'js-yaml'
-import FileConf from '@LLNG/conf-file'
-import { LLNG_Conf, Conf_Accessor } from '@LLNG/types'
+import FileConf from '@lemonldap-ng/conf-file'
+import { LLNG_Conf, Conf_Accessor } from '@lemonldap-ng/types'
 
-import { FileArgs } from '@LLNG/conf-file'
+import { FileArgs } from '@lemonldap-ng/conf-file'
 
 class YAMLConf extends FileConf implements Conf_Accessor {
   dirName: string

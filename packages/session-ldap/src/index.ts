@@ -1,6 +1,6 @@
 import fs from 'fs'
 import ldapjs from 'ldapjs'
-import { LLNG_Session, Session_Accessor } from '@LLNG/types'
+import { LLNG_Session, Session_Accessor } from '@lemonldap-ng/types'
 type SessionLDAP_Args = {
   ldapServer: string
   ldapConfBase: string

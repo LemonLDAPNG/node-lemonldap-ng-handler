@@ -10,7 +10,7 @@ export type LDAP_Args = {
 }
 
 import ldapjs from 'ldapjs'
-import { LLNG_Conf, Conf_Accessor } from '@LLNG/types'
+import { LLNG_Conf, Conf_Accessor } from '@lemonldap-ng/types'
 import {
   SearchCallbackResponse,
   SearchEntry,

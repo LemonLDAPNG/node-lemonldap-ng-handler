@@ -1,14 +1,14 @@
-import Conf from '@LLNG/conf'
-import Session from '@LLNG/session'
-import SafeLib from '@LLNG/safelib'
-import Logger from '@LLNG/logger'
+import Conf from '@lemonldap-ng/conf'
+import Session from '@lemonldap-ng/session'
+import SafeLib from '@lemonldap-ng/safelib'
+import Logger from '@lemonldap-ng/logger'
 import {
   LocalConf,
   LLNG_Conf,
   LLNG_Session,
   IniSection_NodeHandler,
   LLNG_Logger
-} from '@LLNG/types'
+} from '@lemonldap-ng/types'
 import vm from 'vm'
 import RE2 from 're2'
 import { TSV } from './tsv'

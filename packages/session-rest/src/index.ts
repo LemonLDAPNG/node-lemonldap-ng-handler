@@ -1,5 +1,5 @@
 import fetch from 'node-fetch'
-import { LLNG_Session, Session_Accessor } from '@LLNG/types'
+import { LLNG_Session, Session_Accessor } from '@lemonldap-ng/types'
 type SessionREST_Args = {
   baseUrl: string
   user?: string

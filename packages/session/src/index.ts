@@ -1,4 +1,4 @@
-import { LLNG_Session, Session_Accessor, Backend_Options } from '@LLNG/types'
+import { LLNG_Session, Session_Accessor, Backend_Options } from '@lemonldap-ng/types'
 import { LimitedCache, LimitedCacheInstance } from 'limited-cache'
 import nodePersist from 'node-persist'
 import path from 'path'
@@ -21,7 +21,7 @@ class Session {
     this.ready = new Promise((gresolve, greject) => {
       Promise.all([
         new Promise((resolve, reject) => {
-          import(`@LLNG/session-${this.aliases(opts.storageModule)}`)
+          import(`@lemonldap-ng/session-${this.aliases(opts.storageModule)}`)
             .then(mod => {
               const cl = mod.default
               this.backend = new cl(opts.storageModuleOptions)

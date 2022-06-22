@@ -1,7 +1,7 @@
 {
-  "name": "@LLNG/conf-yaml",
+  "name": "@lemonldap-ng/conf-yaml",
   "version": "0.6.0",
-  "description": "LLNG class for YAML File configuration access",
+  "description": "lemonldap-ng class for YAML File configuration access",
   "main": "./lib/index.js",
   "module": "./lib/index.mjs",
   "exports": {

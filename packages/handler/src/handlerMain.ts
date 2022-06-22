@@ -1,4 +1,4 @@
-import { LLNG_Session } from '@LLNG/types'
+import { LLNG_Session } from '@lemonldap-ng/types'
 import HandlerInit from './init'
 import express from 'express'
 import http from 'http'

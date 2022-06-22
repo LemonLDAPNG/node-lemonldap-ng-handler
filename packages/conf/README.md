@@ -1,12 +1,12 @@
-# @LLNG/conf
+# @lemonldap-ng/conf
 
-@LLNG/conf is the configuration accessor.
+@lemonldap-ng/conf is the configuration accessor.
 
 ## Synopsis
 
 ```typescript
-import Conf from '@LLNG/conf'
-import {LocalConf} from '@LLNG/types' // typescript only
+import Conf from '@lemonldap-ng/conf'
+import {LocalConf} from '@lemonldap-ng/types' // typescript only
 
 const minimalConf: LocalConf = {
   confFile: '/path/to/lemonldap-ng.ini' // default to /etc/lemonldap-ng/lemonldap-ng.ini
@@ -25,5 +25,5 @@ confAccessor.getConf().then ( (conf: LLNG_Conf) => {
 })
 ```
 
-@LLNG/conf is a component of [lemonldap-ng-handler](https://www.npmjs.com/package/lemonldap-ng-handler),
+@lemonldap-ng/conf is a component of [lemonldap-ng-handler](https://www.npmjs.com/package/lemonldap-ng-handler),
 a Node.js handler for [LemonLDAP::NG WebSSO](https://lemonldap-ng.org).

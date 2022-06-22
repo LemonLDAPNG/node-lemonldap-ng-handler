@@ -1,5 +1,5 @@
 const SafeLib = require('..')
-const Crypto = require('@LLNG/crypto')
+const Crypto = require('@lemonldap-ng/crypto')
 
 let safeLib
 let cipher

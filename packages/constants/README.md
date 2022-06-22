@@ -1,4 +1,4 @@
-# @LLNG/constants
+# @lemonldap-ng/constants
 
-@LLNG/constants is a component of [lemonldap-ng-handler](https://www.npmjs.com/package/lemonldap-ng-handler),
+@lemonldap-ng/constants is a component of [lemonldap-ng-handler](https://www.npmjs.com/package/lemonldap-ng-handler),
 a Node.js handler for [LemonLDAP::NG WebSSO](https://lemonldap-ng.org).

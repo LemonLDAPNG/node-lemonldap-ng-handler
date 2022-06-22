@@ -1,6 +1,6 @@
 import { MongoClient } from 'mongodb'
 import { Db, Collection, Document } from 'mongodb'
-import { LLNG_Conf, Conf_Accessor } from '@LLNG/types'
+import { LLNG_Conf, Conf_Accessor } from '@lemonldap-ng/types'
 
 const ref = [
   'host',

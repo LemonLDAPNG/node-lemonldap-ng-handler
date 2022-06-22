@@ -1,7 +1,7 @@
 {
-  "name": "@LLNG/session-dbi",
+  "name": "@lemonldap-ng/session-dbi",
   "version": "0.6.0",
-  "description": "LLNG class for DBI session access",
+  "description": "lemonldap-ng class for DBI session access",
   "main": "./lib/index.js",
   "module": "./lib/index.mjs",
   "exports": {

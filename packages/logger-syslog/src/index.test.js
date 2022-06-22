@@ -2,7 +2,7 @@ const syslog = require('modern-syslog')
 
 let logSpy, openSpy
 
-const Logger = require('@LLNG/logger')
+const Logger = require('@lemonldap-ng/logger')
 const conf = {
   logLevel: 'notice',
   logger: 'Lemonldap::NG::Common::Logger::Syslog'

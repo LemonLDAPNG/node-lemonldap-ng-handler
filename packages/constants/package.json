@@ -1,7 +1,7 @@
 {
-  "name": "@LLNG/constants",
+  "name": "@lemonldap-ng/constants",
   "version": "0.6.0",
-  "description": "lemonkdap-ng mani constants",
+  "description": "lemonldap-ng main constants",
   "main": "./lib/index.js",
   "module": "./lib/index.mjs",
   "exports": {

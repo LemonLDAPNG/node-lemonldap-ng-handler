@@ -1,12 +1,12 @@
-# @LLNG/session
+# @lemonldap-ng/session
 
-@LLNG/session is the session accessor.
+@lemonldap-ng/session is the session accessor.
 
 ## Synopsis
 
 ```typescript
-import Session from '@LLNG/session'
-import { LLNG_Session } from '@LLNG/types' // typescript only
+import Session from '@lemonldap-ng/session'
+import { LLNG_Session } from '@lemonldap-ng/types' // typescript only
 
 const sessionAccessor = new Session({
   storageModule: 'Apache::Session::File',
@@ -35,5 +35,5 @@ sessionAccessor.ready.then( () => {
 })
 ```
 
-@LLNG/session is a component of [lemonldap-ng-handler](https://www.npmjs.com/package/lemonldap-ng-handler),
+@lemonldap-ng/session is a component of [lemonldap-ng-handler](https://www.npmjs.com/package/lemonldap-ng-handler),
 a Node.js handler for [LemonLDAP::NG WebSSO](https://lemonldap-ng.org).

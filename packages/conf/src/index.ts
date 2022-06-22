@@ -6,7 +6,7 @@ import {
   LLNG_IniSection,
   LLNG_IniFile,
   IniSection
-} from '@LLNG/types'
+} from '@lemonldap-ng/types'
 
 type getConf_Args = {
   cfgNum?: number
@@ -15,7 +15,7 @@ type getConf_Args = {
 
 import fs from 'fs'
 import ini from 'ini'
-import crypto from '@LLNG/crypto'
+import crypto from '@lemonldap-ng/crypto'
 
 class Conf {
   localConf: LocalConf
@@ -33,7 +33,7 @@ class Conf {
     if (!confSection.type)
       throw new Error('Configuration.type is missing in lemonldap-ng.ini')
     this.ready = new Promise<boolean>((resolve, reject) => {
-      import(`@LLNG/conf-${confSection.type.toLowerCase()}`)
+      import(`@lemonldap-ng/conf-${confSection.type.toLowerCase()}`)
         .then(mod => {
           const cl = mod.default
           this.module = new cl(confSection)

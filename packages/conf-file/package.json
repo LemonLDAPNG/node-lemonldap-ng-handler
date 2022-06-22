@@ -1,7 +1,7 @@
 {
-  "name": "@LLNG/conf-file",
+  "name": "@lemonldap-ng/conf-file",
   "version": "0.6.0",
-  "description": "LLNG class for File configuration access",
+  "description": "lemonldap-ng class for File configuration access",
   "main": "./lib/index.js",
   "module": "./lib/index.mjs",
   "exports": {

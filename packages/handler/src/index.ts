@@ -30,7 +30,7 @@ export const init = (args: Handler_Args) => {
         .then(() => resolve(currentHandler))
         .catch(e => reject(e))
     } else {
-      import('@LLNG/handler-' + args.type.toLowerCase())
+      import('@lemonldap-ng/handler-' + args.type.toLowerCase())
         .then(mod => {
           currentClass = mod.default
           currentHandler = new currentClass(args)

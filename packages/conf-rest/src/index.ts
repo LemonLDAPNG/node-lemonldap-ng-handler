@@ -1,5 +1,5 @@
 import fetch from 'node-fetch'
-import { LLNG_Conf, Conf_Accessor } from '@LLNG/types'
+import { LLNG_Conf, Conf_Accessor } from '@lemonldap-ng/types'
 
 export type REST_Args = {
   baseUrl: string

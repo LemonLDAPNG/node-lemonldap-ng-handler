@@ -1,7 +1,7 @@
 {
-  "name": "@LLNG/logger-syslog",
+  "name": "@lemonldap-ng/logger-syslog",
   "version": "0.6.0",
-  "description": "LLNG syslog logger",
+  "description": "lemonldap-ng syslog logger",
   "main": "./lib/index.js",
   "module": "./lib/index.mjs",
   "exports": {

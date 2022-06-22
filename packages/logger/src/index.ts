@@ -1,4 +1,4 @@
-import { LLNG_Conf, LLNG_Logger } from '@LLNG/types'
+import { LLNG_Conf, LLNG_Logger } from '@lemonldap-ng/types'
 import Std from './Std'
 import uWsgi from './uWsgi'
 
@@ -31,7 +31,7 @@ export default (conf: LLNG_Conf, userLogger: boolean) => {
     )
   } else {
     return new Promise((resolve, reject) => {
-      import(`@LLNG/logger-${wantedLogger}`)
+      import(`@lemonldap-ng/logger-${wantedLogger}`)
         .then(mod => {
           const cl = mod.default
           resolve(new cl(conf.logLevel, userLogger, conf))

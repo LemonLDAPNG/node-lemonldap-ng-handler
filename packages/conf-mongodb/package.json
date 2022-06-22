@@ -1,7 +1,7 @@
 {
-  "name": "@LLNG/conf-mongodb",
+  "name": "@lemonldap-ng/conf-mongodb",
   "version": "0.5.4",
-  "description": "LemonLDAP::NG handler for Node.js",
+  "description": "LemonLDAP::NG configuration connector to MongoDB storage",
   "main": "./lib/index.js",
   "module": "./lib/index.mjs",
   "exports": {

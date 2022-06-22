@@ -6,15 +6,15 @@ Beta [Lemonldap::NG](https://lemonldap-ng.org) handler for node.js
 
  * Main package: [lemonldap-ng-handler](./packages/handler/README.md)
  * Configuration:
-   * Main class: [@LLNG/conf](./packages/conf/README.md)
-   * Configuration backends: [@LLNG/conf-\*](./packages/)
+   * Main class: [@lemonldap-ng/conf](./packages/conf/README.md)
+   * Configuration backends: [@lemonldap-ng/conf-\*](./packages/)
  * Perl Apache::Session::\* wrapper:
-   * Main class: [@LLNG/session](./packages/session/README.md)
-   * Session backends: [@LLNG/session-\*](./packages/)
+   * Main class: [@lemonldap-ng/session](./packages/session/README.md)
+   * Session backends: [@lemonldap-ng/session-\*](./packages/)
  * Perl-DBI wrapper: [perl-dbi](./packages/perl-dbi/README.md)
- * Crypto API: [@LLNG/crypto](./packages/crypto/README.md)
- * Constants: [@LLNG/constants](./packages/constants)
- * Global typescript types: [@LLNG/types](./packages/types)
+ * Crypto API: [@lemonldap-ng/crypto](./packages/crypto/README.md)
+ * Constants: [@lemonldap-ng/constants](./packages/constants)
+ * Global typescript types: [@lemonldap-ng/types](./packages/types)
 
 ## What is [LemonLDAP::NG](https://lemonldap-ng.org)
 

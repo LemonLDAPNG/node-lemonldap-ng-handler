@@ -1,3 +1,3 @@
 import config from '../../rollup.template.js';
 
-export default config(['@LLNG/conf-file', 'js-yaml', 'fs', 'path']);
+export default config(['@lemonldap-ng/conf-file', 'js-yaml', 'fs', 'path']);

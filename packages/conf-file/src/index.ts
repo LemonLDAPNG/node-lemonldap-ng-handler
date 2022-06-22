@@ -1,6 +1,6 @@
 import fs from 'fs'
 import path from 'path'
-import { LLNG_Conf, Conf_Accessor } from '@LLNG/types'
+import { LLNG_Conf, Conf_Accessor } from '@lemonldap-ng/types'
 
 export type FileArgs = {
   dirName: string

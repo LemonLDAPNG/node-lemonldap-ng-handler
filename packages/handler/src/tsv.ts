@@ -1,5 +1,5 @@
 import RE2 from 're2'
-import Crypto from '@LLNG/crypto'
+import Crypto from '@lemonldap-ng/crypto'
 
 declare type vhost = string
 

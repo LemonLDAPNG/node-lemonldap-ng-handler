@@ -1,10 +1,10 @@
-import { LLNG_Session } from '@LLNG/types'
+import { LLNG_Session } from '@lemonldap-ng/types'
 import { Handler_Args } from './init'
 import LemonldapNGHandler from './handlerMain'
 import RE2 from 're2'
 import express from 'express'
 import http from 'http'
-import SafeLib from '@LLNG/safelib'
+import SafeLib from '@lemonldap-ng/safelib'
 import vm from 'vm'
 
 type Vhost_Config = {

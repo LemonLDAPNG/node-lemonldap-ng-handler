@@ -1,7 +1,7 @@
 {
-  "name": "@LLNG/session-redis",
+  "name": "@lemonldap-ng/session-redis",
   "version": "0.6.0",
-  "description": "LLNG class for Redis session access",
+  "description": "lemonldap-ng class for Redis session access",
   "main": "./lib/index.js",
   "module": "./lib/index.mjs",
   "exports": {

@@ -1,4 +1,4 @@
-import Crypto from '@LLNG/crypto'
+import Crypto from '@lemonldap-ng/crypto'
 
 /* LemonLDAP::NG configuration */
 
@@ -46,7 +46,7 @@ declare type Apache_Session = {
   a_session: string
 }
 
-/* @LLNG/session-* classes */
+/* @lemonldap-ng/session-* classes */
 export interface Session_Accessor {
   get(id: string): Promise<LLNG_Session>
   update(data: LLNG_Session): Promise<boolean>

@@ -1,7 +1,7 @@
 {
-  "name": "@LLNG/conf-dbi",
+  "name": "@lemonldap-ng/conf-dbi",
   "version": "0.6.0",
-  "description": "LLNG base class for *DBI configuration access",
+  "description": "lemonldap-ng base class for *DBI configuration access",
   "main": "./lib/index.js",
   "module": "./lib/index.mjs",
   "exports": {

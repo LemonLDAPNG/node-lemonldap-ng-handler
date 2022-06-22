@@ -1,7 +1,7 @@
 {
-  "name": "@LLNG/conf-rest",
+  "name": "@lemonldap-ng/conf-rest",
   "version": "0.6.0",
-  "description": "LLNG class for REST configuration access",
+  "description": "lemonldap-ng class for REST configuration access",
   "main": "./lib/index.js",
   "module": "./lib/index.mjs",
   "exports": {

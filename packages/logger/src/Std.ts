@@ -1,4 +1,4 @@
-import { LLNG_Logger, LogLevel } from '@LLNG/types'
+import { LLNG_Logger, LogLevel } from '@lemonldap-ng/types'
 
 // @ts-ignore: tsc doesn't see how we imlement logger methods
 class LoggerStd implements LLNG_Logger {

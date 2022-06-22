@@ -1,7 +1,7 @@
 {
-  "name": "@LLNG/types",
+  "name": "@lemonldap-ng/types",
   "version": "0.6.0",
-  "description": "LLNG common typescript types",
+  "description": "lemonldap-ng common typescript types",
   "main": "",
   "types": "index.d.ts",
   "maintainers": [

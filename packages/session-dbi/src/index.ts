@@ -1,6 +1,6 @@
 import PerlDBI from 'perl-dbi'
 import { PerlDBI_Client, PerlDBI_Args } from 'perl-dbi'
-import { Apache_Session, LLNG_Session, Session_Accessor } from '@LLNG/types'
+import { Apache_Session, LLNG_Session, Session_Accessor } from '@lemonldap-ng/types'
 export type SessionDBI_Args = {
   DataSource: string
   UserName: string | undefined

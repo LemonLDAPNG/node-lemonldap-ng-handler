@@ -1,7 +1,7 @@
 {
-  "name": "@LLNG/conf-rdbi",
+  "name": "@lemonldap-ng/conf-rdbi",
   "version": "0.6.0",
-  "description": "LLNG class for RDBI configuration access",
+  "description": "lemonldap-ng class for RDBI configuration access",
   "main": "./lib/index.js",
   "module": "./lib/index.mjs",
   "exports": {
@@ -23,7 +23,7 @@
     "README.md"
   ],
   "dependencies": {
-    "@LLNG/conf-dbi": "^0.6.0"
+    "@lemonldap-ng/conf-dbi": "^0.6.0"
   },
   "bugs": {
     "url": "https://gitlab.ow2.org/lemonldap-ng/lemonldap-ng/issues"

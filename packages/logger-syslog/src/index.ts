@@ -1,4 +1,4 @@
-import { LLNG_Conf, LLNG_Logger, LogLevel } from '@LLNG/types'
+import { LLNG_Conf, LLNG_Logger, LogLevel } from '@lemonldap-ng/types'
 // @ts-ignore
 import syslog from 'modern-syslog'
 

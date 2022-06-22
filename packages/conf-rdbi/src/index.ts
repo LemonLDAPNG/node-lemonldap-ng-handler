@@ -1,6 +1,6 @@
-import { LLNG_Conf, Conf_Accessor } from '@LLNG/types'
-import { hashParameters } from '@LLNG/constants'
-import DBI from '@LLNG/conf-dbi'
+import { LLNG_Conf, Conf_Accessor } from '@lemonldap-ng/types'
+import { hashParameters } from '@lemonldap-ng/constants'
+import DBI from '@lemonldap-ng/conf-dbi'
 
 type Serialized = { [key: string]: string | number | boolean }
 

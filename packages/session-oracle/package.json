@@ -1,7 +1,7 @@
 {
-  "name": "@LLNG/session-oracle",
+  "name": "@lemonldap-ng/session-oracle",
   "version": "0.6.0",
-  "description": "LLNG class for Orable session access",
+  "description": "lemonldap-ng class for Orable session access",
   "main": "./lib/index.js",
   "module": "./lib/index.mjs",
   "exports": {
@@ -23,7 +23,7 @@
     "README.md"
   ],
   "dependencies": {
-    "@LLNG/session-dbi": "^0.6.0",
+    "@lemonldap-ng/session-dbi": "^0.6.0",
     "oracledb": "^5.4.0"
   },
   "bugs": {

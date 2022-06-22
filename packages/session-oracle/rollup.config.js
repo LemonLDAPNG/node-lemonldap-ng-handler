@@ -1,3 +1,3 @@
 import config from '../../rollup.template.js';
 
-export default config(['@LLNG/session-dbi']);
+export default config(['@lemonldap-ng/session-dbi']);

@@ -1,7 +1,7 @@
 {
-  "name": "@LLNG/session-rest",
+  "name": "@lemonldap-ng/session-rest",
   "version": "0.6.0",
-  "description": "LLNG class for REST session access",
+  "description": "lemonldap-ng class for REST session access",
   "main": "./lib/index.js",
   "module": "./lib/index.mjs",
   "exports": {

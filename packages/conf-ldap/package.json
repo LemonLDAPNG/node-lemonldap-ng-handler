@@ -1,7 +1,7 @@
 {
-  "name": "@LLNG/conf-ldap",
+  "name": "@lemonldap-ng/conf-ldap",
   "version": "0.6.0",
-  "description": "LLNG class for LDAP configuration access",
+  "description": "lemonldap-ng class for LDAP configuration access",
   "main": "./lib/index.js",
   "module": "./lib/index.mjs",
   "exports": {

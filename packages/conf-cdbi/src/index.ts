@@ -1,6 +1,6 @@
-import { LLNG_Conf, Conf_Accessor } from '@LLNG/types'
+import { LLNG_Conf, Conf_Accessor } from '@lemonldap-ng/types'
 
-import DBI from '@LLNG/conf-dbi'
+import DBI from '@lemonldap-ng/conf-dbi'
 
 class CDBI extends DBI implements Conf_Accessor {
   store (fields: LLNG_Conf) {
