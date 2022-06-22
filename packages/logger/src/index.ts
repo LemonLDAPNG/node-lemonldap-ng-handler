@@ -20,13 +20,18 @@ export default (conf: LLNG_Conf, userLogger: boolean) => {
   if (knownLoggers[wantedLogger]) {
     return Promise.resolve(
       //@ts-ignore
-      new knownLoggers[wantedLogger](conf.logLevel || 'notice', userLogger)
+      new knownLoggers[wantedLogger](
+        conf.logLevel || 'notice',
+        userLogger,
+        conf
+      )
     )
   } else {
     return new Promise((resolve, reject) => {
       import(`@LLNG/logger-${wantedLogger}`)
         .then(mod => {
-          resolve(new mod(conf.logLevel, userLogger))
+          const cl = mod.default
+          resolve(new cl(conf.logLevel, userLogger, conf))
         })
         .catch(e => reject(e))
     })

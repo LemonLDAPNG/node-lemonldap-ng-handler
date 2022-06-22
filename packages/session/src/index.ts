@@ -23,7 +23,8 @@ class Session {
         new Promise((resolve, reject) => {
           import(`@LLNG/session-${this.aliases(opts.storageModule)}`)
             .then(mod => {
-              this.backend = new mod.default(opts.storageModuleOptions)
+              const cl = mod.default
+              this.backend = new cl(opts.storageModuleOptions)
               resolve(true)
             })
             .catch(e => {

@@ -1,7 +1,7 @@
 {
-  "name": "@LLNG/conf-file",
+  "name": "@LLNG/logger-syslog",
   "version": "0.6.0",
-  "description": "LLNG class for File configuration access",
+  "description": "LLNG syslog logger",
   "main": "./lib/index.js",
   "module": "./lib/index.mjs",
   "exports": {
@@ -22,6 +22,9 @@
     "LICENSE",
     "README.md"
   ],
+  "dependencies": {
+    "modern-syslog": "^1.2.0"
+  },
   "bugs": {
     "url": "https://gitlab.ow2.org/lemonldap-ng/lemonldap-ng/issues"
   },

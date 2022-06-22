@@ -35,7 +35,8 @@ class Conf {
     this.ready = new Promise<boolean>((resolve, reject) => {
       import(`@LLNG/conf-${confSection.type.toLowerCase()}`)
         .then(mod => {
-          this.module = new mod.default(confSection)
+          const cl = mod.default
+          this.module = new cl(confSection)
           resolve(true)
         })
         .catch(e => {

@@ -15,10 +15,6 @@
     }
   ],
   "homepage": "https://lemonldap-ng.org",
-  "directories": {
-    "lib": "lib",
-    "src": "src"
-  },
   "files": [
     "package.json",
     "lib",
@@ -26,8 +22,6 @@
     "LICENSE",
     "README.md"
   ],
-  "dependencies": {
-  },
   "bugs": {
     "url": "https://gitlab.ow2.org/lemonldap-ng/lemonldap-ng/issues"
   },

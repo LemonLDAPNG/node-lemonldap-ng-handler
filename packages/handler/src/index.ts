@@ -32,8 +32,8 @@ export const init = (args: Handler_Args) => {
     } else {
       import('@LLNG/handler-' + args.type.toLowerCase())
         .then(mod => {
-          currentClass = mod
-          currentHandler = new mod.default(args)
+          currentClass = mod.default
+          currentHandler = new currentClass(args)
           currentHandler.init().then(() => resolve(currentHandler))
         })
         .catch(e => reject(e))
