@@ -134,9 +134,6 @@ npm install lemonldap-ng-handler
 Node-lemonldap-ng-handler uses LemonLDAP::NG configuration file, sections
 `[configuration]` and `[node-handler]`.
 
-> **Note important**: lemonldap-ng-handler can't read multilines in
-lemonldap-ng.ini. You must rewrite them on one line *(even in other sections)*.
-
 #### Sections `[all]` and `[configuration]`
 
 Nothing to change, but lemonldap-ng-handler isn't compatible with all
