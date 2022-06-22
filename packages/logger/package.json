@@ -1,7 +1,7 @@
 {
-  "name": "node-lemonldap-ng-handler",
-  "version": "0.5.1",
-  "description": "LemonLDAP::NG handler for Node.js",
+  "name": "@LLNG/logger",
+  "version": "0.6.0",
+  "description": "LLNG class for loggers",
   "main": "./lib/index.js",
   "module": "./lib/index.mjs",
   "exports": {
@@ -10,11 +10,15 @@
   },
   "maintainers": [
     {
-      "name": "Xavier Guimard",
+      "name": "Yadd",
       "email": "yadd@debian.org"
     }
   ],
   "homepage": "https://lemonldap-ng.org",
+  "directories": {
+    "lib": "lib",
+    "src": "src"
+  },
   "files": [
     "package.json",
     "lib",
@@ -23,7 +27,6 @@
     "README.md"
   ],
   "dependencies": {
-    "lemonldap-ng-handler": "^0.5.4"
   },
   "bugs": {
     "url": "https://gitlab.ow2.org/lemonldap-ng/lemonldap-ng/issues"
@@ -40,8 +43,12 @@
     "SSOaaS"
   ],
   "authors": [
-    "Xavier Guimard <yadd@debian.org>"
+    "Yadd <yadd@debian.org>"
   ],
   "license": "GPL-2.0-or-later",
-  "llng-compat": "2.0.5"
+  "llng-compat": "2.0.5",
+  "scripts": {
+    "test": "jest",
+    "build": "rollup -c"
+  }
 }

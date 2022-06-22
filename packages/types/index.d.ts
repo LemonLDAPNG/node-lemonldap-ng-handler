@@ -18,6 +18,7 @@ declare type LLNG_Conf = {
   globalStorage: string | undefined
   globalStorageOptions: Backend_Options
   exportedHeaders?: { [k: string]: string }
+  logLevel?: LogLevel
   [key: string]: any
 }
 
@@ -92,4 +93,18 @@ export type LLNG_IniFile = {
   handler?: IniSection
   manager?: IniSection
   'node-handler'?: IniSection
+}
+
+/**
+ * Loggers
+ */
+
+declare type LogLevel = 'debug' | 'info' | 'notice' | 'warn' | 'error'
+
+declare interface LLNG_Logger {
+  debug(txt: string): void
+  info(txt: string): void
+  notice(txt: string): void
+  warn(txt: string): void
+  error(txt: string): void
 }
