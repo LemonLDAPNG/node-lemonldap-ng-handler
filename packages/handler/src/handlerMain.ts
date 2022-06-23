@@ -54,15 +54,19 @@ class LemonldapNGHandler extends HandlerInit {
                 this.sendHeaders(req, session)
                 this.hideCookie(req)
                 next()
-                this.userLogger.info(`${vhost}: user ${user} was granted access to ${uri}`)
+                this.userLogger.info(
+                  `${vhost}: user ${user} was granted access to ${uri}`
+                )
               } else {
                 this.forbidden(req, res, session)
-                this.userLogger.notice(`${vhost}: user ${user} was denied access to ${uri}`)
+                this.userLogger.notice(
+                  `${vhost}: user ${user} was denied access to ${uri}`
+                )
               }
             })
             .catch(e => {
               console.error(e)
-              this.setError(res, '/', 500, 'Server error')
+              this.setError(res, '/', 503, 'Service Unavailable')
             })
         })
         .catch(e => {
@@ -149,6 +153,7 @@ class LemonldapNGHandler extends HandlerInit {
   retrieveSession (id: string) {
     return new Promise<LLNG_Session>((resolve, reject) => {
       if (this.sessionAcc === undefined)
+        // istanbul ignore next
         return reject('Server not ready, please wait')
       this.sessionAcc
         .get(id)
@@ -232,6 +237,7 @@ class LemonldapNGHandler extends HandlerInit {
       })
     } catch (e) {
       console.error(`Headers maybe not sent: ${e}`)
+      // istanbul ignore next
       return
     }
   }
@@ -256,6 +262,7 @@ class LemonldapNGHandler extends HandlerInit {
   goToPortal (res: http.ServerResponse, uri: string, args: string = '') {
     if (typeof this.tsv.portal !== 'function') {
       this.setError(res, uri, 503, 'Waiting for configuration')
+      // istanbul ignore next
       return
     }
     const urlc =

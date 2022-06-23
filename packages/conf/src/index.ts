@@ -31,6 +31,7 @@ class Conf {
     )
     if (confSection === undefined) throw new Error('Unknown error')
     if (!confSection.type)
+      // istanbul ignore next
       throw new Error('Configuration.type is missing in lemonldap-ng.ini')
     this.ready = new Promise<boolean>((resolve, reject) => {
       import(`@lemonldap-ng/conf-${confSection.type.toLowerCase()}`)
@@ -40,6 +41,7 @@ class Conf {
           resolve(true)
         })
         .catch(e => {
+          // istanbul ignore next
           reject(e)
         })
     })
@@ -48,6 +50,7 @@ class Conf {
   getConf (args: getConf_Args = {}) {
     return new Promise<LLNG_Conf>((resolve, reject) => {
       if (this.module === undefined)
+        // istanbul ignore next
         return reject('Conf backend not initialized, please wait')
       this.module.lastCfg().then((cn: number) => {
         args.cfgNum || (args.cfgNum = cn)
@@ -55,7 +58,9 @@ class Conf {
         // @ts-ignore: this.module is defined
         this.module.load(args.cfgNum).then(rawConf => {
           if (!rawConf.key || typeof rawConf.key !== 'string') {
+            // istanbul ignore next
             console.error('Key not defined in configuration')
+            // istanbul ignore next
             rawConf.key = ''
           }
           if (!args.raw) rawConf.cipher = new crypto(rawConf.key)
@@ -68,6 +73,7 @@ class Conf {
   getLocalConf (section: LLNG_IniSection, loadDefault: boolean = false) {
     try {
       if (!this.localConf.confFile)
+        // istanbul ignore next
         this.localConf.confFile =
           process.env.LLNG_DEFAULTCONFFILE ||
           '/etc/lemonldap-ng/lemonldap-ng.ini'
@@ -79,8 +85,10 @@ class Conf {
         )
       )
       if (iniContent === undefined)
+        // istanbul ignore next
         throw new Error('Unable to get data from lemonldap-ng.ini')
-      const res: IniSection = loadDefault && iniContent.all ? iniContent.all : {}
+      const res: IniSection =
+        loadDefault && iniContent.all ? iniContent.all : {}
       if (iniContent[section] === undefined) return res
       Object.keys(iniContent[section] as IniSection).forEach(k => {
         // @ts-ignore: iniContent[section] isn't undefined

@@ -39,6 +39,10 @@ test('store new conf', done => {
   })
 })
 
+test('unexistent conf', () => {
+  expect(cdbi.load(2)).rejects.toEqual('Configuration 2 not found')
+})
+
 test('read new conf', done => {
   cdbi
     .load(1)

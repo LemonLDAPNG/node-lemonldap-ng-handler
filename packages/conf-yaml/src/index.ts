@@ -18,6 +18,7 @@ class YAMLConf extends FileConf implements Conf_Accessor {
     return new Promise<number[]>((resolve, reject) => {
       fs.readdir(this.dirName, (err, files) => {
         if (err) {
+          // istanbul ignore next
           reject(err)
         } else {
           const res: number[] = []
@@ -39,15 +40,18 @@ class YAMLConf extends FileConf implements Conf_Accessor {
       )
       fs.access(filename, fs.constants.R_OK, err => {
         if (err) {
+          // istanbul ignore next
           reject(`Unable to read ${filename}: ${err}`)
         } else {
           fs.readFile(filename, (err, data) => {
             if (err) {
+              // istanbul ignore next
               reject(`Unable to read ${filename}: ${err}`)
             } else {
               try {
                 return resolve(yaml.load(data.toString()) as LLNG_Conf)
               } catch (err) {
+                // istanbul ignore next
                 reject(`YAML parsing error: ${err}`)
               }
             }
@@ -67,6 +71,7 @@ class YAMLConf extends FileConf implements Conf_Accessor {
         err => {
           process.umask(mask)
           if (err) {
+            // istanbul ignore next
             reject(`Unable to write lmConf-${fields.cfgNum.toString()}.yaml`)
           } else {
             resolve(true)

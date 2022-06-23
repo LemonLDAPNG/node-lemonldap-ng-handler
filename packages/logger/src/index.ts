@@ -36,6 +36,7 @@ export default (conf: LLNG_Conf, userLogger: boolean) => {
           const cl = mod.default
           resolve(new cl(conf.logLevel, userLogger, conf))
         })
+        // istanbul ignore next
         .catch(e => reject(e))
     })
   }

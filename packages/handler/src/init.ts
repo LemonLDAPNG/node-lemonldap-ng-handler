@@ -90,6 +90,7 @@ abstract class HandlerInit {
       })
     })
     if (this.localConf.nodeVhosts === undefined)
+      // istanbul ignore next
       throw new Error('No Virtualhosts configured for Node.js')
     this.vhostList = this.localConf.nodeVhosts.split(/[,\s]+/)
   }
@@ -138,13 +139,15 @@ abstract class HandlerInit {
 
             //['global','oidc'].forEach
             if (!conf['globalStorage'] || !conf['globalStorageOptions'])
-              throw new Error('Bad session storage coniguration')
+              // istanbul ignore next
+              throw new Error('Missing session storage configuration')
             try {
               this.sessionAcc = new Session({
                 storageModule: conf['globalStorage'],
                 storageModuleOptions: conf['globalStorageOptions']
               })
             } catch (e) {
+              // istanbul ignore next
               throw new Error(`Unable to load session module: ${e}`)
             }
 
@@ -185,7 +188,9 @@ abstract class HandlerInit {
                 }
               })
               if (!this.tsv.defaultCondition[vhost]) {
+                // istanbul ignore next
                 this.tsv.defaultCondition[vhost] = () => true
+                // istanbul ignore next
                 this.tsv.defaultProtection[vhost] = 0
               }
             })
@@ -238,17 +243,19 @@ abstract class HandlerInit {
             this.sessionAcc.ready.then(() => {
               resolve(true)
               Logger(conf, true)
-              .then(logger => {
-                this.userLogger = logger
-                resolve(true)
-              })
-              .catch(e => {
-                console.error('Logger error', e)
-                throw new Error(e)
-              })
+                .then(logger => {
+                  this.userLogger = logger
+                  resolve(true)
+                })
+                .catch(e => {
+                  console.error('Logger error', e)
+                  // istanbul ignore next
+                  throw new Error(e)
+                })
             })
           })
           .catch((e: string) => {
+            // istanbul ignore next
             reject(`Unable to get configuration: ${e}`)
           })
       })
@@ -295,6 +302,7 @@ abstract class HandlerInit {
       // @ts-ignore: cts is also a context
       return [ctx[`sub${sid.toString()}`], 0]
     } else {
+      // istanbul ignore next
       throw new Error('Disabling safeJail is not supported')
     }
   }

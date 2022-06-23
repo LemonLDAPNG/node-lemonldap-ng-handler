@@ -1,4 +1,8 @@
-import { LLNG_Session, Session_Accessor, Backend_Options } from '@lemonldap-ng/types'
+import {
+  LLNG_Session,
+  Session_Accessor,
+  Backend_Options
+} from '@lemonldap-ng/types'
 import { LimitedCache, LimitedCacheInstance } from 'limited-cache'
 import nodePersist from 'node-persist'
 import path from 'path'
@@ -55,6 +59,7 @@ class Session {
         })
       ])
         .then(() => gresolve(true))
+        // istanbul ignore next
         .catch(e => greject(e))
     })
     this.inMemoryCache = LimitedCache<LLNG_Session>({
@@ -73,6 +78,7 @@ class Session {
   get (id: string) {
     return new Promise<LLNG_Session>((resolve, reject) => {
       if (this.backend === undefined)
+        // istanbul ignore next
         return reject('Please wait for initialization')
       const backendGet = (
         id: string,
@@ -109,6 +115,7 @@ class Session {
   update (data: LLNG_Session): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
       if (this.backend === undefined)
+        // istanbul ignore next
         return reject('Please wait for initialization')
       this.backend
         .update(data)
@@ -118,6 +125,7 @@ class Session {
           resolve(res)
         })
         .catch(e => {
+          // istanbul ignore next
           reject(e)
         })
     })

@@ -10,10 +10,12 @@ class FileSession implements Session_Accessor {
 
   constructor (args: SessionFile_Args) {
     if (!args.Directory) {
+      // istanbul ignore next
       throw new Error("'Directory' is required in 'File' configuration type")
     }
     this.dir = args.Directory
     if (!fs.lstatSync(this.dir).isDirectory()) {
+      // istanbul ignore next
       throw new Error(`Directory ${this.dir} doesn't exist`)
     }
   }
@@ -25,6 +27,7 @@ class FileSession implements Session_Accessor {
         try {
           resolve(JSON.parse(data.toString()))
         } catch (err) {
+          // istanbul ignore next
           reject(`Error when parsing session file (${err})`)
         }
       })

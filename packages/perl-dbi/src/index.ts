@@ -32,11 +32,13 @@ import knex from 'knex'
 export type PerlDBI_Client = Knex
 
 export default function PerlDBI (args: PerlDBI_Args): PerlDBI_Client {
-  if (!args.dbiChain.match(/^dbi:(SQLite|Pg|mysql):(.*)/)) {
+  if (!args.dbiChain.match(/^dbi:(SQLite|Pg|mysql):(.*)/))
+    // istanbul ignore next
     throw new Error(`Invalid dbiChain: ${args.dbiChain}`)
-  }
+
   const type: DB | undefined = btype[RegExp.$1 as keyof typeof btype] as DB
   if (!type) {
+    // istanbul ignore next
     throw new Error(`Unsupported database type: ${RegExp.$1}`)
   }
   const dbArgs: Knex.Config = {}
@@ -51,6 +53,7 @@ export default function PerlDBI (args: PerlDBI_Args): PerlDBI_Client {
         // @ts-ignore
         dbArgs.connection[k] = kv[2]
       } else {
+        // istanbul ignore next
         throw new Error(`Unknown DB argument ${k}`)
       }
     }
@@ -58,10 +61,12 @@ export default function PerlDBI (args: PerlDBI_Args): PerlDBI_Client {
   if (type === 'sqlite3') {
     // @ts-ignore
     if (!dbArgs.connection.filename) {
+      // istanbul ignore next
       throw new Error('database should be defined')
     }
     // @ts-ignore
     if (!/^(?:\.|\/)/.test(dbArgs.connection.filename)) {
+      // istanbul ignore next
       throw new Error('database must be a path')
     }
     dbArgs.useNullAsDefault = true

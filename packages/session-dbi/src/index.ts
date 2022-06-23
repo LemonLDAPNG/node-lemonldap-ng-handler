@@ -1,6 +1,10 @@
 import PerlDBI from 'perl-dbi'
 import { PerlDBI_Client, PerlDBI_Args } from 'perl-dbi'
-import { Apache_Session, LLNG_Session, Session_Accessor } from '@lemonldap-ng/types'
+import {
+  Apache_Session,
+  LLNG_Session,
+  Session_Accessor
+} from '@lemonldap-ng/types'
 export type SessionDBI_Args = {
   DataSource: string
   UserName: string | undefined
@@ -44,6 +48,7 @@ abstract class DBISession implements Session_Accessor {
         .where('id', '=', data._session_id)
         .update({ a_session: JSON.stringify(data) })
         .then(() => resolve(true))
+        // istanbul ignre next
         .catch(e => reject(e))
     })
   }

@@ -45,6 +45,7 @@ class Crypto {
     const newhmac = sha('sha256')
       .update(bufRes)
       .digest()
+    // istanbul ignore next
     if (!hmac.equals(newhmac)) throw new Error('Bad hmac')
     const z = bufRes.indexOf('\0')
     if (z > 0) bufRes = bufRes.slice(0, z + 1)

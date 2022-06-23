@@ -48,7 +48,7 @@ class ExtdFunc {
         if (typeof groups[k][attr] === 'string') {
           if (match(<string>groups[k][attr])) return true
         } else {
-          (<string[]>groups[k][attr]).forEach(val => {
+          ;(<string[]>groups[k][attr]).forEach(val => {
             if (match(val)) return true
           })
         }
@@ -69,6 +69,8 @@ class ExtdFunc {
     timeCorrection: string,
     defaultAccess: number = 0
   ) {
+    // istanbul ignore next
+    if (!logonHours) return defaultAccess
     const tc = parseInt(timeCorrection)
     const d = new Date()
     const hourPos = d.getDay() * 24 + d.getHours() + tc
@@ -132,6 +134,7 @@ class ExtdFunc {
 class SafeLib extends ExtdFunc {
   constructor (conf: LLNG_Conf) {
     if (conf.cipher === undefined)
+      // istanbul ignore next
       throw new Error('a @lemonldap-ng/cripto object is required')
     super(conf.cipher)
     vm.createContext(this)

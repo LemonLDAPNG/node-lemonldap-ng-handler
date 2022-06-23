@@ -13,11 +13,17 @@ class LemonldapNGHandlerServiceToken extends LemonldapNGHandler {
     if (token) {
       // Decrypt token
       // Format: encrypt(time:_session_id:vhost1:vhost2,...)
-      const tokenElement = this.tsv.cipher.decrypt(token).split(':')
+      let tokenElement
+      try {
+        tokenElement = this.tsv.cipher.decrypt(token).split(':')
+      } catch (e) {
+        this.userLogger.error('Invalid token')
+        return ''
+      }
 
       // At least one vhost is required
       if (!tokenElement[2]) {
-        console.warn('Bad service token')
+        this.userLogger.error('Bad service token')
         return ''
       }
 
@@ -25,7 +31,7 @@ class LemonldapNGHandlerServiceToken extends LemonldapNGHandler {
       const now = Date.now() / 1000
       const tokenTime = parseInt(tokenElement[0])
       if (tokenTime < now - 30 || tokenTime > now) {
-        console.warn('Expired service token')
+        this.userLogger.warn('Expired service token')
         return ''
       }
 

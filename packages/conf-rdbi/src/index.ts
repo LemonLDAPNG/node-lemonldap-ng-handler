@@ -24,6 +24,7 @@ class CDBI extends DBI implements Conf_Accessor {
             await trx(this.table).insert(fields)
           })
           .then(() => resolve(true))
+          // istanbul ignore next
           .catch(e => reject(e))
       })
     })
@@ -37,6 +38,7 @@ class CDBI extends DBI implements Conf_Accessor {
         .where('cfgNum', '=', cfgNum)
         .then(rows => {
           if (rows.length === 0) {
+            // istanbul ignore next
             reject(`Configuration ${cfgNum} not found`)
           } else {
             const res: Serialized = {}
@@ -47,6 +49,7 @@ class CDBI extends DBI implements Conf_Accessor {
           }
         })
         .catch(e => {
+          // istanbul ignore next
           reject(e)
         })
     })
@@ -68,6 +71,7 @@ class CDBI extends DBI implements Conf_Accessor {
         // @ts-expect-error TS2345: Argument of type 'string | number | boolean' is not assignable to parameter of type 'string'
         res[k] = k.match(hashParameters) ? JSON.parse(cfg[k]) : cfg[k]
       } catch (e) {
+        // istanbul ignore next
         throw new Error(`Error when parsing ${k} field: (${e})`)
       }
     })

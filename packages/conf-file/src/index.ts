@@ -11,10 +11,12 @@ class FileConf implements Conf_Accessor {
 
   constructor (args: FileArgs) {
     if (!args.dirName) {
+      // istanbul ignore next
       throw new Error("'dirName' is required in 'File' configuration type")
     }
     this.dirName = args.dirName
     if (!fs.lstatSync(this.dirName).isDirectory()) {
+      // istanbul ignore next
       throw new Error(`Directory ${this.dirName} doesn't exist`)
     }
   }
@@ -23,6 +25,7 @@ class FileConf implements Conf_Accessor {
     return new Promise<number[]>((resolve, reject) => {
       fs.readdir(this.dirName, (err, files) => {
         if (err) {
+          // istanbul ignore next
           reject(err)
         } else {
           const res: number[] = []
@@ -48,6 +51,7 @@ class FileConf implements Conf_Accessor {
           }
         })
         .catch(err => {
+          // istanbul ignore next
           reject(err)
         })
     })
@@ -58,15 +62,18 @@ class FileConf implements Conf_Accessor {
       const filename = path.join(this.dirName, `lmConf-${cfgNum.toString()}.json`)
       fs.access(filename, fs.constants.R_OK, err => {
         if (err) {
+          // istanbul ignore next
           reject(`Unable to read ${filename}: ${err}`)
         } else {
           fs.readFile(filename, (err, data) => {
             if (err) {
+              // istanbul ignore next
               reject(`Unable to read ${filename}: ${err}`)
             } else {
               try {
                 return resolve(JSON.parse(data.toString()))
               } catch (err) {
+                // istanbul ignore next
                 reject(`JSON parsing error: ${err}`)
               }
             }

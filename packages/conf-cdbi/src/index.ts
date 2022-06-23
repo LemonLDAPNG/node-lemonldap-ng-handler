@@ -18,6 +18,7 @@ class CDBI extends DBI implements Conf_Accessor {
               resolve(true)
             })
             .catch(e => {
+              // istanbul ignore next
               reject(e)
             })
         } else {
@@ -30,6 +31,7 @@ class CDBI extends DBI implements Conf_Accessor {
               resolve(true)
             })
             .catch(e => {
+              // istanbul ignore next
               reject(e)
             })
         }
@@ -51,6 +53,7 @@ class CDBI extends DBI implements Conf_Accessor {
           }
         })
         .catch(e => {
+          // istanbul ignore next
           reject(e)
         })
     })

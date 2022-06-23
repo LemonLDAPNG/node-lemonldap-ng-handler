@@ -12,8 +12,10 @@ const lmconfTmp = path.join(__dirname, '__testData__', 'lmConf-1.json')
 const sessionsDir = path.join(__dirname, '__testData__', 'sessions')
 const sessionSrc = path.join(__dirname, '__testData__', 'session.json')
 
+const crypto = new Crypto('azertyyuio')
+
 const cipher = new SafeLib({
-  cipher: new Crypto('azertyyuio')
+  cipher: crypto
 })
 
 let app
@@ -50,6 +52,12 @@ beforeAll(() => {
     path.join(sessionsDir, 'rtylersession'),
     JSON.stringify(content)
   )
+})
+
+let warnSpy, errorSpy
+beforeEach(() => {
+  warnSpy = jest.spyOn(console, 'warn')
+  errorSpy = jest.spyOn(console, 'error')
 })
 
 afterAll(() => {
@@ -145,6 +153,15 @@ describe('Main', () => {
         done()
       })
   })
+
+  it("Should return an error if host isn't configured", done => {
+    agent('dwho', '/', 'test3.example.com')
+      .expect(503)
+      .end( (err,res) => {
+        if (err) return done(err)
+        done()
+      })
+  })
 })
 
 describe('handlerServiceToken', () => {
@@ -159,6 +176,11 @@ describe('handlerServiceToken', () => {
         throw new Error(e)
       })
   })
+
+  afterEach(() => {
+    jest.clearAllMocks()
+  })
+
   it('should works with user', done => {
     agent('dwho', '/headers')
       .expect(200)
@@ -170,6 +192,7 @@ describe('handlerServiceToken', () => {
         done()
       })
   })
+
   it('should accept valid token', done => {
     agentSt(cipher.token('dwhosession', 'test1.example.com'), '/headers')
       .expect(200)
@@ -179,6 +202,50 @@ describe('handlerServiceToken', () => {
         expect(headers['Auth-User']).toEqual('dwho')
         done()
       })
+  })
+
+  describe('errors', () => {
+    it('should reject invalid token', done => {
+      agentSt(
+        [
+          parseInt(Math.trunc(Date.now() / 1000)),
+          'dwhosession',
+          'test1.example.com'
+        ].join(':'),
+        '/headers'
+      )
+        .expect(302)
+        .end((err, res) => {
+          if (err) return done(err)
+          expect(res.headers.location).toMatch(
+            new RegExp('^http://auth.example.com/\\?url=')
+          )
+          expect(errorSpy).toHaveBeenCalledWith('Invalid token')
+          done()
+        })
+    })
+
+    it('should reject expired token', done => {
+      agentSt(
+        crypto.encrypt(
+          [
+            parseInt(Math.trunc(Date.now() / 1000) - 31),
+            'dwhosession',
+            'test1.example.com'
+          ].join(':')
+        ),
+        '/headers'
+      )
+        .expect(302)
+        .end((err, res) => {
+          if (err) return done(err)
+          expect(res.headers.location).toMatch(
+            new RegExp('^http://auth.example.com/\\?url=')
+          )
+          expect(warnSpy).toHaveBeenCalledWith('Expired service token')
+          done()
+        })
+    })
   })
 })
 
@@ -196,6 +263,8 @@ const agentSt = (token, path = '/', host = 'test1.example.com') => {
     .agent(app)
     .host(host)
     .get(path)
-    .set({ 'X-Llng-Token': token })
+    .set({
+      'X-Llng-Token': token
+    })
     .send()
 }
