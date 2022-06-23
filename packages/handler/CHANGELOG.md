@@ -1,6 +1,11 @@
 Changelog
 =========
 
+## 0.6.1
+
+ * More tests
+ * Fix HTTP error codes
+
 ## 0.6.0
 
  * Rewrite to Typescript and then find and fix a lot of bugs

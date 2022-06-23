@@ -48,7 +48,7 @@ class ExtdFunc {
         if (typeof groups[k][attr] === 'string') {
           if (match(<string>groups[k][attr])) return true
         } else {
-          ;(<string[]>groups[k][attr]).forEach(val => {
+          (<string[]>groups[k][attr]).forEach(val => {
             if (match(val)) return true
           })
         }

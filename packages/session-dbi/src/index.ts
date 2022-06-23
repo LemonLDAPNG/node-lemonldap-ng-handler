@@ -48,7 +48,7 @@ abstract class DBISession implements Session_Accessor {
         .where('id', '=', data._session_id)
         .update({ a_session: JSON.stringify(data) })
         .then(() => resolve(true))
-        // istanbul ignre next
+        // istanbul ignore next
         .catch(e => reject(e))
     })
   }
