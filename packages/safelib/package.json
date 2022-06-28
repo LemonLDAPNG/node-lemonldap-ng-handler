@@ -1,6 +1,6 @@
 {
   "name": "@lemonldap-ng/safelib",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "lemonldap-ng safe library",
   "main": "./lib/index.js",
   "module": "./lib/index.mjs",

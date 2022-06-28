@@ -1,6 +1,6 @@
 {
   "name": "@lemonldap-ng/session-postgres",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "lemonldap-ng class for PostgreSQL session access",
   "main": "./lib/index.js",
   "module": "./lib/index.mjs",
@@ -22,7 +22,7 @@
     "*.md"
   ],
   "dependencies": {
-    "@lemonldap-ng/session-dbi": "^0.6.0",
+    "@lemonldap-ng/session-dbi": "^0.6.1",
     "pg": "^8.7.3"
   },
   "bugs": {

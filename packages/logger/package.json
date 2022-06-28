@@ -1,6 +1,6 @@
 {
   "name": "@lemonldap-ng/logger",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "lemonldap-ng class for loggers",
   "main": "./lib/index.js",
   "module": "./lib/index.mjs",
