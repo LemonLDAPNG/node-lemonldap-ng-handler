@@ -4,7 +4,7 @@ Changelog
 ## 0.6.1
 
  * More tests
- * Fix HTTP error codes
+ * Fix error codes
 
 ## 0.6.0
 

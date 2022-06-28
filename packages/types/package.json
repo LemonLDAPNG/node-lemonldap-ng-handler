@@ -15,7 +15,7 @@
     "package.json",
     "index.d.ts",
     "LICENSE",
-    "README.md"
+    "*.md"
   ],
   "bugs": {
     "url": "https://gitlab.ow2.org/lemonldap-ng/lemonldap-ng/issues"

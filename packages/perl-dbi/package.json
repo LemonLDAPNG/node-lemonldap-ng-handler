@@ -19,9 +19,8 @@
   "files": [
     "package.json",
     "lib",
-    "CHANGELOG.md",
     "LICENSE",
-    "README.md"
+    "*.md"
   ],
   "dependencies": {
     "knex": "^2.1.0"

@@ -18,9 +18,8 @@
   "files": [
     "package.json",
     "lib",
-    "CHANGELOG.md",
     "LICENSE",
-    "README.md"
+    "*.md"
   ],
   "dependencies": {
     "js-yaml": "^4.1.0"

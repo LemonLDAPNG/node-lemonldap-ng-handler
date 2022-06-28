@@ -18,9 +18,8 @@
   "files": [
     "package.json",
     "lib",
-    "CHANGELOG.md",
     "LICENSE",
-    "README.md"
+    "*.md"
   ],
   "dependencies": {
     "@lemonldap-ng/session-dbi": "^0.6.0",
