@@ -23,7 +23,7 @@
     "*.md"
   ],
   "dependencies": {
-    "@lemonldap-ng/session-dbi": "^0.6.1",
+    "@lemonldap-ng/session-dbi": "^0.6.2",
     "oracledb": "^5.4.0"
   },
   "bugs": {

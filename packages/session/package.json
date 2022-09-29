@@ -23,18 +23,18 @@
     "*.md"
   ],
   "dependencies": {
-    "@lemonldap-ng/crypto": "^0.6.1",
+    "@lemonldap-ng/crypto": "^0.6.2",
     "ini": "^3.0.0",
     "limited-cache": "^2.0.0",
     "node-persist": "^3.1.0"
   },
   "optionalDependencies": {
-    "@lemonldap-ng/session-file": "^0.6.1",
-    "@lemonldap-ng/session-ldap": "^0.6.1",
-    "@lemonldap-ng/session-mysql": "^0.6.1",
-    "@lemonldap-ng/session-postgres": "^0.6.1",
-    "@lemonldap-ng/session-redis": "^0.6.1",
-    "@lemonldap-ng/session-rest": "^0.6.1"
+    "@lemonldap-ng/session-file": "^0.6.2",
+    "@lemonldap-ng/session-ldap": "^0.6.2",
+    "@lemonldap-ng/session-mysql": "^0.6.2",
+    "@lemonldap-ng/session-postgres": "^0.6.2",
+    "@lemonldap-ng/session-redis": "^0.6.2",
+    "@lemonldap-ng/session-rest": "^0.6.2"
   },
   "bugs": {
     "url": "https://gitlab.ow2.org/lemonldap-ng/lemonldap-ng/issues"
