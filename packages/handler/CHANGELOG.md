@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 0.6.2
+ * Add missing types fields
+
 ## 0.6.1
 
  * More tests

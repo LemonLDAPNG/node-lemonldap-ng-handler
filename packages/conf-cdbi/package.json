@@ -1,9 +1,10 @@
 {
   "name": "@lemonldap-ng/conf-cdbi",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "description": "lemonldap-ng class for CDBI configuration access",
   "main": "./lib/index.js",
   "module": "./lib/index.mjs",
+  "types": "./lib/index.d.ts",
   "exports": {
     "import": "./lib/index.mjs",
     "require": "./lib/index.js"
