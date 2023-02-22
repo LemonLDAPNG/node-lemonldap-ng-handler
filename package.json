@@ -83,5 +83,8 @@
   "workspaces": [
     "packages/*",
     "!packages/node-lemonldap-ng-handler"
-  ]
+  ],
+  "optionalDependencies": {
+    "fsevents": "^2.3.2"
+  }
 }
