@@ -18,7 +18,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-      - run: npm i
+      - run: npm --version
+      - run: npm ci
       - run: ls -l node_modules/@lemonldap-ng/
       - run: npm run build
       - run: npm run test
