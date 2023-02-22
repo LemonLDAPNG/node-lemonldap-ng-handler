@@ -41,3 +41,9 @@ LLNG is designed in 3 kinds of elements:
 This module provide the Node.js handler and the FastCGI server.
 
 See [Lemonldap::NG website](http://lemonldap-ng.org) for more.
+
+## Copyright and license
+
+Copyright (C) 2016-present Yadd <yadd@debian.org>
+
+Licensed under [GNU GPL V3](./LICENSE)
