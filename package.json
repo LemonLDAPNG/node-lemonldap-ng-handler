@@ -72,7 +72,7 @@
     "nx": "15.7.2",
     "redis-mock": "^0.56.3",
     "rimraf": "^3.0.2",
-    "rollup": "^2.75.5",
+    "rollup": "^3.17.2",
     "rollup-plugin-cleaner": "^1.0.0",
     "rollup-plugin-copy": "^3.4.0",
     "sqlite3": "^5.1.4",

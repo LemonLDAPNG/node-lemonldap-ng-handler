@@ -25,7 +25,7 @@ function configure(esm, external) {
          cleaner({ targets: ['./lib']}),
          typescript(),
          commonjs(),
-         nodeResolve(),
+         nodeResolve({preferBuiltins: true}),
        ],
   }
 }
