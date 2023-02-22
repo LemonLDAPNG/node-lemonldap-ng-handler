@@ -2,5 +2,4 @@ lerna-debug.log
 node_modules/
 coverage/
 packages/*/lib/
-package-lock.json
 src/packages/lemonldap-ng-conf/test/cr.json
