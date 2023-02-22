@@ -54,5 +54,6 @@
     "build": "npm run check && npm run rollup",
     "check": "tsc --noEmit",
     "rollup": "rollup -c"
-  }
+  },
+  "gitHead": "e692ccc036459a940dc07ff6da5730cca87d2607"
 }

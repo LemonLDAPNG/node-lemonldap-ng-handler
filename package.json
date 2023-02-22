@@ -67,7 +67,7 @@
     "jest": "^28.1.0",
     "jest-mock-server": "^0.0.5",
     "ldap-server-mock": "^5.0.0",
-    "lerna": "^5.1.4",
+    "lerna": "^6.5.1",
     "normalize-url": "^7.0.3",
     "nx": "15.7.2",
     "redis-mock": "^0.56.3",
@@ -89,4 +89,3 @@
     "fsevents": "^2.3.2"
   }
 }
-
