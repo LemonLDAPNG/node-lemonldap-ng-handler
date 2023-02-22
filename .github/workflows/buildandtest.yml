@@ -18,7 +18,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-      - run: yarn --frozen-lockfile
+      - run: npm i
       - run: ls -l node_modules/@lemonldap-ng/
-      - run: yarn build
-      - run: yarn test
+      - run: npm run build
+      - run: npm run test
