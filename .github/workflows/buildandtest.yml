@@ -19,5 +19,6 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm i
+      - run: ls -l node_modules/@lemonldap-ng/
       - run: npm run build
       - run: npm run test
