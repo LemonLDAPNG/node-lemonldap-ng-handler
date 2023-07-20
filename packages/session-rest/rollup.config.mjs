@@ -18,12 +18,16 @@ function configure(esm, external) {
     external: esm ? ['node-fetch'] : ['node:http', 'node:https', 'node:stream', 'node:zlib', 'node:buffer', 'node:util', 'node:url', 'node:net', 'node:fs', 'node:path'],
     plugins: esm
      ? [
-         typescript(),
+         typescript({
+           exclude: ["**/__tests__", "**/*.test.ts"]
+         }),
          commonjs(),
        ]
      : [
          cleaner({ targets: ['./lib']}),
-         typescript(),
+         typescript({
+           exclude: ["**/__tests__", "**/*.test.ts"]
+         }),
          commonjs(),
          nodeResolve({preferBuiltins: true}),
        ],

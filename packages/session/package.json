@@ -56,7 +56,7 @@
   "license": "GPL-2.0-or-later",
   "llng-compat": "2.0.5",
   "scripts": {
-    "test": "jest",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest --preset ts-jest",
     "build": "rollup -c"
   }
 }

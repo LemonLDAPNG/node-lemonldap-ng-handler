@@ -22,10 +22,14 @@ function configure (esm, external) {
         },
     external: external,
     plugins: esm
-      ? [typescript(), commonjs()]
+      ? [typescript({
+          exclude: ["**/__tests__", "**/*.test.ts"]
+        }), commonjs()]
       : [
           cleaner({ targets: ['./lib']}),
-          typescript(),
+          typescript({
+            exclude: ["**/__tests__", "**/*.test.ts"]
+          }),
           commonjs()
           //terser(),
         ]

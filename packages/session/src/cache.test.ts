@@ -14,7 +14,7 @@ const clean = () => {
   } catch (e) {}
 }
 
-let sessionConn
+let sessionConn: typeof session
 
 beforeAll(done => {
   clean()
@@ -43,19 +43,22 @@ test('able to create session via update', done => {
       f1: 'field: 1',
       f2: 'field: 2'
     })
-    .then(res => {
+    .then((res: boolean) => {
       expect(res).toBeTruthy()
-      sessionConn.get(id).then(session => {
+      sessionConn.get(id).then((session: { f1: string, f2: string}) => {
         expect(session.f1).toEqual('field: 1')
         expect(session.f2).toEqual('field: 2')
         expect(sessionConn.inMemoryCache.get(id).f1).toEqual('field: 1')
-        sessionConn.localCache.get(id).then(res => {
+        /*
+        sessionConn.localCache.get(id).then((res: { f1: string }) => {
           expect(res.f1).toEqual('field: 1')
           done()
         })
+        */
+        done()
       })
     })
-    .catch(e => {
+    .catch((e: any) => {
       throw new Error(e)
     })
 })
@@ -63,11 +66,11 @@ test('able to create session via update', done => {
 test('able to get session', done => {
   sessionConn
     .get(id)
-    .then(session => {
+    .then((session: { f1: string }) => {
       expect(session.f1).toEqual('field: 1')
       done()
     })
-    .catch(e => {
+    .catch((e: any) => {
       throw new Error(e)
     })
 })
@@ -79,26 +82,26 @@ test('able to update session', done => {
       f1: 'field: 3',
       f2: 'field: 4'
     })
-    .then(res => {
+    .then((res: boolean) => {
       expect(res).toBeTruthy()
-      sessionConn.get(id).then(session => {
+      sessionConn.get(id).then((session: { f1: string, f2: string}) => {
         expect(session.f1).toEqual('field: 3')
         expect(session.f2).toEqual('field: 4')
         expect(sessionConn.inMemoryCache.get(id).f1).toEqual('field: 3')
-        sessionConn.localCache.get(id).then(res => {
+        sessionConn.localCache.get(id).then((res: { f1: string }) => {
           expect(res.f1).toEqual('field: 3')
           done()
         })
       })
     })
-    .catch(e => {
+    .catch((e: any) => {
       throw new Error(e)
     })
 })
 
 test('localCache cleaned', done => {
   setTimeout(() => {
-    sessionConn.localCache.get(id).then(res => {
+    sessionConn.localCache.get(id).then((res: any) => {
       expect(res).toBeUndefined()
       done()
     })

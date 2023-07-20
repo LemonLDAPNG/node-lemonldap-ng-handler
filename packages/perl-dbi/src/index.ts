@@ -3,8 +3,8 @@
  */
 export interface PerlDBI_Args {
   dbiChain: string
-  dbiUser: string | undefined
-  dbiPassword: string | undefined
+  dbiUser?: string | undefined
+  dbiPassword?: string | undefined
 }
 
 const btype = {

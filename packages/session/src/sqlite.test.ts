@@ -1,6 +1,6 @@
-const PerlDBI = require('perl-dbi')
-const session = require('..')
-const fs = require('fs')
+import PerlDBI from 'perl-dbi'
+import session from '..'
+import fs from 'fs'
 
 const db = `${__dirname}/db.sqlite`
 const dbiChain = `dbi:SQLite:dbname=${db}`
@@ -11,7 +11,7 @@ const clean = () => {
   } catch (e) {}
 }
 
-let sessionConn
+let sessionConn: session
 
 beforeAll(async () => {
   clean()
@@ -19,6 +19,7 @@ beforeAll(async () => {
   const conn = PerlDBI({
     dbiChain
   })
+  // @ts-ignore
   await conn.schema.createTable('sessions', function (table) {
     table.string('id')
     table.string('a_session')
@@ -34,10 +35,12 @@ beforeAll(async () => {
     storageModule: 'Apache::Session::Browseable::SQLite',
     storageModuleOptions: { DataSource: dbiChain }
   })
+  await sessionConn.ready
 })
 
 afterAll(() => {
   clean()
+  // @ts-ignore
   sessionConn.backend.db.destroy()
 })
 
@@ -55,6 +58,7 @@ test('able to get session', done => {
 
 test('able to update session', done => {
   sessionConn
+    // @ts-ignore
     .update({
       _session_id: 'aaaaaaaaaaaa',
       f1: 'field: 1',
