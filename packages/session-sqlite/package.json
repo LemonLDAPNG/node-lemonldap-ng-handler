@@ -1,6 +1,6 @@
 {
   "name": "@lemonldap-ng/session-sqlite",
-  "version": "0.6.2",
+  "version": "0.6.4",
   "description": "lemonldap-ng class for SQLite session access",
   "main": "./lib/index.js",
   "module": "./lib/index.mjs",
@@ -23,7 +23,7 @@
     "*.md"
   ],
   "dependencies": {
-    "@lemonldap-ng/session-dbi": "^0.6.2",
+    "@lemonldap-ng/session-dbi": "^0.6.4",
     "sqlite3": "^5.0.8"
   },
   "bugs": {

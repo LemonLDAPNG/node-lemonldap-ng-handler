@@ -1,6 +1,6 @@
 {
   "name": "lemonldap-ng-handler",
-  "version": "0.6.3",
+  "version": "0.6.4",
   "description": "LemonLDAP::NG handler for Node.js",
   "main": "./lib/index.js",
   "module": "./lib/index.mjs",
@@ -23,9 +23,9 @@
     "*.md"
   ],
   "dependencies": {
-    "@lemonldap-ng/conf": "^0.6.2",
-    "@lemonldap-ng/logger": "^0.6.2",
-    "@lemonldap-ng/session": "^0.6.2",
+    "@lemonldap-ng/conf": "^0.6.4",
+    "@lemonldap-ng/logger": "^0.6.4",
+    "@lemonldap-ng/session": "^0.6.4",
     "node-fastcgi": "^1.3.3",
     "normalize-url": "^7.0.3",
     "re2": "^1.17.7"
