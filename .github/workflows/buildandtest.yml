@@ -36,4 +36,4 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-      - run: npm audit
+      - run: npm audit --audit-level=high
