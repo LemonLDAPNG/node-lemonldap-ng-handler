@@ -78,7 +78,7 @@
     "rollup": "^3.17.2",
     "rollup-plugin-cleaner": "^1.0.0",
     "rollup-plugin-copy": "^3.4.0",
-    "sqlite3": "^5.1.4",
+    "sqlite3": "^5.1.6",
     "supertest": "^6.2.3",
     "ts-jest": "^29.1.1",
     "tslib": "^2.4.0",
