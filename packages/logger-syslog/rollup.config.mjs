@@ -1,3 +1,3 @@
-import config from '../../rollup.template.mjs';
+import config from "../../rollup.template.mjs";
 
-export default config( ['modern-syslog'] );
+export default config(["modern-syslog"]);

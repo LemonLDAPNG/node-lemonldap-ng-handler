@@ -10,31 +10,36 @@ import { FlatCompat } from "@eslint/eslintrc";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const compat = new FlatCompat({
-    baseDirectory: __dirname,
-    recommendedConfig: js.configs.recommended,
-    allConfig: js.configs.all
+  baseDirectory: __dirname,
+  recommendedConfig: js.configs.recommended,
+  allConfig: js.configs.all,
 });
 
-export default defineConfig([{
-    extends: compat.extends("eslint:recommended", "plugin:@typescript-eslint/eslint-recommended"),
+export default defineConfig([
+  {
+    extends: compat.extends(
+      "eslint:recommended",
+      "plugin:@typescript-eslint/eslint-recommended",
+    ),
 
     plugins: {
-        "@typescript-eslint": typescriptEslint,
+      "@typescript-eslint": typescriptEslint,
     },
 
     languageOptions: {
-        globals: {
-            ...globals.browser,
-            ...globals.jest,
-            ...globals.node,
-            Atomics: "readonly",
-            SharedArrayBuffer: "readonly",
-        },
+      globals: {
+        ...globals.browser,
+        ...globals.jest,
+        ...globals.node,
+        Atomics: "readonly",
+        SharedArrayBuffer: "readonly",
+      },
 
-        parser: tsParser,
-        ecmaVersion: 13,
-        sourceType: "module",
+      parser: tsParser,
+      ecmaVersion: 13,
+      sourceType: "module",
     },
 
     rules: {},
-}]);
+  },
+]);

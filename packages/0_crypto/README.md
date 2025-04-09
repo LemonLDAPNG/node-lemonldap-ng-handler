@@ -5,6 +5,7 @@
 This library is compatible with LemonLDAP::NG >= 2.0.5.
 
 Usage:
+
 ```js
 import Crypto from '@lemonldap-ng/crypto`;
 import {expect} from 'expect';

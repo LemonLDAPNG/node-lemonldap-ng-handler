@@ -5,5 +5,5 @@ node_js:
   - "16"
   - "18"
 before_script:
- - npm install
- - npm run build
+  - npm install
+  - npm run build

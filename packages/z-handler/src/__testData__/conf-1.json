@@ -1,64 +1,64 @@
 {
-   "key": "azertyyuio",
-   "authentication" : "Demo",
-   "cfgAuthor" : "The LemonLDAP::NG team",
-   "cfgDate" : "1627287638",
-   "cfgNum" : 1,
-   "cfgVersion" : "2.0.13",
-   "cookieName" : "lemonldap",
-   "demoExportedVars" : {
-      "cn" : "cn",
-      "mail" : "mail",
-      "uid" : "uid"
-   },
-   "domain" : "example.com",
-   "exportedHeaders" : {
-      "test1.example.com" : {
-         "Auth-Groups" : "$groups",
-         "Auth-User" : "$uid"
-      },
-      "test2.example.com" : {
-         "Auth-Groups" : "$groups",
-         "Auth-User" : "$uid"
-      },
-      "test3.example.com" : {
-         "Auth-Groups" : "$groups",
-         "Auth-User" : "$uid"
-      }
-   },
-   "exportedVars" : {},
-   "globalStorage" : "Apache::Session::File",
-   "globalStorageOptions" : {
-      "Directory" : "__SESSIONDIR__",
-      "LockDirectory" : "__SESSIONDIR__/lock",
-      "generateModule" : "Lemonldap::NG::Common::Apache::Session::Generate::SHA256"
-   },
-   "groups" : {},
-   "localSessionStorage" : "Cache::FileCache",
-   "localSessionStorageOptions" : {
-      "cache_depth" : 3,
-      "cache_root" : "__CACHEDIR__",
-      "default_expires_in" : 600,
-      "directory_umask" : "007",
-      "namespace" : "lemonldap-ng-sessions"
-   },
-   "locationRules" : {
-      "test1.example.com" : {
-         "^/dwho": "$uid == 'dwho'",
-         "^/deny": "deny",
-         "default" : "accept"
-      },
-      "test2.example.com" : {
-         "default" : "accept"
-      },
-      "test3.example.com" : {
-         "default" : "accept"
-      }
-   },
-   "portal" : "http://auth.example.com/",
-   "securedCookie" : 0,
-   "sessionDataToRemember" : {},
-   "timeout" : 72000,
-   "userDB" : "Same",
-   "whatToTrace" : "_whatToTrace"
+  "key": "azertyyuio",
+  "authentication": "Demo",
+  "cfgAuthor": "The LemonLDAP::NG team",
+  "cfgDate": "1627287638",
+  "cfgNum": 1,
+  "cfgVersion": "2.0.13",
+  "cookieName": "lemonldap",
+  "demoExportedVars": {
+    "cn": "cn",
+    "mail": "mail",
+    "uid": "uid"
+  },
+  "domain": "example.com",
+  "exportedHeaders": {
+    "test1.example.com": {
+      "Auth-Groups": "$groups",
+      "Auth-User": "$uid"
+    },
+    "test2.example.com": {
+      "Auth-Groups": "$groups",
+      "Auth-User": "$uid"
+    },
+    "test3.example.com": {
+      "Auth-Groups": "$groups",
+      "Auth-User": "$uid"
+    }
+  },
+  "exportedVars": {},
+  "globalStorage": "Apache::Session::File",
+  "globalStorageOptions": {
+    "Directory": "__SESSIONDIR__",
+    "LockDirectory": "__SESSIONDIR__/lock",
+    "generateModule": "Lemonldap::NG::Common::Apache::Session::Generate::SHA256"
+  },
+  "groups": {},
+  "localSessionStorage": "Cache::FileCache",
+  "localSessionStorageOptions": {
+    "cache_depth": 3,
+    "cache_root": "__CACHEDIR__",
+    "default_expires_in": 600,
+    "directory_umask": "007",
+    "namespace": "lemonldap-ng-sessions"
+  },
+  "locationRules": {
+    "test1.example.com": {
+      "^/dwho": "$uid == 'dwho'",
+      "^/deny": "deny",
+      "default": "accept"
+    },
+    "test2.example.com": {
+      "default": "accept"
+    },
+    "test3.example.com": {
+      "default": "accept"
+    }
+  },
+  "portal": "http://auth.example.com/",
+  "securedCookie": 0,
+  "sessionDataToRemember": {},
+  "timeout": 72000,
+  "userDB": "Same",
+  "whatToTrace": "_whatToTrace"
 }

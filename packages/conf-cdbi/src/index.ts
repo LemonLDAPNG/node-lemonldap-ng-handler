@@ -1,64 +1,64 @@
-import { LLNG_Conf, Conf_Accessor } from '@lemonldap-ng/types'
+import { LLNG_Conf, Conf_Accessor } from "@lemonldap-ng/types";
 
-import DBI from '@lemonldap-ng/conf-dbi'
+import DBI from "@lemonldap-ng/conf-dbi";
 
 class CDBI extends DBI implements Conf_Accessor {
-  store (fields: LLNG_Conf) {
-    const cfgNum: number = fields.cfgNum
-    const data = JSON.stringify(fields)
+  store(fields: LLNG_Conf) {
+    const cfgNum: number = fields.cfgNum;
+    const data = JSON.stringify(fields);
     return new Promise<boolean>((resolve, reject) => {
-      this.lastCfg().then(lastCfg => {
+      this.lastCfg().then((lastCfg) => {
         if (cfgNum == lastCfg) {
           this.db(this.table)
-            .where('cfgNum', '=', cfgNum)
+            .where("cfgNum", "=", cfgNum)
             .update({
-              data: data
+              data: data,
             })
             .then(() => {
-              resolve(true)
+              resolve(true);
             })
-            .catch(e => {
+            .catch((e) => {
               // istanbul ignore next
-              reject(e)
-            })
+              reject(e);
+            });
         } else {
           this.db(this.table)
             .insert({
               cfgNum: cfgNum,
-              data: data
+              data: data,
             })
             .then(() => {
-              resolve(true)
+              resolve(true);
             })
-            .catch(e => {
+            .catch((e) => {
               // istanbul ignore next
-              reject(e)
-            })
+              reject(e);
+            });
         }
-      })
-    })
+      });
+    });
   }
 
   // eslint-disable-next-line no-unused-vars
-  load (cfgNum: number, fields: string[] = ['*']) {
+  load(cfgNum: number, fields: string[] = ["*"]) {
     return new Promise<LLNG_Conf>((resolve, reject) => {
       this.db
-        .select('data')
+        .select("data")
         .from(this.table)
-        .where('cfgNum', '=', cfgNum)
-        .then(row => {
+        .where("cfgNum", "=", cfgNum)
+        .then((row) => {
           if (row.length != 1) {
-            reject(`Configuration ${cfgNum} not found`)
+            reject(`Configuration ${cfgNum} not found`);
           } else {
-            resolve(JSON.parse(row[0].data))
+            resolve(JSON.parse(row[0].data));
           }
         })
-        .catch(e => {
+        .catch((e) => {
           // istanbul ignore next
-          reject(e)
-        })
-    })
+          reject(e);
+        });
+    });
   }
 }
 
-export default CDBI
+export default CDBI;

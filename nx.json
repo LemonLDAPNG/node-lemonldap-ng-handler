@@ -3,10 +3,7 @@
     "default": {
       "runner": "@nrwl/nx-cloud",
       "options": {
-        "cacheableOperations": [
-          "build",
-          "test"
-        ],
+        "cacheableOperations": ["build", "test"],
         "accessToken": "YzY0YjE3ZGItOTYzZS00NGY5LWI1YmItNjNlODVhY2Y1MTFlfHJlYWQtd3JpdGU="
       }
     }
@@ -17,14 +14,9 @@
     }
   },
   "namedInputs": {
-    "default": [
-      "{projectRoot}/**/*",
-      "sharedGlobals"
-    ],
+    "default": ["{projectRoot}/**/*", "sharedGlobals"],
     "sharedGlobals": [],
-    "production": [
-      "default"
-    ]
+    "production": ["default"]
   },
   "$schema": "./node_modules/nx/schemas/nx-schema.json"
 }

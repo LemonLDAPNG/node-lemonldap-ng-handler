@@ -1,77 +1,77 @@
-import fetch from 'node-fetch'
-import { LLNG_Session, Session_Accessor } from '@lemonldap-ng/types'
+import fetch from "node-fetch";
+import { LLNG_Session, Session_Accessor } from "@lemonldap-ng/types";
 type SessionREST_Args = {
-  baseUrl: string
-  user?: string
-  password?: string
-}
+  baseUrl: string;
+  user?: string;
+  password?: string;
+};
 
 class RESTSession implements Session_Accessor {
-  baseUrl: string
-  user: string | undefined
-  password: string | undefined
+  baseUrl: string;
+  user: string | undefined;
+  password: string | undefined;
 
-  constructor (args: SessionREST_Args) {
+  constructor(args: SessionREST_Args) {
     if (!args.baseUrl)
-      throw new Error('baseUrl parameter is required in REST configuration')
+      throw new Error("baseUrl parameter is required in REST configuration");
 
     if (!args.baseUrl.match(/(https?):\/\/([^/:]+)(?::(\d+))?(.*)/))
-      throw new Error(`Bad URL ${args.baseUrl}`)
+      throw new Error(`Bad URL ${args.baseUrl}`);
 
-    this.baseUrl = args.baseUrl.replace(/\/+$/, '')
+    this.baseUrl = args.baseUrl.replace(/\/+$/, "");
     if (args.user) {
-      this.user = args.user
-      if (!args.password) throw new Error('password required')
-      this.password = args.password
+      this.user = args.user;
+      if (!args.password) throw new Error("password required");
+      this.password = args.password;
     }
   }
 
-  get (id: string) {
+  get(id: string) {
     return new Promise<LLNG_Session>((resolve, reject) => {
-      this.query('get', id)
+      this.query("get", id)
         .then((res: LLNG_Session) => {
-          resolve(res)
+          resolve(res);
         })
-        .catch(e => reject(e))
-    })
+        .catch((e) => reject(e));
+    });
   }
 
   // eslint-disable-next-line no-unused-vars
-  update (data: LLNG_Session) {
+  update(data: LLNG_Session) {
     return new Promise<boolean>((resolve, reject) => {
-      reject('TODO')
-    })
+      reject("TODO");
+    });
   }
 
-  query (method: string, query: string) {
+  query(method: string, query: string) {
     return new Promise<LLNG_Session>((resolve, reject) => {
       const headers: { Accept: string; Authorization?: string } = {
-        Accept: 'application/json'
-      }
+        Accept: "application/json",
+      };
       if (this.user) {
         headers.Authorization =
-          'Basic ' +
-          Buffer.from(`${this.user}:${this.password}`).toString('base64')
+          "Basic " +
+          Buffer.from(`${this.user}:${this.password}`).toString("base64");
       }
-      const url = this.baseUrl + (this.baseUrl.match(/\/$/) ? '' : '/') + query
+      const url = this.baseUrl + (this.baseUrl.match(/\/$/) ? "" : "/") + query;
       fetch(url, {
         method: method,
-        headers
+        headers,
       })
-        .then(response => {
+        .then((response) => {
           if (response.status !== 200) {
-            reject(response.status)
+            reject(response.status);
           } else {
-            return response.json() as Promise<LLNG_Session>
+            return response.json() as Promise<LLNG_Session>;
           }
         })
-        .then(value => {
-          if (typeof value !== 'object') return reject('Bad JSON response')
-          resolve(value as LLNG_Session)
+        .then((value) => {
+          if (typeof value !== "object") return reject("Bad JSON response");
+          resolve(value as LLNG_Session);
         })
-        .catch(err => reject(err))
-    })
+        .catch((err) => reject(err));
+    });
   }
 }
 
-export default RESTSession
+export default RESTSession;

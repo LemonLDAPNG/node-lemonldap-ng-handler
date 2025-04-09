@@ -1,83 +1,81 @@
-import { LLNG_Conf, Conf_Accessor } from '@lemonldap-ng/types'
-import { hashParameters } from '@lemonldap-ng/constants'
-import DBI from '@lemonldap-ng/conf-dbi'
+import { LLNG_Conf, Conf_Accessor } from "@lemonldap-ng/types";
+import { hashParameters } from "@lemonldap-ng/constants";
+import DBI from "@lemonldap-ng/conf-dbi";
 
-type Serialized = { [key: string]: string | number | boolean }
+type Serialized = { [key: string]: string | number | boolean };
 
 class CDBI extends DBI implements Conf_Accessor {
-  store (conf: LLNG_Conf) {
-    const cfgNum: number = conf.cfgNum
+  store(conf: LLNG_Conf) {
+    const cfgNum: number = conf.cfgNum;
     return new Promise<boolean>((resolve, reject) => {
-      this.lastCfg().then(lastCfg => {
+      this.lastCfg().then((lastCfg) => {
         this.db
-          .transaction(async trx => {
+          .transaction(async (trx) => {
             if (cfgNum == lastCfg) {
-              await trx(this.table)
-                .where('cfgNum', '=', lastCfg)
-                .del()
+              await trx(this.table).where("cfgNum", "=", lastCfg).del();
             }
-            const tmp = this.serialize(conf)
-            const fields: object[] = []
-            Object.keys(tmp).forEach(k => {
-              fields.push({ cfgNum: cfgNum, field: k, value: tmp[k] })
-            })
-            await trx(this.table).insert(fields)
+            const tmp = this.serialize(conf);
+            const fields: object[] = [];
+            Object.keys(tmp).forEach((k) => {
+              fields.push({ cfgNum: cfgNum, field: k, value: tmp[k] });
+            });
+            await trx(this.table).insert(fields);
           })
           .then(() => resolve(true))
           // istanbul ignore next
-          .catch(e => reject(e))
-      })
-    })
+          .catch((e) => reject(e));
+      });
+    });
   }
 
   // eslint-disable-next-line no-unused-vars
-  load (cfgNum: number, fields: string[] = ['*']) {
+  load(cfgNum: number, fields: string[] = ["*"]) {
     return new Promise<LLNG_Conf>((resolve, reject) => {
       this.db
-        .select('field', 'value')
+        .select("field", "value")
         .from(this.table)
-        .where('cfgNum', '=', cfgNum)
-        .then(rows => {
+        .where("cfgNum", "=", cfgNum)
+        .then((rows) => {
           if (rows.length === 0) {
             // istanbul ignore next
-            reject(`Configuration ${cfgNum} not found`)
+            reject(`Configuration ${cfgNum} not found`);
           } else {
-            const res: Serialized = {}
+            const res: Serialized = {};
             rows.map((row: { field: string; value: string }) => {
-              res[row.field] = row.value
-            })
-            resolve(this.unserialize(res))
+              res[row.field] = row.value;
+            });
+            resolve(this.unserialize(res));
           }
         })
-        .catch(e => {
+        .catch((e) => {
           // istanbul ignore next
-          reject(e)
-        })
-    })
+          reject(e);
+        });
+    });
   }
 
-  serialize (cfg: LLNG_Conf) {
-    const res: Serialized = {}
-    Object.keys(cfg).forEach(k => {
-      res[k] = k.match(hashParameters) ? JSON.stringify(cfg[k]) : cfg[k]
-    })
-    return res
+  serialize(cfg: LLNG_Conf) {
+    const res: Serialized = {};
+    Object.keys(cfg).forEach((k) => {
+      res[k] = k.match(hashParameters) ? JSON.stringify(cfg[k]) : cfg[k];
+    });
+    return res;
   }
 
-  unserialize (cfg: Serialized) {
+  unserialize(cfg: Serialized) {
     // @ts-expect-error TS2741: Property 'cfgNum' is missing in type '{}' but required in type 'LLNG_Conf'
-    const res: LLNG_Conf = {}
-    Object.keys(cfg).forEach(k => {
+    const res: LLNG_Conf = {};
+    Object.keys(cfg).forEach((k) => {
       try {
         // @ts-expect-error TS2345: Argument of type 'string | number | boolean' is not assignable to parameter of type 'string'
-        res[k] = k.match(hashParameters) ? JSON.parse(cfg[k]) : cfg[k]
+        res[k] = k.match(hashParameters) ? JSON.parse(cfg[k]) : cfg[k];
       } catch (e) {
         // istanbul ignore next
-        throw new Error(`Error when parsing ${k} field: (${e})`)
+        throw new Error(`Error when parsing ${k} field: (${e})`);
       }
-    })
-    return res
+    });
+    return res;
   }
 }
 
-export default CDBI
+export default CDBI;

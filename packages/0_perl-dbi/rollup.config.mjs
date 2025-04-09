@@ -1,3 +1,3 @@
-import config from '../../rollup.template.mjs';
+import config from "../../rollup.template.mjs";
 
-export default config(['knex']);
+export default config(["knex"]);

@@ -1,18 +1,18 @@
-import { Request } from 'express'
-import { ParamsDictionary } from 'express-serve-static-core'
-import { IncomingMessage } from 'http'
-import { ParsedQs } from 'qs'
-import LemonldapNGHandlerDevOps from './handlerDevOps'
-import LemonldapNGHandlerServiceToken from './handlerServiceToken'
+import { Request } from "express";
+import { ParamsDictionary } from "express-serve-static-core";
+import { IncomingMessage } from "http";
+import { ParsedQs } from "qs";
+import LemonldapNGHandlerDevOps from "./handlerDevOps";
+import LemonldapNGHandlerServiceToken from "./handlerServiceToken";
 
 class LemonldapNGHandlerDevOpsST extends LemonldapNGHandlerDevOps {
-  fetchId (
+  fetchId(
     req:
       | Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>
-      | IncomingMessage
+      | IncomingMessage,
   ): string {
-    return LemonldapNGHandlerServiceToken.prototype.fetchId.call(this, req)
+    return LemonldapNGHandlerServiceToken.prototype.fetchId.call(this, req);
   }
 }
 
-export default LemonldapNGHandlerDevOpsST
+export default LemonldapNGHandlerDevOpsST;
