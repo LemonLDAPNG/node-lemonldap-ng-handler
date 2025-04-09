@@ -28,7 +28,7 @@ test('encrypt and decrypt', () => {
 })
 
 test('token', () => {
-  let res = cipher.decrypt(safeLib.token('a', 'b')).split(':')
+  const res = cipher.decrypt(safeLib.token('a', 'b')).split(':')
   expect(res[1]).toEqual('a')
   expect(res[2]).toEqual('b')
   expect(res.length).toEqual(3)

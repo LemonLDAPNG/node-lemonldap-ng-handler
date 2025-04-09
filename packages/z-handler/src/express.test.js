@@ -71,7 +71,7 @@ afterAll(() => {
 describe('Main', () => {
   beforeAll(done => {
     // load express app
-    let mod = import('./__testData__/express-app.js')
+    import('./__testData__/express-app.js')
     .then(mod => {
       mod.default.then(res => {
         app = res
@@ -121,7 +121,7 @@ describe('Main', () => {
   test('It should reject /deny', done => {
     agent('dwho', '/deny')
       .expect(403)
-      .end((err, res) => {
+      .end((err) => {
         if (err) return done(err)
         done()
       })
@@ -130,7 +130,7 @@ describe('Main', () => {
   test('It should accept /dwho for dwho', done => {
     agent('dwho', '/dwho')
       .expect(200)
-      .end((err, res) => {
+      .end((err) => {
         if (err) return done(err)
         done()
       })
@@ -139,7 +139,7 @@ describe('Main', () => {
   test('It should deny /dwho for rtyler', done => {
     agent('rtyler', '/dwho')
       .expect(403)
-      .end((err, res) => {
+      .end((err) => {
         if (err) return done(err)
         done()
       })
@@ -160,7 +160,7 @@ describe('Main', () => {
   it("Should return an error if host isn't configured", done => {
     agent('dwho', '/', 'test3.example.com')
       .expect(503)
-      .end( (err,res) => {
+      .end( (err) => {
         if (err) return done(err)
         done()
       })

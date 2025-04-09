@@ -8,7 +8,7 @@ const dbiChain = `dbi:SQLite:dbname=${db}`
 const clean = () => {
   try {
     fs.unlinkSync(db)
-  } catch (e) {}
+  } catch (e) {console.debug(e)}
 }
 
 beforeAll(async () => {
@@ -34,7 +34,7 @@ beforeAll(async () => {
 afterAll(clean)
 
 test('able to search', done => {
-  let conn = PerlDBI({ dbiChain })
+  const conn = PerlDBI({ dbiChain })
   conn
     .select('cfgNum')
     .from('lmconfig')

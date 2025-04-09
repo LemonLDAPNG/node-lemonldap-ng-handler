@@ -11,7 +11,7 @@ const clean = () => {
   try {
     fs.rmSync(path.join(__dirname, id))
     fs.rmdirSync(realcache)
-  } catch (e) {}
+  } catch (e) {console.debug(e)}
 }
 
 let sessionConn: typeof session

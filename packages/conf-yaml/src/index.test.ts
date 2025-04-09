@@ -1,8 +1,7 @@
 'use strict'
 
-const YAMLConf = require('../')
+const YAMLConf = require("../")
 
-const fs = require('fs')
 const path = require('path')
 const { rimraf } = require('rimraf')
 const mkdirp = require('mkdirp')
@@ -26,8 +25,8 @@ beforeAll(async () => {
 afterAll(clean)
 
 test('store new conf', done => {
-  yamlConfs.store({ cfgNum: 1, f1: 'field 1' }).then(res => {
-    expect(res).toBeTrue
+  yamlConfs.store({ cfgNum: 1, f1: 'field 1', _utime: 11 }).then(res => {
+    expect(res).toBeTruthy()
     done()
   })
 })

@@ -9,7 +9,7 @@ afterAll(() => server.stop())
 beforeEach(() => server.reset())
 
 test('able to get session', done => {
-  const route = server.get(/^.*$/).mockImplementationOnce(ctx => {
+  server.get(/^.*$/).mockImplementationOnce((ctx) => {
     expect(ctx.originalUrl).toEqual(`/${id}`)
     ctx.status = 200
     ctx.body = `{"_session_id":"${id}","f1":"field 1"}`
@@ -19,11 +19,11 @@ test('able to get session', done => {
   const sessionConn = new sessionREST({ baseUrl })
   sessionConn
     .get(id)
-    .then(session => {
+    .then((session) => {
       expect(session.f1).toEqual('field 1')
       done()
     })
-    .catch(e => {
+    .catch((e) => {
       throw new Error(e)
     })
 })

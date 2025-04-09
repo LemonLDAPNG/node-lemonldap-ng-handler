@@ -113,8 +113,7 @@ class LemonldapNGHandlerDevOps extends LemonldapNGHandler {
             if (vhostConfig.rules && typeof vhostConfig.rules === 'object') {
               Object.keys(vhostConfig.rules).forEach((url: string) => {
                 const rule = new String(vhostConfig.rules[url]).valueOf()
-                let cond, prot
-                ;[cond, prot] = this.conditionSub(rule, this.safe[vhost])
+                const [cond, prot] = this.conditionSub(rule, this.safe[vhost])
                 if (url === 'default') {
                   this.tsv.defaultCondition[vhost] = cond
                   this.tsv.defaultProtection[vhost] = prot

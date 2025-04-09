@@ -8,7 +8,7 @@ afterAll(() => server.stop())
 beforeEach(() => server.reset())
 
 test('lastCfg', done => {
-  const route = server.get('/latest').mockImplementationOnce(ctx => {
+  server.get('/latest').mockImplementationOnce(ctx => {
     ctx.status = 200
     ctx.body = '{"cfgNum":1,"f1":"field 1"}'
   })
@@ -21,7 +21,7 @@ test('lastCfg', done => {
 })
 
 test('load', done => {
-  const route = server.get(/^.*$/).mockImplementationOnce(ctx => {
+  server.get(/^.*$/).mockImplementationOnce(ctx => {
     expect(ctx.originalUrl).toEqual('/1?full=1')
     ctx.status = 200
     ctx.body = '{"cfgNum":1,"f1":"field 1"}'
@@ -35,7 +35,7 @@ test('load', done => {
 })
 
 test('authentified load', done => {
-  const route = server.get(/^.*$/).mockImplementationOnce(ctx => {
+  server.get(/^.*$/).mockImplementationOnce(ctx => {
     expect(ctx.request.header.authorization).toEqual('Basic Zm9vOmJhcg==')
     ctx.status = 200
     ctx.body = '{"cfgNum":1,"f1":"field 2"}'
@@ -54,13 +54,13 @@ test('authentified load', done => {
 
 test('required fields', () => {
   expect(() => {
-    const r = new REST({})
+    new REST({})
   }).toThrow(/required/)
   expect(() => {
-    const r = new REST({ baseUrl: 'foo' })
+    new REST({ baseUrl: 'foo' })
   }).toThrow(/Bad URL/)
   expect(() => {
-    const r = new REST({
+    new REST({
       baseUrl: 'https://foo',
       user: 'foo'
     })

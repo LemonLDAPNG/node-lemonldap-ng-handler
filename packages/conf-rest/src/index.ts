@@ -47,7 +47,7 @@ class RESTConf implements Conf_Accessor {
     })
   }
 
-  load (cfgNum: number, fields: string[] = []) {
+  load (cfgNum: number) {
     return new Promise<LLNG_Conf>((resolve, reject) => {
       this.get(`${cfgNum}?full=1`)
         .then(res => resolve(res))
@@ -55,6 +55,7 @@ class RESTConf implements Conf_Accessor {
     })
   }
 
+  // eslint-disable-next-line no-unused-vars
   store (fields: LLNG_Conf) {
     return new Promise<boolean>((resolve, reject) => {
       reject('Not implemented for now')

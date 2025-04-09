@@ -16,6 +16,7 @@ class LemonldapNGHandlerServiceToken extends LemonldapNGHandler {
       let tokenElement
       try {
         tokenElement = this.tsv.cipher.decrypt(token).split(':')
+      // eslint-disable-next-line no-unused-vars
       } catch (e) {
         this.userLogger.error('Invalid token')
         return ''

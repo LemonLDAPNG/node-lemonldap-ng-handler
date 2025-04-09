@@ -32,7 +32,7 @@ class YAMLConf extends FileConf implements Conf_Accessor {
     })
   }
 
-  load (cfgNum: number, fields: string[] = []) {
+  load (cfgNum: number) {
     return new Promise<LLNG_Conf>((resolve, reject) => {
       const filename = path.join(
         this.dirName,

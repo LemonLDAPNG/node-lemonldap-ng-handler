@@ -22,7 +22,7 @@ describe('Standard logger', () => {
   })
 
   it('should display all levels', done => {
-    let stdLogger = Logger(conf, false)
+    const stdLogger = Logger(conf, false)
     stdLogger.then(logger => {
       const tested = ['debug', 'info', 'notice', 'error']
       tested.forEach(level => {
@@ -54,9 +54,9 @@ describe('uWsgi logger as userLogger', () => {
   let uwsgiSpy
 
   beforeEach(() => {
-    /* eslint-disable */
+     
     uwsgiSpy = jest.spyOn(uwsgi, 'log')
-    /* eslint-enable */
+     
     conf.logLevel = 'notice'
     conf.userLogger = 'Lemonldap::NG::Common::Logger::UWSGI'
   })

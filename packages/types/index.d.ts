@@ -14,7 +14,7 @@ declare type Backend_Options = {
 /* Lemonldap::NG configuration (stored into database */
 declare type LLNG_Conf = {
   cfgNum: number
-  cipher: Crypto | undefined
+  cipher?: Crypto | undefined
   globalStorage: string | undefined
   globalStorageOptions: Backend_Options
   exportedHeaders?: { [k: string]: string }

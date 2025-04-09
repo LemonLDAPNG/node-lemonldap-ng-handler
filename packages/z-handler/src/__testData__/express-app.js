@@ -26,6 +26,7 @@ const defer = new Promise((resolve, reject) => {
       })
       resolve(app)
     })
+    .catch(reject)
 })
 
 module.exports = defer

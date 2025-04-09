@@ -69,6 +69,7 @@ class LemonldapNGHandler extends HandlerInit {
               this.setError(res, '/', 503, 'Service Unavailable')
             })
         })
+        // eslint-disable-next-line no-unused-vars
         .catch(e => {
           /* Expired session */
           this.goToPortal(res, this.selfUri(<string>vhost, <string>uri))

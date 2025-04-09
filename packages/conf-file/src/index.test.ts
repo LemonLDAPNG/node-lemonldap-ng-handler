@@ -12,7 +12,7 @@ const clean = () => {
   try {
     fs.rmSync(dir, { recursive: true })
   } catch (e) {
-    //console.error(e)
+    console.debug(e)
   }
 }
 

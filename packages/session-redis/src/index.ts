@@ -40,28 +40,21 @@ class RedisSession implements Session_Accessor {
   }
 
   get (id: string) {
-    return new Promise<LLNG_Session>(async (resolve, reject) => {
-      try {
-        const data = await this.client.get(id)
-        if (data !== undefined) {
-          resolve(JSON.parse(data!))
-        } else {
-          reject('No session found')
-        }
-      } catch (e) {
-        reject(e)
-      }
+    return new Promise<LLNG_Session>((resolve, reject) => {
+        this.client.get(id).then(data => {
+            if (data !== undefined) {
+              resolve(JSON.parse(data!))
+            } else {
+              reject('No session found')
+            }
+        })
+      .catch (reject)
     })
   }
 
   update (data: LLNG_Session) {
-    return new Promise<boolean>(async (resolve, reject) => {
-      try {
-        await this.client.set(data._session_id, JSON.stringify(data))
-        resolve(true)
-      } catch (e) {
-        reject(e)
-      }
+    return new Promise<boolean>((resolve, reject) => {
+      this.client.set(data._session_id, JSON.stringify(data)).then(() => resolve(true)).catch(reject)
     })
   }
 }

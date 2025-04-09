@@ -8,7 +8,7 @@ const dbiChain = `dbi:SQLite:dbname=${db}`
 const clean = () => {
   try {
     fs.unlinkSync(db)
-  } catch (e) {}
+  } catch (e) {console.debug(e)}
 }
 
 beforeAll(async () => {
@@ -30,7 +30,7 @@ beforeAll(async () => {
 afterAll(clean)
 
 test('available', done => {
-  let dbi = new DBI({ dbiChain })
+  const dbi = new DBI({ dbiChain })
   dbi.available().then(res => {
     expect(res).toEqual([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
     dbi.destroy()
@@ -39,7 +39,7 @@ test('available', done => {
 })
 
 test('lastCfg', done => {
-  let dbi = new DBI({ dbiChain })
+  const dbi = new DBI({ dbiChain })
   dbi.lastCfg().then(res => {
     expect(res).toEqual(9)
     dbi.destroy()

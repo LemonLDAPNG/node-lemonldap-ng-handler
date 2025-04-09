@@ -8,7 +8,7 @@ const dbiChain = `dbi:SQLite:dbname=${db}`
 const clean = () => {
   try {
     fs.unlinkSync(db)
-  } catch (e) {}
+  } catch (e) {console.debug(e)}
 }
 
 let sessionConn
@@ -19,7 +19,7 @@ beforeAll(async () => {
   const conn = PerlDBI({
     dbiChain
   })
-  await conn.schema.createTable('sessions', function (table) {
+  await conn.schema.createTable('sessions', (table) => {
     table.string('id')
     table.string('a_session')
   })
@@ -41,11 +41,11 @@ afterAll(() => {
 test('able to get session', done => {
   sessionConn
     .get('aaaaaaaaaaaa')
-    .then(session => {
+    .then((session) => {
       expect(session.f1).toEqual('field 1')
       done()
     })
-    .catch(e => {
+    .catch((e) => {
       throw new Error(e)
     })
 })
@@ -57,15 +57,15 @@ test('able to update session', done => {
       f1: 'field: 1',
       f2: 'field: 2'
     })
-    .then(res => {
+    .then((res) => {
       expect(res).toBeTruthy()
-      sessionConn.get('aaaaaaaaaaaa').then(session => {
+      sessionConn.get('aaaaaaaaaaaa').then((session) => {
         expect(session.f1).toEqual('field: 1')
         expect(session.f2).toEqual('field: 2')
         done()
       })
     })
-    .catch(e => {
+    .catch((e) => {
       throw new Error(e)
     })
 })

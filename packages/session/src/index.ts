@@ -35,7 +35,7 @@ class Session {
               reject(`Unable to load ${opts.storageModule}: ${e}`)
             })
         }),
-        new Promise((resolve, reject) => {
+        new Promise((resolve) => {
           if (opts.cacheModule) {
             const dir =
               opts.cacheModuleOptions && opts.cacheModuleOptions.cache_root

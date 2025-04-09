@@ -36,6 +36,7 @@ class RESTSession implements Session_Accessor {
     })
   }
 
+  // eslint-disable-next-line no-unused-vars
   update (data: LLNG_Session) {
     return new Promise<boolean>((resolve, reject) => {
       reject('TODO')

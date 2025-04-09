@@ -8,7 +8,7 @@ const dbiChain = `dbi:SQLite:dbname=${db}`
 const clean = () => {
   try {
     fs.unlinkSync(db)
-  } catch (e) {}
+  } catch (e) {console.debug(e)}
 }
 
 let sessionConn
@@ -19,7 +19,7 @@ beforeAll(async () => {
   const conn = PerlDBI({
     dbiChain
   })
-  await conn.schema.createTable('sessions', function (table) {
+  await conn.schema.createTable('sessions', (table) => {
     table.string('id')
     table.string('a_session')
   })
@@ -54,6 +54,7 @@ test('able to update session', done => {
   sessionConn
     .update({
       _session_id: 'aaaaaaaaaaaa',
+      _utime: 11,
       f1: 'field: 1',
       f2: 'field: 2'
     })

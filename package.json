@@ -11,7 +11,13 @@
   "scripts": {
     "clean": "rimraf packages/*/lib",
     "build": "npm run build --workspaces",
-    "test": "npm run test --workspaces"
+    "format:check": "prettier --check .",
+    "format:check-diff": "prettier --check $(git diff $(git rev-parse --abbrev-ref --symbolic-full-name @{u}) --name-status|grep -E '^M|A'|cut -f2)",
+    "format:fix": "prettier --write .",
+    "format:fix-diff": "prettier --write $(git checkout|grep -E '^(M|A)'|cut -f2)",
+    "lint": "eslint packages/*/src --ext .ts",
+    "lint-fix": "eslint --fix packages/*/src --ext .ts",
+    "test": "npm run test --workspaces && echo All test succeeded"
   },
   "llng-compat": "2.0.11",
   "bugs": {
@@ -58,6 +64,7 @@
     "@types/node-persist": "^3.1.8",
     "@types/random-bytes": "^1.0.3",
     "@types/sha.js": "^2.4.4",
+    "@typescript-eslint/eslint-plugin": "^8.29.1",
     "eslint": "^9.24.0",
     "express": "^5.1.0",
     "jest": "^29.7.0",

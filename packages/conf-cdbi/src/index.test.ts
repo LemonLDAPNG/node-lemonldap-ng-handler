@@ -8,7 +8,7 @@ const dbiChain = `dbi:SQLite:dbname=${db}`
 const clean = () => {
   try {
     fs.unlinkSync(db)
-  } catch (e) {}
+  } catch (e) {console.debug(e)}
 }
 
 let cdbi

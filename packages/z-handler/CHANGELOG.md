@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 0.7.0
+ * Update dependencies
+
 ## 0.6.2
  * Add missing types fields
 

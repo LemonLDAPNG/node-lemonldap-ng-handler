@@ -116,6 +116,7 @@ class LDAPConf implements Conf_Accessor {
     })
   }
 
+  // eslint-disable-next-line no-unused-vars
   load (cfgNum: number, fields: string[] = []) {
     return new Promise<LLNG_Conf>((resolve, reject) => {
       this.client.bind(this.dn, this.pwd, err => {
@@ -158,6 +159,7 @@ class LDAPConf implements Conf_Accessor {
     })
   }
 
+  // eslint-disable-next-line no-unused-vars
   store (conf: LLNG_Conf) {
     return new Promise<boolean>((resolve, reject) => {
       reject('TODO')

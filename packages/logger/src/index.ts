@@ -1,4 +1,4 @@
-import { LLNG_Conf, LLNG_Logger } from '@lemonldap-ng/types'
+import { LLNG_Conf } from '@lemonldap-ng/types'
 import Std from './Std'
 import uWsgi from './uWsgi'
 

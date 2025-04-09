@@ -2,10 +2,6 @@ const sessionFile = require('..')
 const fs = require('fs')
 const path = require('path')
 
-const clean = () => {
-  try {
-  } catch (e) {}
-}
 
 let sessionConn
 
@@ -21,6 +17,7 @@ test('able to update session', done => {
   sessionConn
     .update({
       _session_id: 'aaaaaaaaaaaa',
+      _utime: 11,
       f1: 'field: 1',
       f2: 'field: 2'
     })
