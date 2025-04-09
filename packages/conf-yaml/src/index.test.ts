@@ -4,18 +4,16 @@ const YAMLConf = require('../')
 
 const fs = require('fs')
 const path = require('path')
-const rimraf = require('rimraf')
+const { rimraf } = require('rimraf')
 const mkdirp = require('mkdirp')
 const dir = path.join(__dirname, 'conf')
 
 let yamlConfs
 
 const clean = () => {
-  try {
-    rimraf(dir, () => {})
-  } catch (e) {
-    console.error(e)
-  }
+  rimraf(dir)
+  .then(() => {})
+  .catch(console.error)
 }
 
 beforeAll(async () => {

@@ -71,15 +71,18 @@ afterAll(() => {
 describe('Main', () => {
   beforeAll(done => {
     // load express app
-    let mod = require('./__testData__/express-app.js')
-    mod
-      .then(res => {
+    let mod = import('./__testData__/express-app.js')
+    .then(mod => {
+      mod.default.then(res => {
         app = res
         done()
+      }).catch(e => {
+        done(e)
       })
-      .catch(e => {
-        throw new Error(e)
-      })
+    })
+    .catch(e => {
+      done(e)
+    })
   })
   test('It should redirect unauthentified requests', done => {
     request(app)

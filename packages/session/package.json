@@ -1,6 +1,6 @@
 {
   "name": "@lemonldap-ng/session",
-  "version": "0.6.4",
+  "version": "0.7.0",
   "description": "LemonLDAP::NG session loader",
   "main": "./lib/index.js",
   "module": "./lib/index.mjs",

@@ -1,6 +1,6 @@
 {
   "name": "@lemonldap-ng/types",
-  "version": "0.6.1",
+  "version": "0.7.0",
   "description": "lemonldap-ng common typescript types",
   "main": "",
   "types": "index.d.ts",
@@ -10,6 +10,10 @@
       "email": "yadd@debian.org"
     }
   ],
+  "scripts": {
+    "build": "echo",
+    "test": "echo"
+  },
   "homepage": "https://lemonldap-ng.org",
   "files": [
     "package.json",

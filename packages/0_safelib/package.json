@@ -1,7 +1,7 @@
 {
-  "name": "@lemonldap-ng/conf-dbi",
-  "version": "0.6.4",
-  "description": "lemonldap-ng base class for *DBI configuration access",
+  "name": "@lemonldap-ng/safelib",
+  "version": "0.7.0",
+  "description": "lemonldap-ng safe library",
   "main": "./lib/index.js",
   "module": "./lib/index.mjs",
   "types": "./lib/index.d.ts",
@@ -18,13 +18,10 @@
   "homepage": "https://lemonldap-ng.org",
   "files": [
     "package.json",
-    "lib",
+    "index*",
     "LICENSE",
     "*.md"
   ],
-  "dependencies": {
-    "perl-dbi": "^0.6.4"
-  },
   "bugs": {
     "url": "https://gitlab.ow2.org/lemonldap-ng/lemonldap-ng/issues"
   },
@@ -47,5 +44,9 @@
   "scripts": {
     "test": "jest",
     "build": "rollup -c"
+  },
+  "dependencies": {
+    "iconv-lite": "^0.6.3",
+    "ipaddr.js": "^2.0.1"
   }
 }

@@ -1,7 +1,7 @@
 {
-  "name": "@lemonldap-ng/crypto",
-  "version": "0.6.4",
-  "description": "LemonLDAP::NG crypto class",
+  "name": "@lemonldap-ng/constants",
+  "version": "0.7.0",
+  "description": "lemonldap-ng main constants",
   "main": "./lib/index.js",
   "module": "./lib/index.mjs",
   "types": "./lib/index.d.ts",
@@ -18,15 +18,10 @@
   "homepage": "https://lemonldap-ng.org",
   "files": [
     "package.json",
-    "lib",
+    "index*",
     "LICENSE",
     "*.md"
   ],
-  "dependencies": {
-    "aes-js": "^3.1.2",
-    "random-bytes": "^1.0.0",
-    "sha.js": "^2.4.11"
-  },
   "bugs": {
     "url": "https://gitlab.ow2.org/lemonldap-ng/lemonldap-ng/issues"
   },
@@ -42,12 +37,12 @@
     "SSOaaS"
   ],
   "authors": [
-    "Xavier Guimard <yadd@debian.org>"
+    "Yadd <yadd@debian.org>"
   ],
   "license": "GPL-2.0-or-later",
   "llng-compat": "2.0.5",
   "scripts": {
-    "test": "jest",
-    "build": "rollup -c"
+    "build": "rollup -c",
+    "test": "echo"
   }
 }
