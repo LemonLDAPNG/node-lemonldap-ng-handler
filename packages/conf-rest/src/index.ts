@@ -19,7 +19,6 @@ class RESTConf implements Conf_Accessor {
     if (!args.baseUrl.match(/(https?):\/\/([^/:]+)(?::(\d+))?(.*)/))
       throw new Error(`Bad URL ${args.baseUrl}`);
 
-    this.baseUrl = args.baseUrl.replace(/\/+$/, "");
     this.baseUrl = args.baseUrl.split('/',1)[0];
     if (args.user) {
       this.user = args.user;

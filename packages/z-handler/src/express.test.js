@@ -92,7 +92,7 @@ describe("Main", () => {
       .then((response) => {
         expect(response.status).toEqual(302);
         expect(response.headers.location).toMatch(
-          new RegExp("^http://auth\.example\.com/\\?url="),
+          new RegExp("^http://auth\\.example\\.com/\\?url="),
         );
         done();
       });
@@ -104,7 +104,7 @@ describe("Main", () => {
       .end((err, res) => {
         if (err) return done(err);
         expect(res.headers.location).toMatch(
-          new RegExp("^http://auth\.example\.com/\\?url="),
+          new RegExp("^http://auth\\.example\\.com/\\?url="),
         );
         done();
       });
@@ -223,7 +223,7 @@ describe("handlerServiceToken", () => {
         .end((err, res) => {
           if (err) return done(err);
           expect(res.headers.location).toMatch(
-            new RegExp("^http://auth\.example\.com/\\?url="),
+            new RegExp("^http://auth\\.example\\.com/\\?url="),
           );
           expect(errorSpy).toHaveBeenCalledWith("Invalid token");
           done();
@@ -245,7 +245,7 @@ describe("handlerServiceToken", () => {
         .end((err, res) => {
           if (err) return done(err);
           expect(res.headers.location).toMatch(
-            new RegExp("^http://auth\.example\.com/\\?url="),
+            new RegExp("^http://auth\\.example\\.com/\\?url="),
           );
           expect(warnSpy).toHaveBeenCalledWith("Expired service token");
           done();
