@@ -20,6 +20,7 @@ class RESTConf implements Conf_Accessor {
       throw new Error(`Bad URL ${args.baseUrl}`);
 
     this.baseUrl = args.baseUrl.replace(/\/+$/, "");
+    this.baseUrl = args.baseUrl.split('/',1)[0];
     if (args.user) {
       this.user = args.user;
       if (!args.password) throw new Error("password required");
