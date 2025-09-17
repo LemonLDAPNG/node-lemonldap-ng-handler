@@ -21,8 +21,8 @@ type handlerConf = LocalConf & {
 };
 
 export type Handler_Args = {
-  configStorage: LocalConf | undefined;
-  type: string | undefined;
+  configStorage?: LocalConf | undefined;
+  type?: string | undefined;
   [key: string]: string | number | boolean | object | undefined;
 };
 
