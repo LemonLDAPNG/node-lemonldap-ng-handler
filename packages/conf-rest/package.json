@@ -1,6 +1,6 @@
 {
   "name": "@lemonldap-ng/conf-rest",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "lemonldap-ng class for REST configuration access",
   "main": "./lib/index.js",
   "module": "./lib/index.mjs",

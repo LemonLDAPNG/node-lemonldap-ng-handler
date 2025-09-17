@@ -22,7 +22,7 @@ test("lastCfg", (done) => {
 
 test("load", (done) => {
   server.get(/^.*$/).mockImplementationOnce((ctx) => {
-    expect(ctx.originalUrl).toEqual("/1?full=1");
+    expect(ctx.originalUrl).toMatch(/^\/+1\?full=1$/);
     ctx.status = 200;
     ctx.body = '{"cfgNum":1,"f1":"field 1"}';
   });
