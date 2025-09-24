@@ -1,5 +1,5 @@
 import fs from "fs";
-import ldapjs from "ldapjs";
+import { Attribute, Change, Client as LDAPClient, SearchOptions } from "ldapts";
 import { LLNG_Session, Session_Accessor } from "@lemonldap-ng/types";
 type SessionLDAP_Args = {
   ldapServer: string;
@@ -11,7 +11,6 @@ type SessionLDAP_Args = {
   ldapAttributeContent: string | undefined;
   ldapCAFile: string | undefined;
 };
-import { SearchOptions, Client as LDAPClient } from "ldapjs";
 
 const defaultValues = {
   ldapObjectClass: "applicationProcess",
@@ -54,17 +53,16 @@ class LDAPSession implements Session_Accessor {
     if (ldapCa != "") {
       caConf.ca = [fs.readFileSync(ldapCa).toString()];
     }
-    this.ldap = ldapjs.createClient({
+    this.ldap = new LDAPClient({
       tlsOptions: caConf,
       url: ldapServer,
     });
     this.ldap.bind(
       args.ldapBindDN || "",
-      args.ldapBindPassword || "",
-      (err) => {
-        if (err) throw new Error(`LDAP bind failed: ${err}`);
-      },
-    );
+      args.ldapBindPassword || ""
+    ).catch((e) => {
+      throw new Error(`LDAP bind error: ${e}`);
+    });
   }
 
   get(id: string) {
@@ -74,44 +72,34 @@ class LDAPSession implements Session_Accessor {
         scope: "base",
         attributes: [this.contentAttr],
       };
-      this.ldap.search(`${this.idAttr}=${id},${this.base}`, opt, (err, res) => {
-        let data: string;
-        if (err) return reject(err);
-        res.on("searchEntry", (entry) => {
-          const tmp = entry.object[this.contentAttr];
-          data = <string>entry.object[typeof tmp === "object" ? tmp[0] : tmp];
-        });
-        res.on("error", (err) => {
-          reject(`LDAP search failed: ${err}`);
-        });
-        res.on("end", () => {
-          try {
-            resolve(JSON.parse(data));
-          } catch (e) {
-            reject(`LDAP session parse error: ${e}`);
-          }
-        });
-      });
+      this.ldap.search(`${this.idAttr}=${id},${this.base}`, opt)
+      .then(res => res.searchEntries)
+      .then((res) => {
+        const tmp = (res[0]?.[this.contentAttr] as string | string[]);
+        const data = <string>res[0]?.[typeof tmp === "object" ? tmp[0] : tmp];
+        if (!data) return reject("LDAP session not found");
+        try {
+          resolve(JSON.parse(data));
+        } catch (e) {
+          reject(`LDAP session parse error: ${e}`);
+        }
+      })
+      .catch((e) => reject(`LDAP search error: ${e}`));
     });
   }
 
-  update(data: LLNG_Session) {
-    return new Promise<boolean>((resolve, reject) => {
-      const change = new ldapjs.Change({
-        operation: "modify",
-        modification: {
-          [this.contentAttr]: JSON.stringify(data),
-        },
-      });
-      this.ldap.modify(
-        `${this.idAttr}=${data._session_id},${this.base}`,
-        change,
-        (err) => {
-          if (err) return reject(err);
-          resolve(true);
-        },
-      );
-    });
+  async update(data: LLNG_Session) {
+    await this.ldap.modify(
+      `${this.idAttr}=${data._session_id},${this.base}`,
+      new Change({
+        operation: 'replace',
+        modification: new Attribute({
+          type: this.contentAttr,
+          values: [JSON.stringify(data)],
+        }),
+      })
+    );
+    return true
   }
 }
 

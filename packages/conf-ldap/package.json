@@ -1,37 +1,7 @@
 {
   "name": "@lemonldap-ng/conf-ldap",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "lemonldap-ng class for LDAP configuration access",
-  "main": "./lib/index.js",
-  "module": "./lib/index.mjs",
-  "types": "./lib/index.d.ts",
-  "exports": {
-    "import": "./lib/index.mjs",
-    "require": "./lib/index.js"
-  },
-  "maintainers": [
-    {
-      "name": "Yadd",
-      "email": "yadd@debian.org"
-    }
-  ],
-  "homepage": "https://lemonldap-ng.org",
-  "files": [
-    "package.json",
-    "lib",
-    "LICENSE",
-    "*.md"
-  ],
-  "dependencies": {
-    "ldapjs": "^2.3.3"
-  },
-  "bugs": {
-    "url": "https://gitlab.ow2.org/lemonldap-ng/lemonldap-ng/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/LemonLDAPNG/node-lemonldap-ng-handler.git"
-  },
   "keywords": [
     "Lemonldap::NG",
     "SSO",
@@ -39,13 +9,43 @@
     "OpenID-Connect",
     "SSOaaS"
   ],
-  "authors": [
-    "Yadd <yadd@debian.org>"
-  ],
+  "homepage": "https://lemonldap-ng.org",
+  "bugs": {
+    "url": "https://gitlab.ow2.org/lemonldap-ng/lemonldap-ng/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LemonLDAPNG/node-lemonldap-ng-handler.git"
+  },
   "license": "GPL-2.0-or-later",
-  "llng-compat": "2.0.5",
+  "maintainers": [
+    {
+      "name": "Yadd",
+      "email": "yadd@debian.org"
+    }
+  ],
+  "exports": {
+    "import": "./lib/index.mjs",
+    "require": "./lib/index.js"
+  },
+  "main": "./lib/index.js",
+  "module": "./lib/index.mjs",
+  "types": "./lib/index.d.ts",
+  "files": [
+    "package.json",
+    "lib",
+    "LICENSE",
+    "*.md"
+  ],
   "scripts": {
     "build": "rollup -c",
     "test": "echo"
-  }
+  },
+  "dependencies": {
+    "ldapts": "^8.0.9"
+  },
+  "authors": [
+    "Yadd <yadd@debian.org>"
+  ],
+  "llng-compat": "2.0.5"
 }
