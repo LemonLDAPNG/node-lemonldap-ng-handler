@@ -209,7 +209,7 @@ backends:
 - Redis _(install `redis` to use them)_:
   - [Apache::Session::Redis](https://metacpan.org/pod/Apache::Session::Redis)
   - [Apache::Session::Browseable::Redis](https://metacpan.org/pod/Apache::Session::Browseable::Redis)
-- LDAP backends _(install `ldapjs` to use them)_:
+- LDAP backends _(install `ldapts` to use them)_:
   - [Apache::Session::LDAP](https://metacpan.org/pod/Apache::Session::LDAP)
   - [Apache::Session::Browseable::LDAP](https://metacpan.org/pod/Apache::Session::Browseable::LDAP)
 - SQL backends _(install `nodedbi` to use them)_:
