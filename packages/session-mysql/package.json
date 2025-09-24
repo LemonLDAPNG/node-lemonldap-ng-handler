@@ -1,6 +1,6 @@
 {
   "name": "@lemonldap-ng/session-mysql",
-  "version": "0.7.0",
+  "version": "0.7.3",
   "description": "lemonldap-ng class for MySQL session access",
   "main": "./lib/index.js",
   "module": "./lib/index.mjs",
@@ -23,7 +23,7 @@
     "*.md"
   ],
   "dependencies": {
-    "@lemonldap-ng/session-dbi": "^0.6.4",
+    "@lemonldap-ng/session-dbi": "^0.7.3",
     "mysql": "^2.18.1"
   },
   "bugs": {

@@ -1,6 +1,6 @@
 {
   "name": "@lemonldap-ng/conf-yaml",
-  "version": "0.7.0",
+  "version": "0.7.3",
   "description": "lemonldap-ng class for YAML File configuration access",
   "main": "./lib/index.js",
   "module": "./lib/index.mjs",
@@ -23,7 +23,7 @@
     "*.md"
   ],
   "dependencies": {
-    "@lemonldap-ng/conf-file": "^0.6.4",
+    "@lemonldap-ng/conf-file": "^0.7.0",
     "js-yaml": "^4.1.0"
   },
   "bugs": {
