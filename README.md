@@ -4,7 +4,7 @@ Beta [Lemonldap::NG](https://lemonldap-ng.org) handler for node.js
 
 ## packages
 
-- Main package: [lemonldap-ng-handler](./packages/handler/README.md)
+- Main package: [lemonldap-ng-handler](./packages/z-handler/README.md)
 - Configuration:
   - Main class: [@lemonldap-ng/conf](./packages/conf/README.md)
   - Configuration backends: [@lemonldap-ng/conf-\*](./packages/)
