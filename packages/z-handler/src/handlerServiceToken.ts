@@ -39,7 +39,7 @@ class LemonldapNGHandlerServiceToken extends LemonldapNGHandler {
       // Is vhost listed in token ?
       const vhost = this.resolveAlias(req);
       if (tokenElement.indexOf(vhost) < 2) {
-        console.warn(`${vhost} not authorizated in token`);
+        this.userLogger.warn(`${vhost} not authorizated in token`);
         return "";
       }
 

@@ -22,6 +22,10 @@ class FileSession implements Session_Accessor {
 
   get(id: string) {
     return new Promise<LLNG_Session>((resolve, reject) => {
+      // Validate session ID to prevent path traversal
+      if (!/^[a-zA-Z0-9_-]+$/.test(id)) {
+        return reject(new Error("Invalid session ID format"));
+      }
       fs.readFile(path.join(this.dir, id), (err, data) => {
         if (err) return reject(err);
         try {
@@ -36,6 +40,10 @@ class FileSession implements Session_Accessor {
 
   update(data: LLNG_Session) {
     return new Promise<boolean>((resolve, reject) => {
+      // Validate session ID to prevent path traversal
+      if (!/^[a-zA-Z0-9_-]+$/.test(data._session_id)) {
+        return reject(new Error("Invalid session ID format"));
+      }
       fs.writeFile(
         path.join(this.dir, data._session_id),
         JSON.stringify(data),

@@ -251,9 +251,9 @@ abstract class HandlerInit {
                   resolve(true);
                 })
                 .catch((e) => {
-                  console.error("Logger error", e);
+                  // Logger initialization failed, throw error
                   // istanbul ignore next
-                  throw new Error(e);
+                  throw new Error(`Logger error: ${e}`);
                 });
             });
           })

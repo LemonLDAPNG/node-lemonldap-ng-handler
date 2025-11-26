@@ -59,8 +59,7 @@ class Conf {
         this.module.load(args.cfgNum).then((rawConf) => {
           if (!rawConf.key || typeof rawConf.key !== "string") {
             // istanbul ignore next
-            console.error("Key not defined in configuration");
-            // istanbul ignore next
+            // Key is required for encryption but missing in configuration
             rawConf.key = "";
           }
           // @ts-ignore

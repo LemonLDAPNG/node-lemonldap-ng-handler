@@ -42,19 +42,19 @@ class ExtdFunc {
     attr: string,
     value: string,
   ) {
-    const match = new RegExp(value).test;
-    Object.keys(groups).forEach((k) => {
+    const regex = new RegExp(value);
+    for (const k of Object.keys(groups)) {
       if (groups[k][attr]) {
         if (typeof groups[k][attr] === "string") {
-          if (match(<string>groups[k][attr])) return true;
+          if (regex.test(<string>groups[k][attr])) return true;
         } else {
-          (<string[]>groups[k][attr]).forEach((val) => {
-            if (match(val)) return true;
-          });
+          for (const val of <string[]>groups[k][attr]) {
+            if (regex.test(val)) return true;
+          }
         }
       }
-      return false;
-    });
+    }
+    return false;
   }
 
   isInNet6(ip: string, net: string) {

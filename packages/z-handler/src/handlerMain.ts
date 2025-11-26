@@ -65,7 +65,7 @@ class LemonldapNGHandler extends HandlerInit {
               }
             })
             .catch((e) => {
-              console.error(e);
+              this.userLogger.error(`Authorization check failed: ${e}`);
               this.setError(res, "/", 503, "Service Unavailable");
             });
         })
@@ -200,12 +200,12 @@ class LemonldapNGHandler extends HandlerInit {
         );
       }
       if (this.tsv.locationRegexp[vhost]) {
-        let i = 0;
-        this.tsv.locationRegexp[vhost].forEach((regex: RegExp) => {
-          if (regex.test(uri))
+        for (let i = 0; i < this.tsv.locationRegexp[vhost].length; i++) {
+          const regex = this.tsv.locationRegexp[vhost][i];
+          if (regex.test(uri)) {
             return resolve(this.tsv.locationCondition[vhost][i](req, session));
-          i++;
-        });
+          }
+        }
       }
       this.tsv.defaultCondition[vhost](req, session)
         ? resolve(true)
@@ -237,7 +237,7 @@ class LemonldapNGHandler extends HandlerInit {
         }
       });
     } catch (e) {
-      console.error(`Headers maybe not sent: ${e}`);
+      this.userLogger.error(`Headers maybe not sent: ${e}`);
       // istanbul ignore next
       return;
     }

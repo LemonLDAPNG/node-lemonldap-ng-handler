@@ -64,7 +64,7 @@ class LemonldapNGHandlerDevOps extends LemonldapNGHandler {
             .catch((e) => reject(e));
         })
         .catch((err) => {
-          console.error(err);
+          this.userLogger.error(`Session retrieval error: ${err}`);
           this.grant(req, uri, session)
             .then((res) => {
               resolve(res);
