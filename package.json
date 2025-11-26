@@ -74,7 +74,6 @@
     "rimraf": "^6.0.1",
     "rollup": "^4.39.0",
     "rollup-plugin-cleaner": "^1.0.0",
-    "rollup-plugin-copy": "^3.5.0",
     "sqlite3": "^5.1.7",
     "supertest": "^7.1.0",
     "ts-jest": "^29.3.1",
