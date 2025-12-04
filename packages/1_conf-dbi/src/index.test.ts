@@ -1,4 +1,4 @@
-const PerlDBI = require("perl-dbi");
+const { default: PerlDBI } = require("perl-dbi");
 const DBI = require("..");
 const fs = require("fs");
 

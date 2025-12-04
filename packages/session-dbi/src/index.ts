@@ -1,5 +1,4 @@
-import PerlDBI from "perl-dbi";
-import { PerlDBI_Client, PerlDBI_Args } from "perl-dbi";
+import { PerlDBI, PerlDBI_Client, PerlDBI_Args } from "perl-dbi";
 import {
   Apache_Session,
   LLNG_Session,

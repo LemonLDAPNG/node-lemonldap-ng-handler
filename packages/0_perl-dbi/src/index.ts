@@ -7,6 +7,25 @@ export interface PerlDBI_Args {
   dbiPassword?: string | undefined;
 }
 
+/**
+ * Parsed DBI connection options
+ */
+export interface DBI_ConnectionOptions {
+  type: "sqlite3" | "pg" | "mysql" | "oracledb";
+  database?: string;
+  host?: string;
+  port?: string;
+  encoding?: string;
+  sid?: string;
+  user?: string;
+  password?: string;
+}
+
+/**
+ * Regex pattern to parse DBI chain format: dbi:Type:params
+ */
+const DBI_CHAIN_PATTERN = /^dbi:(SQLite|Pg|mysql|Oracle):(.*)/i;
+
 const btype = {
   SQLite: "sqlite3",
   Pg: "pg",
@@ -31,8 +50,46 @@ import knex from "knex";
 
 export type PerlDBI_Client = Knex;
 
-export default function PerlDBI(args: PerlDBI_Args): PerlDBI_Client {
-  if (!args.dbiChain.match(/^dbi:(SQLite|Pg|mysql):(.*)/))
+/**
+ * Parse a DBI chain string and return connection options
+ * Format: dbi:Type:param1=value1;param2=value2
+ * Example: dbi:Pg:dbname=llng;host=localhost;port=5432
+ */
+export function parseDbiChain(args: PerlDBI_Args): DBI_ConnectionOptions {
+  if (!args.dbiChain.match(DBI_CHAIN_PATTERN))
+    throw new Error(`Invalid dbiChain: ${args.dbiChain}`);
+
+  const type: DB | undefined = btype[RegExp.$1 as keyof typeof btype] as DB;
+  if (!type) {
+    throw new Error(`Unsupported database type: ${RegExp.$1}`);
+  }
+
+  const options: DBI_ConnectionOptions = { type };
+
+  RegExp.$2.split(/;/).forEach((s: string) => {
+    const eqIndex = s.indexOf("=");
+    if (eqIndex > 0) {
+      const key = s.substring(0, eqIndex);
+      const value = s.substring(eqIndex + 1);
+      const k: string = convert[key as keyof typeof convert];
+      if (k && k !== "type") {
+        (options as any)[k] = value;
+      }
+    }
+  });
+
+  if (args.dbiUser) {
+    options.user = args.dbiUser;
+  }
+  if (args.dbiPassword) {
+    options.password = args.dbiPassword;
+  }
+
+  return options;
+}
+
+function PerlDBI(args: PerlDBI_Args): PerlDBI_Client {
+  if (!args.dbiChain.match(DBI_CHAIN_PATTERN))
     // istanbul ignore next
     throw new Error(`Invalid dbiChain: ${args.dbiChain}`);
 
@@ -45,13 +102,15 @@ export default function PerlDBI(args: PerlDBI_Args): PerlDBI_Client {
   dbArgs.client = type;
   dbArgs.connection = {};
   RegExp.$2.split(/;/).map((s: string) => {
-    const kv = s.match(/^(.*?)=(.*)$/);
-    if (kv) {
-      let k: string = convert[kv[1] as keyof typeof convert];
+    const eqIndex = s.indexOf("=");
+    if (eqIndex > 0) {
+      const key = s.substring(0, eqIndex);
+      const value = s.substring(eqIndex + 1);
+      let k: string = convert[key as keyof typeof convert];
       if (k && k !== "type") {
         if (type === "sqlite3" && k === "database") k = "filename";
         // @ts-ignore
-        dbArgs.connection[k] = kv[2];
+        dbArgs.connection[k] = value;
       } else {
         // istanbul ignore next
         throw new Error(`Unknown DB argument ${k}`);
@@ -73,3 +132,10 @@ export default function PerlDBI(args: PerlDBI_Args): PerlDBI_Client {
   }
   return knex(dbArgs);
 }
+
+// Export for ESM
+export default PerlDBI;
+
+// Also export the function directly for CommonJS compatibility
+// This allows both `import PerlDBI from "perl-dbi"` and `const PerlDBI = require("perl-dbi")`
+export { PerlDBI };

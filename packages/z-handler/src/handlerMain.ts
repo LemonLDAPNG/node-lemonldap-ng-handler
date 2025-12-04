@@ -4,6 +4,11 @@ import express from "express";
 import http from "http";
 import normalizeUrl from "normalize-url";
 
+/**
+ * Default internal cache timeout in seconds
+ */
+const DEFAULT_INTERNAL_CACHE_TIMEOUT = 15;
+
 export type FastCGI_Opts = {
   mode: string | undefined;
   port: number | undefined;
@@ -11,6 +16,11 @@ export type FastCGI_Opts = {
 };
 
 class LemonldapNGHandler extends HandlerInit {
+  /* Internal handler cache for session data */
+  private lastSessionId: string | null = null;
+  private lastSessionData: LLNG_Session | null = null;
+  private lastSessionTime: number = 0;
+
   init() {
     return this.reload();
   }
@@ -39,7 +49,14 @@ class LemonldapNGHandler extends HandlerInit {
 
     /* 3 - check if current URI is protected */
     const protection = this.isUnprotected(req, uri);
-    if (protection === 2) return next();
+    if (protection === 2) {
+      // SKIP: Clear internal session data
+      this.lastSessionId = null;
+      this.lastSessionData = null;
+      this.lastSessionTime = 0;
+      this.hideCookie(req);
+      return next();
+    }
 
     /* 4 - search for LLNG cookie */
     const id = this.fetchId(req);
@@ -156,10 +173,28 @@ class LemonldapNGHandler extends HandlerInit {
       if (this.sessionAcc === undefined)
         // istanbul ignore next
         return reject("Server not ready, please wait");
+
+      const now = (Date.now() / 1000) | 0;
+      const internalCacheTimeout =
+        this.tsv.handlerInternalCache || DEFAULT_INTERNAL_CACHE_TIMEOUT;
+
+      // Check internal handler cache first (efficient for persistent connections)
+      if (
+        this.lastSessionId === id &&
+        this.lastSessionData &&
+        now - this.lastSessionTime < internalCacheTimeout
+      ) {
+        this.userLogger.debug(`Get session ${id} from internal cache`);
+        return resolve(this.lastSessionData);
+      }
+
+      // Clear stale internal cache
+      this.lastSessionId = null;
+      this.lastSessionData = null;
+
       this.sessionAcc
         .get(id)
         .then((session: LLNG_Session) => {
-          const now = (Date.now() / 1000) | 0;
           if (
             now - session._utime > this.tsv.timeout ||
             (this.tsv.timeoutActivity &&
@@ -178,6 +213,11 @@ class LemonldapNGHandler extends HandlerInit {
               // @ts-ignore this.sessionAcc is defined here
               this.sessionAcc.update(session);
             }
+            // Update internal cache
+            this.lastSessionId = id;
+            this.lastSessionData = session;
+            this.lastSessionTime = now;
+
             resolve(session);
           }
         })
@@ -185,6 +225,26 @@ class LemonldapNGHandler extends HandlerInit {
           reject(`Session ${id} can't be found in store: ${e}`);
         });
     });
+  }
+
+  /**
+   * Local unlog - clear session from all local caches
+   * @param sessionId - Optional session ID to clear (uses last cached if not provided)
+   */
+  async localUnlog(sessionId?: string): Promise<void> {
+    this.userLogger.debug("Local handler logout");
+
+    const id = sessionId || this.lastSessionId;
+
+    // Clear internal handler cache
+    this.lastSessionId = null;
+    this.lastSessionData = null;
+    this.lastSessionTime = 0;
+
+    if (id && this.sessionAcc) {
+      this.sessionAcc.clearMemoryCache(id);
+      await this.sessionAcc.clearLocalCache(id);
+    }
   }
 
   grant(
@@ -256,6 +316,11 @@ class LemonldapNGHandler extends HandlerInit {
     res: http.ServerResponse,
     session: LLNG_Session,
   ) {
+    // Clear local cache on forbidden (fire and forget, but catch errors)
+    this.localUnlog(session._session_id).catch((e) => {
+      this.userLogger.error(`Failed to clear local cache: ${e}`);
+    });
+
     if (session._logout) {
       this.goToPortal(res, session._logout, "logout=1");
     } else {

@@ -4,6 +4,7 @@ const fs = require("fs");
 const ini = require("ini");
 const SafeLib = require("@lemonldap-ng/safelib");
 const Crypto = require("@lemonldap-ng/crypto");
+const handler = require("../lib");
 
 const iniSrc = path.join(__dirname, "__testData__", "lemonldap-ng.ini");
 const iniTmp = path.join(__dirname, "__testData__", "lemonldap-ng.tmp.ini");
@@ -60,7 +61,9 @@ beforeEach(() => {
   errorSpy = jest.spyOn(console, "error");
 });
 
-afterAll(() => {
+afterAll(async () => {
+  // Stop the event loop and close session to allow Jest to exit
+  await handler.shutdown();
   fs.rmSync(iniTmp);
   fs.rmSync(lmconfTmp);
   fs.rmSync(sessionsDir, {

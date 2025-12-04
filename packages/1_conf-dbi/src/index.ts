@@ -1,5 +1,4 @@
-import PerlDBI from "perl-dbi";
-import { PerlDBI_Args, PerlDBI_Client } from "perl-dbi";
+import { PerlDBI, PerlDBI_Args, PerlDBI_Client } from "perl-dbi";
 
 export type DBI_Args = PerlDBI_Args & { dbiTable: string | undefined };
 

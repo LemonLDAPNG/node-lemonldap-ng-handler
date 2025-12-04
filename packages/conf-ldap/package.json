@@ -1,6 +1,6 @@
 {
   "name": "@lemonldap-ng/conf-ldap",
-  "version": "0.7.1",
+  "version": "0.8.0",
   "description": "lemonldap-ng class for LDAP configuration access",
   "keywords": [
     "Lemonldap::NG",

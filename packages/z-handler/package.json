@@ -1,6 +1,6 @@
 {
   "name": "lemonldap-ng-handler",
-  "version": "0.7.3",
+  "version": "0.8.0",
   "description": "LemonLDAP::NG handler for Node.js",
   "main": "./lib/index.js",
   "module": "./lib/index.mjs",
@@ -23,13 +23,18 @@
     "*.md"
   ],
   "dependencies": {
-    "@lemonldap-ng/conf": "^0.7.1",
-    "@lemonldap-ng/logger": "^0.7.0",
-    "@lemonldap-ng/safelib": "^0.7.0",
-    "@lemonldap-ng/session": "^0.7.0",
+    "@lemonldap-ng/conf": "^0.8.0",
+    "@lemonldap-ng/jwt": "^0.8.0",
+    "@lemonldap-ng/logger": "^0.8.0",
+    "@lemonldap-ng/message-broker": "^0.8.0",
+    "@lemonldap-ng/safelib": "^0.8.0",
+    "@lemonldap-ng/session": "^0.8.0",
     "node-fastcgi": "^1.3.3",
     "normalize-url": "^7.0.3",
     "re2": "^1.17.7"
+  },
+  "optionalDependencies": {
+    "@lemonldap-ng/message-broker-nobroker": "^0.8.0"
   },
   "bugs": {
     "url": "https://gitlab.ow2.org/lemonldap-ng/lemonldap-ng/issues"
@@ -51,7 +56,7 @@
   "license": "GPL-2.0-or-later",
   "llng-compat": "2.0.5",
   "scripts": {
-    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest --forceExit",
     "build": "npm run check && npm run rollup && cp ../../CHANGELOG.md ./",
     "check": "tsc --noEmit",
     "rollup": "rollup -c"

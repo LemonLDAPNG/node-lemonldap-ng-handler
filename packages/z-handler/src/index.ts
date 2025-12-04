@@ -5,6 +5,9 @@ import LemonldapNGHandler, { FastCGI_Opts } from "./handlerMain";
 import LemonldapNGHandlerDevOps from "./handlerDevOps";
 import LemonldapNGHandlerServiceToken from "./handlerServiceToken";
 import LemonldapNGHandlerDevOpsST from "./handlerDevOpsST";
+import LemonldapNGHandlerOAuth2 from "./handlerOAuth2";
+import LemonldapNGHandlerAuthBasic from "./handlerAuthBasic";
+import LemonldapNGHandlerCDA from "./handlerCDA";
 
 let currentHandler: LemonldapNGHandler;
 let currentClass: typeof LemonldapNGHandler | typeof LemonldapNGHandlerDevOps;
@@ -14,6 +17,9 @@ const knownHandlers = {
   DevOps: LemonldapNGHandlerDevOps,
   ServiceToken: LemonldapNGHandlerServiceToken,
   ServiceTokenST: LemonldapNGHandlerDevOpsST,
+  OAuth2: LemonldapNGHandlerOAuth2,
+  AuthBasic: LemonldapNGHandlerAuthBasic,
+  CDA: LemonldapNGHandlerCDA,
 };
 
 export const init = (args: Handler_Args) => {
@@ -51,6 +57,16 @@ export const run = (
 
 export const nginxServer = (args: FastCGI_Opts) => {
   currentHandler.nginxServer(args);
+};
+
+/**
+ * Shutdown the handler (stops event loop and cleanup)
+ * Call this in tests' afterAll to prevent Jest from hanging
+ */
+export const shutdown = async () => {
+  if (currentHandler) {
+    await currentHandler.stopEventLoop();
+  }
 };
 
 export { currentClass as class };
