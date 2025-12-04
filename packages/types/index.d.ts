@@ -108,3 +108,100 @@ declare interface LLNG_Logger {
   warn(txt: string): void;
   error(txt: string): void;
 }
+
+/**
+ * Message Broker
+ */
+
+/* Message structure for broker communication */
+export interface BrokerMessage {
+  action: string;
+  channel?: string;
+  id?: string;
+  [key: string]: any;
+}
+
+/* Message Broker interface - mirrors Perl implementation */
+export interface MessageBroker {
+  publish(channel: string, msg: BrokerMessage): Promise<void>;
+  subscribe(channel: string): Promise<void>;
+  getNextMessage(
+    channel: string,
+    delay?: number
+  ): Promise<BrokerMessage | undefined>;
+  waitForNextMessage(channel: string): Promise<BrokerMessage>;
+}
+
+/* Message action handler type */
+export type MsgActionHandler = (
+  handler: any,
+  msg: BrokerMessage,
+  req?: any
+) => Promise<void>;
+
+/* Configuration options for message broker */
+export interface MessageBrokerOptions {
+  server?: string;
+  token?: string;
+  dbiChain?: string;
+  dbiUser?: string;
+  dbiPassword?: string;
+  reconnect?: number;
+  every?: number;
+  checkTime?: number;
+  eventQueueName?: string;
+  statusQueueName?: string;
+  [key: string]: any;
+}
+
+/**
+ * CDA (Cross-Domain Authentication)
+ */
+
+/* CDA Session */
+export interface CDA_Session {
+  _session_id: string;
+  _utime: number;
+  cookie_value: string;
+  cookie_name: string;
+}
+
+/**
+ * OIDC/OAuth2 Extended Configuration
+ */
+
+/* OIDC RP Metadata Options */
+export interface OIDCRPMetaDataOptions {
+  oidcRPMetaDataOptionsClientID?: string;
+  [key: string]: any;
+}
+
+/* Extended LLNG Configuration for OAuth2/OIDC/MessageBroker */
+export interface LLNG_Conf_Extended extends LLNG_Conf {
+  /* OIDC/OAuth2 */
+  oidcStorage?: string;
+  oidcStorageOptions?: Backend_Options;
+  oidcRPMetaDataOptions?: { [rp: string]: OIDCRPMetaDataOptions };
+  key?: string;
+
+  /* AuthBasic */
+  authChoiceAuthBasic?: string;
+  authChoiceParam?: string;
+
+  /* CDA */
+  cda?: boolean;
+  cookieExpiration?: number;
+  httpOnly?: boolean;
+
+  /* Message Broker */
+  messageBroker?: string;
+  messageBrokerOptions?: MessageBrokerOptions;
+  eventQueueName?: string;
+  statusQueueName?: string;
+  eventStatus?: boolean;
+  checkMsg?: number;
+  checkTime?: number;
+
+  /* Session Cache */
+  handlerInternalCache?: number;
+}

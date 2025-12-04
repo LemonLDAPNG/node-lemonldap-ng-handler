@@ -1,6 +1,6 @@
 {
   "name": "@lemonldap-ng/conf-mongodb",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "LemonLDAP::NG configuration connector to MongoDB storage",
   "main": "./lib/index.js",
   "module": "./lib/index.mjs",

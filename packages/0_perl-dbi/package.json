@@ -1,6 +1,6 @@
 {
   "name": "perl-dbi",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "LemonLDAP::NG handler for Node.js",
   "main": "./lib/index.js",
   "module": "./lib/index.mjs",

@@ -1,6 +1,6 @@
 {
   "name": "@lemonldap-ng/crypto",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "LemonLDAP::NG crypto class",
   "main": "./lib/index.js",
   "module": "./lib/index.mjs",

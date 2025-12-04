@@ -8,9 +8,10 @@ on:
     branches: [master]
   pull_request:
     branches: [master]
+  workflow_dispatch:
 
 jobs:
-  build:
+  build-and-test:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
@@ -22,10 +23,12 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm --version
-      - run: npm ci || npm i
-      - run: ls -l node_modules/@lemonldap-ng/
-      - run: npm run build
-      - run: npm run test
+      - name: Install dependencies
+        run: npm ci || npm i
+      - name: Build
+        run: npm run build
+      - name: Test
+        run: npm run test
 
   audit:
     runs-on: ubuntu-22.04

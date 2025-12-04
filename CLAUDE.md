@@ -1,0 +1,2 @@
+- Ce projet est une réécriture de ~/dev/lemonldap-ng en Typescript (partie FastCGI-server et "handler" spécialisé pour Express)
+- On utilise uniquement npm ici, pas yarn ni pnpm

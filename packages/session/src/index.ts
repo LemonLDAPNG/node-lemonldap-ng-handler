@@ -130,6 +130,44 @@ class Session {
         });
     });
   }
+
+  /**
+   * Clear in-memory cache for specific session
+   * @param id - Session ID to clear from memory cache
+   */
+  clearMemoryCache(id: string): void {
+    this.inMemoryCache.remove(id);
+  }
+
+  /**
+   * Clear all in-memory cache entries
+   */
+  clearAllMemoryCache(): void {
+    this.inMemoryCache.reset();
+  }
+
+  /**
+   * Clear local file cache for specific session
+   * @param id - Session ID to clear from local cache
+   */
+  async clearLocalCache(id: string): Promise<void> {
+    if (this.localCache) {
+      try {
+        await this.localCache.removeItem(id);
+      } catch {
+        // Ignore errors - cache entry may not exist
+      }
+    }
+  }
+
+  /**
+   * Clear session from all caches (memory and local)
+   * @param id - Session ID to clear
+   */
+  async clearAllCaches(id: string): Promise<void> {
+    this.clearMemoryCache(id);
+    await this.clearLocalCache(id);
+  }
 }
 
 export default Session;

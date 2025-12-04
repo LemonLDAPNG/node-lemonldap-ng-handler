@@ -16,10 +16,22 @@ class RESTConf implements Conf_Accessor {
     if (!args.baseUrl)
       throw new Error("baseUrl parameter is required in REST configuration");
 
-    if (!args.baseUrl.match(/(https?):\/\/([^/:]+)(?::(\d+))?(.*)/))
+    // Validate URL using native URL API (avoids ReDoS vulnerabilities)
+    try {
+      const url = new URL(args.baseUrl);
+      if (url.protocol !== "http:" && url.protocol !== "https:") {
+        throw new Error(`Bad URL ${args.baseUrl}`);
+      }
+    } catch {
       throw new Error(`Bad URL ${args.baseUrl}`);
+    }
 
-    this.baseUrl = args.baseUrl.replace(/\/+$/, "");
+    // Remove trailing slashes using string methods (avoids ReDoS)
+    let baseUrl = args.baseUrl;
+    while (baseUrl.endsWith("/")) {
+      baseUrl = baseUrl.slice(0, -1);
+    }
+    this.baseUrl = baseUrl;
     if (args.user) {
       this.user = args.user;
       if (!args.password) throw new Error("password required");

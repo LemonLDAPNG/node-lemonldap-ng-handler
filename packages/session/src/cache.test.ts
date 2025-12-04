@@ -9,10 +9,14 @@ const id = "bbbbbbbbbbbbbb";
 
 const clean = () => {
   try {
-    fs.rmSync(path.join(__dirname, id));
-    fs.rmdirSync(realcache);
-  } catch (e) {
-    console.debug(e);
+    fs.rmSync(path.join(__dirname, id), { recursive: true, force: true });
+  } catch {
+    // Ignore errors if file doesn't exist
+  }
+  try {
+    fs.rmSync(realcache, { recursive: true, force: true });
+  } catch {
+    // Ignore errors if directory doesn't exist
   }
 };
 
