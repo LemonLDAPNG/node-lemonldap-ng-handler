@@ -473,14 +473,19 @@ abstract class HandlerInit implements MsgActionHandler {
   }
 
   /**
-   * Stop the event loop
+   * Stop the event loop and close all connections
    * Called to cleanly shutdown the handler (useful for tests)
    */
-  public stopEventLoop(): void {
+  public async stopEventLoop(): Promise<void> {
     if (this.eventLoopInterval) {
       clearInterval(this.eventLoopInterval);
       this.eventLoopInterval = null;
       this.userLogger.debug("Event loop stopped");
+    }
+    // Close session storage to stop background processes
+    if (this.sessionAcc && typeof this.sessionAcc.close === "function") {
+      await this.sessionAcc.close();
+      this.userLogger.debug("Session storage closed");
     }
   }
 

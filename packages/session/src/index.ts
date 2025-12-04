@@ -168,6 +168,26 @@ class Session {
     this.clearMemoryCache(id);
     await this.clearLocalCache(id);
   }
+
+  /**
+   * Close the session storage and stop all background processes
+   * Call this in tests' afterAll to allow Jest to exit cleanly
+   */
+  async close(): Promise<void> {
+    // Stop node-persist intervals if using local cache
+    if (this.localCache) {
+      // Cast to any to access internal node-persist methods
+      const cache = this.localCache as any;
+      if (typeof cache.stopExpiredKeysInterval === "function") {
+        cache.stopExpiredKeysInterval();
+      }
+      if (typeof cache.stopWriteQueueInterval === "function") {
+        cache.stopWriteQueueInterval();
+      }
+    }
+    // Clear in-memory cache
+    this.inMemoryCache.reset();
+  }
 }
 
 export default Session;

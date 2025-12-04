@@ -38,7 +38,8 @@ beforeAll((done) => {
   });
 });
 
-afterAll(() => {
+afterAll(async () => {
+  await sessionConn.close();
   clean();
 });
 

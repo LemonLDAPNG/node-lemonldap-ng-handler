@@ -61,9 +61,9 @@ beforeEach(() => {
   errorSpy = jest.spyOn(console, "error");
 });
 
-afterAll(() => {
-  // Stop the event loop to allow Jest to exit
-  handler.shutdown();
+afterAll(async () => {
+  // Stop the event loop and close session to allow Jest to exit
+  await handler.shutdown();
   fs.rmSync(iniTmp);
   fs.rmSync(lmconfTmp);
   fs.rmSync(sessionsDir, {

@@ -63,9 +63,9 @@ export const nginxServer = (args: FastCGI_Opts) => {
  * Shutdown the handler (stops event loop and cleanup)
  * Call this in tests' afterAll to prevent Jest from hanging
  */
-export const shutdown = () => {
+export const shutdown = async () => {
   if (currentHandler) {
-    currentHandler.stopEventLoop();
+    await currentHandler.stopEventLoop();
   }
 };
 
