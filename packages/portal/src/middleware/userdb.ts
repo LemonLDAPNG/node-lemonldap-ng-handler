@@ -13,7 +13,7 @@ export function userDBMiddleware(portal: Portal) {
   return async (
     req: PortalRequest,
     _res: Response,
-    next: NextFunction
+    next: NextFunction,
   ): Promise<void> => {
     // Skip if already has session or auth failed
     if (req.llngSession || !req.llngAuthResult?.success) {

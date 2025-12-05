@@ -3,12 +3,7 @@ import Session from "@lemonldap-ng/session";
 import Logger from "@lemonldap-ng/logger";
 import crypto from "crypto";
 import type { LLNG_Conf, LLNG_Session, LLNG_Logger } from "@lemonldap-ng/types";
-import type {
-  PortalOptions,
-  AuthModule,
-  UserDBModule,
-  PortalRequest,
-} from "./types";
+import type { PortalOptions, AuthModule, UserDBModule } from "./types";
 import { TemplateEngine } from "./templates/engine";
 
 /**
@@ -63,7 +58,9 @@ export class Portal {
     const userDBType = (this.conf.userDB || "Demo").toLowerCase();
     await this.loadUserDBModule(userDBType);
 
-    logger.info(`Portal initialized with auth=${authType}, userDB=${userDBType}`);
+    logger.info(
+      `Portal initialized with auth=${authType}, userDB=${userDBType}`,
+    );
     return true;
   }
 
@@ -137,7 +134,8 @@ export class Portal {
    * Get template engine
    */
   getTemplateEngine(): TemplateEngine {
-    if (!this.templateEngine) throw new Error("Template engine not initialized");
+    if (!this.templateEngine)
+      throw new Error("Template engine not initialized");
     return this.templateEngine;
   }
 
@@ -171,7 +169,7 @@ export class Portal {
    */
   async createSession(
     sessionId: string,
-    data: Partial<LLNG_Session>
+    data: Partial<LLNG_Session>,
   ): Promise<LLNG_Session> {
     const now = Math.floor(Date.now() / 1000);
     const session: LLNG_Session = {

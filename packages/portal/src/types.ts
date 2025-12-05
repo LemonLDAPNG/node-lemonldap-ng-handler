@@ -1,4 +1,4 @@
-import type { Request, Response, NextFunction } from "express";
+import type { Request } from "express";
 import type { LLNG_Conf, LLNG_Session, LLNG_Logger } from "@lemonldap-ng/types";
 
 /**
@@ -36,13 +36,13 @@ export interface AuthModule {
   readonly name: string;
 
   /** Initialize module with configuration */
-  init(conf: LLNG_Conf, logger: LLNG_Logger): Promise<void>;
+  init(_conf: LLNG_Conf, _logger: LLNG_Logger): Promise<void>;
 
   /** Extract credentials from request */
-  extractCredentials(req: Request): Credentials | null;
+  extractCredentials(_req: Request): Credentials | null;
 
   /** Authenticate user with credentials */
-  authenticate(credentials: Credentials): Promise<AuthResult>;
+  authenticate(_credentials: Credentials): Promise<AuthResult>;
 
   /** Optional: cleanup */
   close?(): Promise<void>;
@@ -56,13 +56,13 @@ export interface UserDBModule {
   readonly name: string;
 
   /** Initialize module with configuration */
-  init(conf: LLNG_Conf, logger: LLNG_Logger): Promise<void>;
+  init(_conf: LLNG_Conf, _logger: LLNG_Logger): Promise<void>;
 
   /** Get user data by username */
-  getUser(username: string): Promise<UserData | null>;
+  getUser(_username: string): Promise<UserData | null>;
 
   /** Set session info from user data */
-  setSessionInfo(session: LLNG_Session, user: UserData): void;
+  setSessionInfo(_session: LLNG_Session, _user: UserData): void;
 
   /** Optional: cleanup */
   close?(): Promise<void>;

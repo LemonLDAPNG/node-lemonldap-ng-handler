@@ -13,7 +13,7 @@ export function authMiddleware(portal: Portal) {
   return async (
     req: PortalRequest,
     _res: Response,
-    next: NextFunction
+    next: NextFunction,
   ): Promise<void> => {
     // Skip if already authenticated
     if (req.llngSession) {
@@ -39,7 +39,7 @@ export function authMiddleware(portal: Portal) {
         logger.info(`User ${credentials.user} authenticated successfully`);
       } else {
         logger.notice(
-          `Authentication failed for ${credentials.user}: ${result.error || "unknown error"}`
+          `Authentication failed for ${credentials.user}: ${result.error || "unknown error"}`,
         );
       }
     } catch (e) {

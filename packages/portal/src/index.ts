@@ -1,7 +1,11 @@
 import express, { Router } from "express";
 import cookieParser from "cookie-parser";
 import { Portal } from "./portal";
-import { sessionMiddleware, authMiddleware, userDBMiddleware } from "./middleware";
+import {
+  sessionMiddleware,
+  authMiddleware,
+  userDBMiddleware,
+} from "./middleware";
 import { createRoutes } from "./routes";
 import type { PortalOptions } from "./types";
 
@@ -39,7 +43,9 @@ export function getPortal(): Portal {
 export function middleware(portal?: Portal): Router {
   const p = portal || currentPortal;
   if (!p) {
-    throw new Error("Portal not initialized. Call init() first or pass portal instance.");
+    throw new Error(
+      "Portal not initialized. Call init() first or pass portal instance.",
+    );
   }
 
   const router = Router();

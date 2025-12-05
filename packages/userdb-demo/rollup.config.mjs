@@ -4,10 +4,7 @@ import typescript from "@rollup/plugin-typescript";
 import terser from "@rollup/plugin-terser";
 import cleaner from "rollup-plugin-cleaner";
 
-const alwaysExt = [
-  "@lemonldap-ng/portal",
-  "@lemonldap-ng/types",
-];
+const alwaysExt = ["@lemonldap-ng/portal", "@lemonldap-ng/types"];
 
 const commonPlugins = [typescript(), commonjs()];
 
