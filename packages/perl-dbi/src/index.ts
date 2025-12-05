@@ -130,6 +130,15 @@ function PerlDBI(args: PerlDBI_Args): PerlDBI_Client {
     }
     dbArgs.useNullAsDefault = true;
   }
+  // Add user and password to connection config
+  if (args.dbiUser) {
+    // @ts-ignore
+    dbArgs.connection.user = args.dbiUser;
+  }
+  if (args.dbiPassword) {
+    // @ts-ignore
+    dbArgs.connection.password = args.dbiPassword;
+  }
   return knex(dbArgs);
 }
 
