@@ -1,7 +1,7 @@
 {
-  "name": "@lemonldap-ng/constants",
+  "name": "@lemonldap-ng/jwt",
   "version": "0.8.0",
-  "description": "lemonldap-ng main constants",
+  "description": "JWT utilities for LemonLDAP::NG",
   "main": "./lib/index.js",
   "module": "./lib/index.mjs",
   "types": "./lib/index.d.ts",
@@ -18,31 +18,32 @@
   "homepage": "https://lemonldap-ng.org",
   "files": [
     "package.json",
-    "index*",
+    "lib",
     "LICENSE",
     "*.md"
   ],
+  "dependencies": {},
   "bugs": {
     "url": "https://gitlab.ow2.org/lemonldap-ng/lemonldap-ng/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/LemonLDAPNG/node-lemonldap-ng-handler.git"
+    "url": "https://github.com/LemonLDAPNG/lemonldap-ng.js.git"
   },
   "keywords": [
     "Lemonldap::NG",
     "SSO",
-    "SAML",
-    "OpenID-Connect",
-    "SSOaaS"
+    "JWT",
+    "OAuth2",
+    "OIDC"
   ],
   "authors": [
-    "Yadd <yadd@debian.org>"
+    "Xavier Guimard <yadd@debian.org>"
   ],
   "license": "GPL-2.0-or-later",
   "llng-compat": "2.0.5",
   "scripts": {
-    "build": "rollup -c",
-    "test": "echo"
+    "test": "jest",
+    "build": "rollup -c"
   }
 }

@@ -1,5 +1,8 @@
+.claude/
+CLAUDE.md
 lerna-debug.log
 node_modules/
 coverage/
 packages/*/lib/
+PLAN.md
 src/packages/lemonldap-ng-conf/test/cr.json
