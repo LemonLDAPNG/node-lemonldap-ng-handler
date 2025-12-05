@@ -1,0 +1,28 @@
+{% extends "base.njk" %}
+
+{% block title %}Error - LemonLDAP::NG{% endblock %}
+
+{% block content %}
+<div class="logo">
+  <h1>LemonLDAP::NG</h1>
+  <p>Single Sign-On Portal</p>
+</div>
+
+<div class="alert alert-error">
+  {% if error %}
+    {{ error }}
+  {% else %}
+    An error occurred
+  {% endif %}
+</div>
+
+{% if errorCode %}
+<p style="text-align: center; color: #666; font-size: 14px;">
+  Error code: {{ errorCode }}
+</p>
+{% endif %}
+
+<div style="text-align: center; margin-top: 20px;">
+  <a href="{{ PORTAL | default('/') }}" style="color: #667eea;">Back to login</a>
+</div>
+{% endblock %}

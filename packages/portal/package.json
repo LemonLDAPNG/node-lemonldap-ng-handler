@@ -1,0 +1,65 @@
+{
+  "name": "@lemonldap-ng/portal",
+  "version": "0.8.0",
+  "description": "LemonLDAP::NG Portal - Authentication portal for WebSSO",
+  "main": "lib/index.cjs",
+  "module": "lib/index.mjs",
+  "types": "lib/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./lib/index.cjs",
+      "import": "./lib/index.mjs",
+      "types": "./lib/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "rollup -c",
+    "start": "node scripts/start.js",
+    "test": "tsc --noEmit && jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LemonLDAPNG/lemonldap-ng.js.git"
+  },
+  "license": "GPL-2.0-or-later",
+  "maintainers": [
+    {
+      "name": "Xavier Guimard",
+      "email": "yadd@debian.org"
+    }
+  ],
+  "dependencies": {
+    "@lemonldap-ng/conf": "^0.8.0",
+    "@lemonldap-ng/crypto": "^0.8.0",
+    "@lemonldap-ng/logger": "^0.8.0",
+    "@lemonldap-ng/session": "^0.8.0",
+    "@lemonldap-ng/types": "^0.8.0",
+    "cookie-parser": "^1.4.6",
+    "express": "^5.1.0",
+    "nunjucks": "^3.2.4"
+  },
+  "keywords": [
+    "Lemonldap::NG",
+    "SSO",
+    "portal",
+    "authentication"
+  ],
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^28.0.3",
+    "@rollup/plugin-node-resolve": "^16.0.1",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^12.1.2",
+    "@types/cookie-parser": "^1.4.8",
+    "@types/express": "^5.0.2",
+    "@types/jest": "^29.5.14",
+    "@types/node": "^22.15.21",
+    "@types/nunjucks": "^3.2.6",
+    "@types/supertest": "^6.0.2",
+    "jest": "^29.7.0",
+    "rollup": "^4.40.2",
+    "rollup-plugin-cleaner": "^1.0.0",
+    "supertest": "^7.1.0",
+    "ts-jest": "^29.3.4",
+    "typescript": "^5.8.3"
+  }
+}
