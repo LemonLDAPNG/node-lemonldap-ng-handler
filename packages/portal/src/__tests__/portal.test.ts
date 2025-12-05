@@ -63,19 +63,17 @@ describe("Template filters", () => {
 
   it("should escape HTML attributes with safe filter", () => {
     // attrEscape + safe to avoid double escaping by nunjucks autoescape
-    const result = engine.renderString(
-      '{{ val | attrEscape | safe }}',
-      { val: 'test"value&here' }
-    );
-    expect(result).toBe('test&quot;value&amp;here');
+    const result = engine.renderString("{{ val | attrEscape | safe }}", {
+      val: 'test"value&here',
+    });
+    expect(result).toBe("test&quot;value&amp;here");
   });
 
   it("should JSON encode values with safe filter", () => {
     // jsonEncode + safe to avoid escaping the JSON quotes
-    const result = engine.renderString(
-      '{{ val | jsonEncode | safe }}',
-      { val: { key: "value" } }
-    );
+    const result = engine.renderString("{{ val | jsonEncode | safe }}", {
+      val: { key: "value" },
+    });
     expect(result).toBe('{"key":"value"}');
   });
 });

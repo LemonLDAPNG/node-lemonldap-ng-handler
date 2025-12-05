@@ -31,7 +31,7 @@ export class TemplateEngine {
    */
   private addFilters(): void {
     // Translate filter (placeholder for i18n)
-    this.env.addFilter("translate", (key: string, _lang?: string) => {
+    this.env.addFilter("translate", (key: string, _lang?: string): string => {
       // TODO: implement i18n
       return key;
     });

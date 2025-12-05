@@ -14,7 +14,7 @@ export function sessionMiddleware(portal: Portal) {
   return async (
     req: PortalRequest,
     _res: Response,
-    next: NextFunction
+    next: NextFunction,
   ): Promise<void> => {
     // Extract session ID from cookie
     const sessionId = req.cookies?.[cookieName];
@@ -25,7 +25,9 @@ export function sessionMiddleware(portal: Portal) {
         if (session) {
           req.llngSession = session;
           req.llngSessionId = sessionId;
-          logger.debug(`Session ${sessionId} loaded for ${session.uid || session._user}`);
+          logger.debug(
+            `Session ${sessionId} loaded for ${session.uid || session._user}`,
+          );
         }
       } catch (e) {
         logger.debug(`Failed to load session ${sessionId}: ${e}`);

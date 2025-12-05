@@ -122,7 +122,9 @@ async function main() {
       path: "/",
     });
 
-    console.log(`[${new Date().toISOString()}] Login: ${user} -> session ${sessionId.substring(0, 8)}...`);
+    console.log(
+      `[${new Date().toISOString()}] Login: ${user} -> session ${sessionId.substring(0, 8)}...`,
+    );
 
     // Check for redirect URL
     const urldc = req.body.url;
@@ -137,7 +139,9 @@ async function main() {
   app.get("/logout", (req, res) => {
     if (req.sessionId) {
       sessions.delete(req.sessionId);
-      console.log(`[${new Date().toISOString()}] Logout: session ${req.sessionId.substring(0, 8)}...`);
+      console.log(
+        `[${new Date().toISOString()}] Logout: session ${req.sessionId.substring(0, 8)}...`,
+      );
     }
 
     res.clearCookie("lemonldap", { path: "/" });

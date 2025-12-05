@@ -1,10 +1,6 @@
 import type { Request } from "express";
 import type { LLNG_Conf, LLNG_Logger } from "@lemonldap-ng/types";
-import type {
-  AuthModule,
-  Credentials,
-  AuthResult,
-} from "@lemonldap-ng/portal";
+import type { AuthModule, Credentials, AuthResult } from "@lemonldap-ng/portal";
 
 /**
  * Demo authentication module

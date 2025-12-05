@@ -32,7 +32,7 @@ describe("DemoUserDB", () => {
   describe("init", () => {
     it("should initialize with default users", async () => {
       expect(mockLogger.info).toHaveBeenCalledWith(
-        expect.stringContaining("2 users")
+        expect.stringContaining("2 users"),
       );
     });
 

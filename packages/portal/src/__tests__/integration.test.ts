@@ -39,8 +39,18 @@ describe("Portal Integration", () => {
 
         // Demo users
         const demoUsers: Record<string, any> = {
-          dwho: { _password: "dwho", uid: "dwho", cn: "Doctor Who", mail: "dwho@example.com" },
-          rtyler: { _password: "rtyler", uid: "rtyler", cn: "Rose Tyler", mail: "rtyler@example.com" },
+          dwho: {
+            _password: "dwho",
+            uid: "dwho",
+            cn: "Doctor Who",
+            mail: "dwho@example.com",
+          },
+          rtyler: {
+            _password: "rtyler",
+            uid: "rtyler",
+            cn: "Rose Tyler",
+            mail: "rtyler@example.com",
+          },
         };
 
         const userData = demoUsers[req.body.user];
@@ -125,9 +135,7 @@ describe("Portal Integration", () => {
       const cookies = loginRes.headers["set-cookie"];
 
       // Then access with session
-      const res = await request(app)
-        .get("/")
-        .set("Cookie", cookies);
+      const res = await request(app).get("/").set("Cookie", cookies);
 
       expect(res.status).toBe(200);
       expect(res.body.authenticated).toBe(true);
@@ -185,9 +193,7 @@ describe("Portal Integration", () => {
       const cookies = loginRes.headers["set-cookie"];
 
       // Access protected resource
-      const protectedRes = await request(app)
-        .get("/")
-        .set("Cookie", cookies);
+      const protectedRes = await request(app).get("/").set("Cookie", cookies);
 
       expect(protectedRes.body.authenticated).toBe(true);
       expect(protectedRes.body.user).toBe("dwho");
@@ -211,9 +217,7 @@ describe("Portal Integration", () => {
       expect(logoutRes.body.loggedOut).toBe(true);
 
       // Verify session is cleared
-      const afterLogout = await request(app)
-        .get("/")
-        .set("Cookie", cookies);
+      const afterLogout = await request(app).get("/").set("Cookie", cookies);
 
       expect(afterLogout.body.authenticated).toBe(false);
     });
