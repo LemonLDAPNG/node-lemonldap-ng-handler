@@ -1,14 +1,14 @@
 {
-  "name": "@lemonldap-ng/safelib",
+  "name": "perl-dbi",
   "version": "0.8.0",
-  "description": "lemonldap-ng safe library",
+  "description": "LemonLDAP::NG handler for Node.js",
   "main": "./lib/index.js",
   "module": "./lib/index.mjs",
-  "types": "./lib/index.d.ts",
   "exports": {
     "import": "./lib/index.mjs",
     "require": "./lib/index.js"
   },
+  "types": "./lib/index.d.ts",
   "maintainers": [
     {
       "name": "Yadd",
@@ -22,19 +22,18 @@
     "LICENSE",
     "*.md"
   ],
+  "dependencies": {
+    "knex": "^2.1.0"
+  },
   "bugs": {
     "url": "https://gitlab.ow2.org/lemonldap-ng/lemonldap-ng/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/LemonLDAPNG/node-lemonldap-ng-handler.git"
+    "url": "https://github.com/LemonLDAPNG/lemonldap-ng.js.git"
   },
   "keywords": [
-    "Lemonldap::NG",
-    "SSO",
-    "SAML",
-    "OpenID-Connect",
-    "SSOaaS"
+    "Lemonldap::NG"
   ],
   "authors": [
     "Yadd <yadd@debian.org>"
@@ -44,9 +43,5 @@
   "scripts": {
     "test": "jest",
     "build": "rollup -c"
-  },
-  "dependencies": {
-    "iconv-lite": "^0.6.3",
-    "ipaddr.js": "^2.0.1"
   }
 }

@@ -1,5 +1,6 @@
 {
-  "name": "lemonldap-ng-handler",
+  "name": "lemonldap-ng.js",
+  "private": true,
   "license": "GPL-3.0",
   "homepage": "https://lemonldap-ng.org",
   "maintainers": [
@@ -10,7 +11,11 @@
   ],
   "scripts": {
     "clean": "rimraf packages/*/lib",
-    "build": "npm run build --workspaces",
+    "build:0": "npm run build --workspace=packages/types --workspace=packages/constants --workspace=packages/crypto --workspace=packages/jwt --workspace=packages/safelib --workspace=packages/perl-dbi --workspace=packages/conf-file --workspace=packages/conf-ldap --workspace=packages/conf-mongodb --workspace=packages/conf-rest --workspace=packages/logger --workspace=packages/logger-syslog --workspace=packages/session-file --workspace=packages/session-ldap --workspace=packages/session-redis --workspace=packages/session-rest",
+    "build:1": "npm run build --workspace=packages/conf-dbi --workspace=packages/session-dbi --workspace=packages/conf-yaml --workspace=packages/message-broker",
+    "build:2": "npm run build --workspace=packages/conf-cdbi --workspace=packages/conf-rdbi --workspace=packages/session-mysql --workspace=packages/session-postgres --workspace=packages/session-sqlite --workspace=packages/session-oracle --workspace=packages/message-broker-redis --workspace=packages/message-broker-pg --workspace=packages/message-broker-web --workspace=packages/message-broker-nobroker",
+    "build:3": "npm run build --workspace=packages/session --workspace=packages/conf",
+    "build": "npm run build:0 && npm run build:1 && npm run build:2 && npm run build:3 && npm run build --workspaces",
     "format:check": "prettier --check .",
     "format:check-diff": "prettier --check $(git diff $(git rev-parse --abbrev-ref --symbolic-full-name @{u}) --name-status|grep -E '^M|A'|cut -f2)",
     "format:fix": "prettier --write .",
@@ -25,7 +30,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/LemonLDAPNG/node-lemonldap-ng-handler.git"
+    "url": "https://github.com/LemonLDAPNG/lemonldap-ng.js.git"
   },
   "keywords": [
     "Lemonldap::NG",
@@ -81,8 +86,7 @@
     "typescript": "^5.8.3"
   },
   "workspaces": [
-    "packages/*",
-    "!packages/node-lemonldap-ng-handler"
+    "packages/*"
   ],
   "optionalDependencies": {
     "fsevents": "^2.3.2"

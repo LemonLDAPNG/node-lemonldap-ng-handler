@@ -40,7 +40,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/LemonLDAPNG/node-lemonldap-ng-handler.git"
+    "url": "https://github.com/LemonLDAPNG/lemonldap-ng.js.git"
   },
   "keywords": [
     "Lemonldap::NG",
