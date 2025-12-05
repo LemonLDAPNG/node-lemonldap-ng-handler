@@ -41,7 +41,7 @@ export default class PgBroker implements MessageBroker {
     }
 
     this.logger.debug(
-      `PgBroker initialized with connection: ${this.maskPassword(this.connectionString)}`
+      `PgBroker initialized with connection: ${this.maskPassword(this.connectionString)}`,
     );
   }
 
@@ -57,7 +57,9 @@ export default class PgBroker implements MessageBroker {
     const colonIndex = connStr.indexOf(":", connStr.indexOf("://") + 3);
     if (colonIndex === -1 || colonIndex > atIndex) return connStr;
 
-    return connStr.substring(0, colonIndex) + ":***" + connStr.substring(atIndex);
+    return (
+      connStr.substring(0, colonIndex) + ":***" + connStr.substring(atIndex)
+    );
   }
 
   /**
@@ -66,7 +68,9 @@ export default class PgBroker implements MessageBroker {
    */
   private validateChannel(channel: string): void {
     if (!VALID_CHANNEL_PATTERN.test(channel)) {
-      throw new Error(`Invalid channel name: ${channel}. Must match pattern: ${VALID_CHANNEL_PATTERN}`);
+      throw new Error(
+        `Invalid channel name: ${channel}. Must match pattern: ${VALID_CHANNEL_PATTERN}`,
+      );
     }
   }
 
@@ -196,7 +200,7 @@ export default class PgBroker implements MessageBroker {
    */
   async getNextMessage(
     channel: string,
-    _delay?: number
+    _delay?: number,
   ): Promise<BrokerMessage | undefined> {
     const queue = this.messageQueue.get(channel);
     if (queue && queue.length > 0) {

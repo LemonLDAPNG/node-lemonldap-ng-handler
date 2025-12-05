@@ -57,12 +57,11 @@ class LDAPSession implements Session_Accessor {
       tlsOptions: caConf,
       url: ldapServer,
     });
-    this.ldap.bind(
-      args.ldapBindDN || "",
-      args.ldapBindPassword || ""
-    ).catch((e) => {
-      throw new Error(`LDAP bind error: ${e}`);
-    });
+    this.ldap
+      .bind(args.ldapBindDN || "", args.ldapBindPassword || "")
+      .catch((e) => {
+        throw new Error(`LDAP bind error: ${e}`);
+      });
   }
 
   get(id: string) {
@@ -72,19 +71,20 @@ class LDAPSession implements Session_Accessor {
         scope: "base",
         attributes: [this.contentAttr],
       };
-      this.ldap.search(`${this.idAttr}=${id},${this.base}`, opt)
-      .then(res => res.searchEntries)
-      .then((res) => {
-        const tmp = (res[0]?.[this.contentAttr] as string | string[]);
-        const data = <string>res[0]?.[typeof tmp === "object" ? tmp[0] : tmp];
-        if (!data) return reject("LDAP session not found");
-        try {
-          resolve(JSON.parse(data));
-        } catch (e) {
-          reject(`LDAP session parse error: ${e}`);
-        }
-      })
-      .catch((e) => reject(`LDAP search error: ${e}`));
+      this.ldap
+        .search(`${this.idAttr}=${id},${this.base}`, opt)
+        .then((res) => res.searchEntries)
+        .then((res) => {
+          const tmp = res[0]?.[this.contentAttr] as string | string[];
+          const data = <string>res[0]?.[typeof tmp === "object" ? tmp[0] : tmp];
+          if (!data) return reject("LDAP session not found");
+          try {
+            resolve(JSON.parse(data));
+          } catch (e) {
+            reject(`LDAP session parse error: ${e}`);
+          }
+        })
+        .catch((e) => reject(`LDAP search error: ${e}`));
     });
   }
 
@@ -92,14 +92,14 @@ class LDAPSession implements Session_Accessor {
     await this.ldap.modify(
       `${this.idAttr}=${data._session_id},${this.base}`,
       new Change({
-        operation: 'replace',
+        operation: "replace",
         modification: new Attribute({
           type: this.contentAttr,
           values: [JSON.stringify(data)],
         }),
-      })
+      }),
     );
-    return true
+    return true;
   }
 }
 

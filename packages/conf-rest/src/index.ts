@@ -67,8 +67,7 @@ class RESTConf implements Conf_Accessor {
     });
   }
 
-  // eslint-disable-next-line no-unused-vars
-  store(fields: LLNG_Conf) {
+  store(_fields: LLNG_Conf) {
     return new Promise<boolean>((resolve, reject) => {
       reject("Not implemented for now");
     });

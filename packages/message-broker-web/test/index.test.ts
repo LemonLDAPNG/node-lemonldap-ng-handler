@@ -22,25 +22,25 @@ describe("@lemonldap-ng/message-broker-web", () => {
       const broker = new WebBroker({}, mockLogger);
       expect(broker).toBeDefined();
       expect(mockLogger.warn).toHaveBeenCalledWith(
-        expect.stringContaining("no server URL configured")
+        expect.stringContaining("no server URL configured"),
       );
     });
 
     it("should initialize with server URL", () => {
       const broker = new WebBroker(
         { server: "http://localhost:8080" },
-        mockLogger
+        mockLogger,
       );
       expect(broker).toBeDefined();
       expect(mockLogger.debug).toHaveBeenCalledWith(
-        expect.stringContaining("http://localhost:8080")
+        expect.stringContaining("http://localhost:8080"),
       );
     });
 
     it("should accept custom poll interval", () => {
       const broker = new WebBroker(
         { server: "http://localhost:8080", every: 10 },
-        mockLogger
+        mockLogger,
       );
       expect(broker).toBeDefined();
     });
@@ -51,7 +51,7 @@ describe("@lemonldap-ng/message-broker-web", () => {
       const broker = new WebBroker({}, mockLogger);
       await broker.subscribe("test-channel");
       expect(mockLogger.debug).toHaveBeenCalledWith(
-        expect.stringContaining("subscribed to test-channel")
+        expect.stringContaining("subscribed to test-channel"),
       );
     });
 
@@ -60,9 +60,8 @@ describe("@lemonldap-ng/message-broker-web", () => {
       await broker.subscribe("test-channel");
       await broker.subscribe("test-channel");
       // Should only log once
-      const subscribeCalls = mockLogger.debug.mock.calls.filter(
-        (call) =>
-          call[0].includes("subscribed to test-channel")
+      const subscribeCalls = mockLogger.debug.mock.calls.filter((call) =>
+        call[0].includes("subscribed to test-channel"),
       );
       expect(subscribeCalls.length).toBe(1);
     });
@@ -82,7 +81,7 @@ describe("@lemonldap-ng/message-broker-web", () => {
       const broker = new WebBroker({}, mockLogger);
       await broker.publish("test-channel", { action: "test" });
       expect(mockLogger.debug).toHaveBeenCalledWith(
-        expect.stringContaining("publish skipped")
+        expect.stringContaining("publish skipped"),
       );
     });
   });
@@ -91,11 +90,11 @@ describe("@lemonldap-ng/message-broker-web", () => {
     it("should clean up resources", () => {
       const broker = new WebBroker(
         { server: "http://localhost:8080" },
-        mockLogger
+        mockLogger,
       );
       broker.close();
       expect(mockLogger.debug).toHaveBeenCalledWith(
-        expect.stringContaining("closed")
+        expect.stringContaining("closed"),
       );
     });
   });

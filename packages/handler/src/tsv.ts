@@ -1,9 +1,6 @@
 import RE2 from "re2";
 import Crypto from "@lemonldap-ng/crypto";
-import type {
-  MessageBroker,
-  Backend_Options,
-} from "@lemonldap-ng/types";
+import type { MessageBroker, Backend_Options } from "@lemonldap-ng/types";
 
 declare type vhost = string;
 

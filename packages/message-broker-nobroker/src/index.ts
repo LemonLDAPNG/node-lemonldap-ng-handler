@@ -31,7 +31,7 @@ export default class NoBroker implements MessageBroker {
    */
   async publish(channel: string, msg: BrokerMessage): Promise<void> {
     this.logger.debug(
-      `NoBroker: publish to ${channel} ignored (action: ${msg.action})`
+      `NoBroker: publish to ${channel} ignored (action: ${msg.action})`,
     );
   }
 
@@ -51,7 +51,7 @@ export default class NoBroker implements MessageBroker {
    */
   async getNextMessage(
     _channel: string,
-    _delay?: number
+    _delay?: number,
   ): Promise<BrokerMessage | undefined> {
     return undefined;
   }
@@ -63,7 +63,7 @@ export default class NoBroker implements MessageBroker {
    */
   waitForNextMessage(channel: string): Promise<BrokerMessage> {
     this.logger.warn(
-      `NoBroker: waitForNextMessage called for ${channel} - this will never resolve`
+      `NoBroker: waitForNextMessage called for ${channel} - this will never resolve`,
     );
     return new Promise(() => {
       // Never resolves - NoBroker doesn't receive messages

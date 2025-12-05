@@ -32,7 +32,7 @@ export interface CDAValue {
 export function createCDACookie(
   cipher: Crypto,
   sessionId: string,
-  timestamp?: number
+  timestamp?: number,
 ): string {
   const ts = timestamp || Math.floor(Date.now() / 1000);
   const value = `${sessionId}:${ts}`;
@@ -49,7 +49,7 @@ export function createCDACookie(
 export function parseCDACookie(
   cipher: Crypto,
   cookieValue: string,
-  maxAge: number = 120
+  maxAge: number = 120,
 ): CDAValue | null {
   try {
     const decrypted = cipher.decrypt(cookieValue);
@@ -93,7 +93,7 @@ export function parseCDACookie(
 export function appendCDAParam(
   cipher: Crypto,
   sessionId: string,
-  url: string
+  url: string,
 ): string {
   const cdaValue = createCDACookie(cipher, sessionId);
   const separator = url.includes("?") ? "&" : "?";
@@ -130,7 +130,7 @@ export function buildCDACookieHeader(
   domain: string,
   expiration: number = 0,
   secure: boolean = false,
-  httpOnly: boolean = true
+  httpOnly: boolean = true,
 ): string {
   let cookie = `${cookieName}=${value}`;
 
@@ -166,7 +166,7 @@ export function buildCDACookieHeader(
  */
 export function deleteCDACookieHeader(
   cookieName: string,
-  domain: string
+  domain: string,
 ): string {
   let cookie = `${cookieName}=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT`;
 

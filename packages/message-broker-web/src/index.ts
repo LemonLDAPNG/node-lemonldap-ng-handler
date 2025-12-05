@@ -31,7 +31,7 @@ export default class WebBroker implements MessageBroker {
 
     if (!this.serverUrl) {
       this.logger.warn(
-        "WebBroker: no server URL configured, broker will be inactive"
+        "WebBroker: no server URL configured, broker will be inactive",
       );
     } else {
       this.logger.debug(`WebBroker initialized with server: ${this.serverUrl}`);
@@ -50,7 +50,9 @@ export default class WebBroker implements MessageBroker {
       await this.poll();
     }, this.pollInterval);
 
-    this.logger.debug(`WebBroker: started polling every ${this.pollInterval}ms`);
+    this.logger.debug(
+      `WebBroker: started polling every ${this.pollInterval}ms`,
+    );
   }
 
   /**
@@ -89,7 +91,9 @@ export default class WebBroker implements MessageBroker {
         });
 
         if (response.ok) {
-          const data = await response.json() as BrokerMessage | BrokerMessage[];
+          const data = (await response.json()) as
+            | BrokerMessage
+            | BrokerMessage[];
 
           if (Array.isArray(data)) {
             for (const msg of data) {
@@ -101,7 +105,7 @@ export default class WebBroker implements MessageBroker {
         } else if (response.status !== 204) {
           // 204 = no new messages
           this.logger.warn(
-            `WebBroker: poll failed for ${channel}: ${response.status}`
+            `WebBroker: poll failed for ${channel}: ${response.status}`,
           );
         }
       } catch (e) {
@@ -180,7 +184,7 @@ export default class WebBroker implements MessageBroker {
    */
   async getNextMessage(
     channel: string,
-    _delay?: number
+    _delay?: number,
   ): Promise<BrokerMessage | undefined> {
     const queue = this.messageQueue.get(channel);
     if (queue && queue.length > 0) {

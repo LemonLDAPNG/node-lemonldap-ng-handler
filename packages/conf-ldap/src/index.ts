@@ -10,10 +10,7 @@ export type LDAP_Args = {
 };
 
 import { Client as LDAPClient } from "ldapts";
-import type {
-  SearchOptions,
-  Entry,
-} from "ldapts";
+import type { SearchOptions, Entry } from "ldapts";
 import { LLNG_Conf, Conf_Accessor } from "@lemonldap-ng/types";
 import fs from "fs";
 
@@ -70,7 +67,8 @@ class LDAPConf implements Conf_Accessor {
 
   available() {
     return new Promise<number[]>((resolve, reject) => {
-      this.client.bind(this.dn, this.pwd)
+      this.client
+        .bind(this.dn, this.pwd)
         .then(() => {
           const data: number[] = [];
           const opt: SearchOptions = {
@@ -78,10 +76,8 @@ class LDAPConf implements Conf_Accessor {
             scope: "sub",
             attributes: [this.idAttr],
           };
-          this.client.search(
-            this.base,
-            opt,
-          )
+          this.client
+            .search(this.base, opt)
             .then((res) => {
               res.searchEntries.forEach((entry: Entry) => {
                 let val = entry[this.idAttr].toString();
@@ -111,37 +107,39 @@ class LDAPConf implements Conf_Accessor {
     });
   }
 
-  // eslint-disable-next-line no-unused-vars
-  load(cfgNum: number, fields: string[] = []) {
+  load(cfgNum: number, _fields: string[] = []) {
     return new Promise<LLNG_Conf>((resolve, reject) => {
-      this.client.bind(this.dn, this.pwd)
+      this.client
+        .bind(this.dn, this.pwd)
         .then(() => {
           const opt: SearchOptions = {
             filter: `(objectClass=${this.objClass})`,
             scope: "sub",
           };
-          this.client.search(
-            `${this.idAttr}=lmConf-${cfgNum},${this.base}`,
-            opt,
-          )
+          this.client
+            .search(`${this.idAttr}=lmConf-${cfgNum},${this.base}`, opt)
             .then((res) => {
               let data: string[] = [];
               // @ts-ignore: cfgNum initialized later
               const conf: LLNG_Conf = {};
               res.searchEntries.forEach((entry: Entry) => {
-                let tmp: string | string[] | Buffer<ArrayBufferLike> | Buffer<ArrayBufferLike>[] = entry[this.contentAttr];
+                let tmp:
+                  | string
+                  | string[]
+                  | Buffer<ArrayBufferLike>
+                  | Buffer<ArrayBufferLike>[] = entry[this.contentAttr];
                 if (!Array.isArray(tmp)) tmp = [tmp as string];
                 data = tmp.map((item): string =>
                   typeof item === "string"
                     ? item
                     : typeof item === "number"
-                    ? (item as number).toString()
-                    : Buffer.isBuffer(item)
-                    ? item.toString()
-                    : (item as unknown) instanceof Uint8Array
-                    ? Buffer.from(item).toString()
-                    : (item as string)?.toString()
-                  );
+                      ? (item as number).toString()
+                      : Buffer.isBuffer(item)
+                        ? item.toString()
+                        : (item as unknown) instanceof Uint8Array
+                          ? Buffer.from(item).toString()
+                          : (item as string)?.toString(),
+                );
               });
               data.forEach((confLine: string) => {
                 if (!confLine.match(/^\{(.*?)\}(.*)/)) {
@@ -163,45 +161,48 @@ class LDAPConf implements Conf_Accessor {
     });
   }
 
-  // eslint-disable-next-line no-unused-vars
-  loadCb(cfgNum: number, fields: string[] = []) {
+  loadCb(cfgNum: number, _fields: string[] = []) {
     return new Promise<LLNG_Conf>((resolve, reject) => {
-      this.client.bind(this.dn, this.pwd)
-      .then(() => {
-        const opt: SearchOptions = {
-          filter: `(objectClass=${this.objClass})`,
-          scope: "sub",
-        };
-        this.client.search(
-          `${this.idAttr}=lmConf-${cfgNum},${this.base}`,
-          opt
-        )
-        .then(res => res.searchEntries)
-        .then((res) => {
-          // @ts-ignore: cfgNum initialized later
-          const conf: LLNG_Conf = {};
-          const tmp = res[0][this.contentAttr];
-          const data: string[] = ((typeof tmp === "object" ? tmp : [tmp]) as string[] | Buffer[]).map((item) => (item.toString ? item.toString() : item) as string);
-          data.forEach((confLine: string) => {
-            if (!confLine.match(/^\{(.*?)\}(.*)/)) {
-              return reject(`Bad conf line: ${confLine}`);
-            }
-            const k = RegExp.$1;
-            const v = RegExp.$2;
-            if (v.match !== null && v.match(/^{/)) {
-              conf[k] = JSON.parse(v);
-            } else {
-              conf[k] = v;
-            }
-          });
-          return resolve(conf);
-        }).catch((err) => reject(`LDAP search failed: ${err}`));
-      }).catch((err) => reject(`LDAP bind failed: ${err}`));
+      this.client
+        .bind(this.dn, this.pwd)
+        .then(() => {
+          const opt: SearchOptions = {
+            filter: `(objectClass=${this.objClass})`,
+            scope: "sub",
+          };
+          this.client
+            .search(`${this.idAttr}=lmConf-${cfgNum},${this.base}`, opt)
+            .then((res) => res.searchEntries)
+            .then((res) => {
+              // @ts-ignore: cfgNum initialized later
+              const conf: LLNG_Conf = {};
+              const tmp = res[0][this.contentAttr];
+              const data: string[] = (
+                (typeof tmp === "object" ? tmp : [tmp]) as string[] | Buffer[]
+              ).map(
+                (item) => (item.toString ? item.toString() : item) as string,
+              );
+              data.forEach((confLine: string) => {
+                if (!confLine.match(/^\{(.*?)\}(.*)/)) {
+                  return reject(`Bad conf line: ${confLine}`);
+                }
+                const k = RegExp.$1;
+                const v = RegExp.$2;
+                if (v.match !== null && v.match(/^{/)) {
+                  conf[k] = JSON.parse(v);
+                } else {
+                  conf[k] = v;
+                }
+              });
+              return resolve(conf);
+            })
+            .catch((err) => reject(`LDAP search failed: ${err}`));
+        })
+        .catch((err) => reject(`LDAP bind failed: ${err}`));
     });
   }
 
-  // eslint-disable-next-line no-unused-vars
-  store(conf: LLNG_Conf) {
+  store(_conf: LLNG_Conf) {
     return new Promise<boolean>((resolve, reject) => {
       reject("TODO");
     });

@@ -57,8 +57,7 @@ class FileConf implements Conf_Accessor {
     });
   }
 
-  // eslint-disable-next-line no-unused-vars
-  load(cfgNum: number, fields: string[] = []) {
+  load(cfgNum: number, _fields: string[] = []) {
     return new Promise<LLNG_Conf>((resolve, reject) => {
       const filename = path.join(
         this.dirName,

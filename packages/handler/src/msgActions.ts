@@ -25,7 +25,7 @@ export interface MsgActionHandler {
  */
 export async function processMessage(
   handler: MsgActionHandler,
-  msg: BrokerMessage
+  msg: BrokerMessage,
 ): Promise<boolean> {
   const logger = handler.userLogger;
 

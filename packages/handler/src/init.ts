@@ -10,7 +10,6 @@ import {
   LLNG_Logger,
 } from "@lemonldap-ng/types";
 import type {
-  MessageBroker,
   BrokerMessage,
   MessageBrokerOptions,
 } from "@lemonldap-ng/message-broker";
@@ -284,7 +283,7 @@ abstract class HandlerInit implements MsgActionHandler {
                   const brokerInitialized = await this.msgBrokerInit(conf);
                   if (!brokerInitialized) {
                     this.userLogger.info(
-                      "Handler initialized without message broker (real-time events disabled)"
+                      "Handler initialized without message broker (real-time events disabled)",
                     );
                   }
                   // Start event loop for checking broker messages
@@ -404,8 +403,10 @@ abstract class HandlerInit implements MsgActionHandler {
     const brokerOptions: MessageBrokerOptions = conf.messageBrokerOptions || {};
 
     // Set queue names from config
-    this.tsv.eventQueueName = brokerOptions.eventQueueName || DEFAULT_EVENT_QUEUE;
-    this.tsv.statusQueueName = brokerOptions.statusQueueName || DEFAULT_STATUS_QUEUE;
+    this.tsv.eventQueueName =
+      brokerOptions.eventQueueName || DEFAULT_EVENT_QUEUE;
+    this.tsv.statusQueueName =
+      brokerOptions.statusQueueName || DEFAULT_STATUS_QUEUE;
     this.tsv.checkTime = brokerOptions.checkTime || DEFAULT_CHECK_TIME;
 
     // Dynamic import of message broker module
@@ -415,25 +416,32 @@ abstract class HandlerInit implements MsgActionHandler {
       const BrokerClass = BrokerModule.default;
 
       // Create reader and writer instances
-      this.tsv.msgBrokerReader = new BrokerClass(brokerOptions, this.userLogger);
-      this.tsv.msgBrokerWriter = new BrokerClass(brokerOptions, this.userLogger);
+      this.tsv.msgBrokerReader = new BrokerClass(
+        brokerOptions,
+        this.userLogger,
+      );
+      this.tsv.msgBrokerWriter = new BrokerClass(
+        brokerOptions,
+        this.userLogger,
+      );
 
       // Subscribe to event queue
       if (this.tsv.msgBrokerReader) {
         await this.tsv.msgBrokerReader.subscribe(this.tsv.eventQueueName);
         this.userLogger.debug(
-          `Message broker ${brokerType} initialized, subscribed to ${this.tsv.eventQueueName}`
+          `Message broker ${brokerType} initialized, subscribed to ${this.tsv.eventQueueName}`,
         );
         return true;
       }
       return false;
     } catch (e) {
       this.userLogger.warn(
-        `Failed to load message broker ${moduleName}: ${e}. Using NoBroker fallback.`
+        `Failed to load message broker ${moduleName}: ${e}. Using NoBroker fallback.`,
       );
       // Fallback to NoBroker
       try {
-        const NoBroker = (await import("@lemonldap-ng/message-broker-nobroker")).default;
+        const NoBroker = (await import("@lemonldap-ng/message-broker-nobroker"))
+          .default;
         this.tsv.msgBrokerReader = new NoBroker({}, this.userLogger);
         this.tsv.msgBrokerWriter = new NoBroker({}, this.userLogger);
         return false; // Using fallback, not the configured broker
@@ -458,7 +466,7 @@ abstract class HandlerInit implements MsgActionHandler {
     // Check interval (convert seconds to ms, minimum 1 second)
     const intervalMs = Math.max(
       MIN_CHECK_INTERVAL_MS,
-      (this.tsv.checkTime || DEFAULT_CHECK_TIME) * 1000
+      (this.tsv.checkTime || DEFAULT_CHECK_TIME) * 1000,
     );
 
     this.eventLoopInterval = setInterval(async () => {
@@ -501,7 +509,7 @@ abstract class HandlerInit implements MsgActionHandler {
     try {
       const msg = await this.tsv.msgBrokerReader.getNextMessage(
         this.tsv.eventQueueName,
-        0 // Non-blocking
+        0, // Non-blocking
       );
 
       if (msg) {
@@ -520,7 +528,7 @@ abstract class HandlerInit implements MsgActionHandler {
    */
   protected async publishEvent(
     action: string,
-    data: Record<string, any> = {}
+    data: Record<string, any> = {},
   ): Promise<void> {
     if (!this.tsv.msgBrokerWriter) {
       return;

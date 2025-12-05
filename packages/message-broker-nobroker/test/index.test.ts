@@ -22,7 +22,7 @@ describe("@lemonldap-ng/message-broker-nobroker", () => {
       const broker = new NoBroker({}, mockLogger);
       expect(broker).toBeDefined();
       expect(mockLogger.debug).toHaveBeenCalledWith(
-        "NoBroker initialized (single instance mode)"
+        "NoBroker initialized (single instance mode)",
       );
     });
 
@@ -43,7 +43,7 @@ describe("@lemonldap-ng/message-broker-nobroker", () => {
 
       await expect(broker.publish("llng-events", msg)).resolves.toBeUndefined();
       expect(mockLogger.debug).toHaveBeenCalledWith(
-        expect.stringContaining("publish to llng-events ignored")
+        expect.stringContaining("publish to llng-events ignored"),
       );
     });
 
@@ -66,7 +66,7 @@ describe("@lemonldap-ng/message-broker-nobroker", () => {
 
       await broker.subscribe("llng-events");
       expect(mockLogger.debug).toHaveBeenCalledWith(
-        expect.stringContaining("subscribed to llng-events")
+        expect.stringContaining("subscribed to llng-events"),
       );
     });
 
@@ -108,7 +108,7 @@ describe("@lemonldap-ng/message-broker-nobroker", () => {
       broker.waitForNextMessage("llng-events");
 
       expect(mockLogger.warn).toHaveBeenCalledWith(
-        expect.stringContaining("waitForNextMessage called")
+        expect.stringContaining("waitForNextMessage called"),
       );
     });
   });

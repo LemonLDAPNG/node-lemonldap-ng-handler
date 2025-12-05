@@ -109,15 +109,12 @@ class LemonldapNGHandlerAuthBasic extends LemonldapNGHandler {
             id,
             pending.username,
             pending.password,
-            pending.xff
+            pending.xff,
           );
 
           if (created) {
             // Session was created, now retrieve it
-            super
-              .retrieveSession(id)
-              .then(resolve)
-              .catch(reject);
+            super.retrieveSession(id).then(resolve).catch(reject);
           } else {
             reject("Authentication failed");
           }
@@ -138,7 +135,7 @@ class LemonldapNGHandlerAuthBasic extends LemonldapNGHandler {
     id: string,
     username: string,
     password: string,
-    xff: string
+    xff: string,
   ): Promise<boolean> {
     // Validate session ID to mitigate SSRF
     if (!/^[a-fA-F0-9]{1,64}$/.test(id)) {
@@ -185,12 +182,12 @@ class LemonldapNGHandlerAuthBasic extends LemonldapNGHandler {
 
       if (response.ok) {
         this.userLogger.info(
-          `AuthBasic: authentication successful for ${username}`
+          `AuthBasic: authentication successful for ${username}`,
         );
         return true;
       } else {
         this.userLogger.warn(
-          `AuthBasic: authentication failed for ${username}: ${response.status} ${response.statusText}`
+          `AuthBasic: authentication failed for ${username}: ${response.status} ${response.statusText}`,
         );
         return false;
       }

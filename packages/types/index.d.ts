@@ -127,7 +127,7 @@ export interface MessageBroker {
   subscribe(channel: string): Promise<void>;
   getNextMessage(
     channel: string,
-    delay?: number
+    delay?: number,
   ): Promise<BrokerMessage | undefined>;
   waitForNextMessage(channel: string): Promise<BrokerMessage>;
 }
@@ -136,7 +136,7 @@ export interface MessageBroker {
 export type MsgActionHandler = (
   handler: any,
   msg: BrokerMessage,
-  req?: any
+  req?: any,
 ) => Promise<void>;
 
 /* Configuration options for message broker */

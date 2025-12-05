@@ -24,13 +24,13 @@ export interface MessageBroker {
    * @param channel - Channel name to publish to
    * @param msg - Message to publish
    */
-  publish(channel: string, msg: BrokerMessage): Promise<void>;
+  publish(_channel: string, _msg: BrokerMessage): Promise<void>;
 
   /**
    * Subscribe to a channel
    * @param channel - Channel name to subscribe to
    */
-  subscribe(channel: string): Promise<void>;
+  subscribe(_channel: string): Promise<void>;
 
   /**
    * Get next message from channel (non-blocking)
@@ -39,8 +39,8 @@ export interface MessageBroker {
    * @returns Message or undefined if none available
    */
   getNextMessage(
-    channel: string,
-    delay?: number
+    _channel: string,
+    _delay?: number,
   ): Promise<BrokerMessage | undefined>;
 
   /**
@@ -48,7 +48,7 @@ export interface MessageBroker {
    * @param channel - Channel name to wait for message from
    * @returns Message when available
    */
-  waitForNextMessage(channel: string): Promise<BrokerMessage>;
+  waitForNextMessage(_channel: string): Promise<BrokerMessage>;
 }
 
 /**
@@ -83,7 +83,7 @@ export interface MessageBrokerOptions {
  * Constructor type for MessageBroker implementations
  */
 export interface MessageBrokerConstructor {
-  new (conf: MessageBrokerOptions, logger: LLNG_Logger): MessageBroker;
+  new (_conf: MessageBrokerOptions, _logger: LLNG_Logger): MessageBroker;
 }
 
 /**

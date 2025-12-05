@@ -24,7 +24,7 @@ describe("@lemonldap-ng/message-broker-pg", () => {
       const broker = new PgBroker({}, mockLogger);
       expect(broker).toBeDefined();
       expect(mockLogger.debug).toHaveBeenCalledWith(
-        expect.stringContaining("PgBroker initialized")
+        expect.stringContaining("PgBroker initialized"),
       );
     });
 
@@ -35,19 +35,19 @@ describe("@lemonldap-ng/message-broker-pg", () => {
           dbiUser: "llng",
           dbiPassword: "secret",
         },
-        mockLogger
+        mockLogger,
       );
       expect(broker).toBeDefined();
       // Password should be masked in log
       expect(mockLogger.debug).toHaveBeenCalledWith(
-        expect.stringContaining(":***@")
+        expect.stringContaining(":***@"),
       );
     });
 
     it("should accept server URL directly", () => {
       const broker = new PgBroker(
         { server: "postgresql://localhost:5432/mydb" },
-        mockLogger
+        mockLogger,
       );
       expect(broker).toBeDefined();
     });

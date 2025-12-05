@@ -15,10 +15,7 @@ const alwaysExt = [
   "http",
 ];
 
-const commonPlugins = [
-  typescript(),
-  commonjs(),
-];
+const commonPlugins = [typescript(), commonjs()];
 
 function configure(esm, external) {
   return {

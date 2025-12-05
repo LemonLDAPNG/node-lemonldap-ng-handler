@@ -105,8 +105,7 @@ class MongoConf implements Conf_Accessor {
     });
   }
 
-  // eslint-disable-next-line no-unused-vars
-  load(cfgNum: number, fields: string[] = []) {
+  load(cfgNum: number, _fields: string[] = []) {
     return new Promise<LLNG_Conf>((resolve, reject) => {
       if (!this.col) return reject("MongoDB not initialized please wait");
       this.col
@@ -128,8 +127,7 @@ class MongoConf implements Conf_Accessor {
     });
   }
 
-  // eslint-disable-next-line no-unused-vars
-  store(conf: LLNG_Conf) {
+  store(_conf: LLNG_Conf) {
     return new Promise<boolean>((resolve, reject) => {
       reject("Not yet implemented");
     });

@@ -40,6 +40,17 @@ export default defineConfig([
       sourceType: "module",
     },
 
-    rules: {},
+    rules: {
+      // Disable base rule in favor of TypeScript version
+      "no-unused-vars": "off",
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+          caughtErrorsIgnorePattern: "^_",
+        },
+      ],
+    },
   },
 ]);

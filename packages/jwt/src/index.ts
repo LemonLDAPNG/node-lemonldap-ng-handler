@@ -28,7 +28,7 @@ export function decodeBase64Url(str: string): string {
  */
 export function getJWTPart(
   jwt: string,
-  part: number
+  part: number,
 ): Record<string, any> | null {
   const jwtParts = jwt.split(".");
 

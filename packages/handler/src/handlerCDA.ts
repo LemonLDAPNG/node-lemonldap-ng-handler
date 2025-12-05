@@ -11,11 +11,7 @@
 import express from "express";
 import http from "http";
 import LemonldapNGHandler from "./handlerMain";
-import {
-  parseCDACookie,
-  buildCDACookieHeader,
-  extractCDAFromUrl,
-} from "./cda";
+import { parseCDACookie, buildCDACookieHeader, extractCDAFromUrl } from "./cda";
 
 class LemonldapNGHandlerCDA extends LemonldapNGHandler {
   /**
@@ -69,7 +65,7 @@ class LemonldapNGHandlerCDA extends LemonldapNGHandler {
    */
   private getCDACookie(
     req: express.Request | http.IncomingMessage,
-    cookieName: string
+    cookieName: string,
   ): string | null {
     const cookies = req.headers.cookie;
     if (!cookies) {
@@ -96,7 +92,7 @@ class LemonldapNGHandlerCDA extends LemonldapNGHandler {
    */
   private setCDACookie(
     _req: express.Request | http.IncomingMessage,
-    _sessionId: string
+    _sessionId: string,
   ): void {
     // Placeholder - see TODO in JSDoc above
   }
@@ -108,7 +104,7 @@ class LemonldapNGHandlerCDA extends LemonldapNGHandler {
    */
   sendHeaders(
     req: express.Request | http.IncomingMessage,
-    session: import("@lemonldap-ng/types").LLNG_Session
+    session: import("@lemonldap-ng/types").LLNG_Session,
   ): void {
     super.sendHeaders(req, session);
 
@@ -127,7 +123,7 @@ class LemonldapNGHandlerCDA extends LemonldapNGHandler {
           domain,
           this.tsv.cookieExpiration || 0,
           this.tsv.securedCookie > 0,
-          this.tsv.httpOnly
+          this.tsv.httpOnly,
         );
       }
     }
@@ -138,7 +134,7 @@ class LemonldapNGHandlerCDA extends LemonldapNGHandler {
    * @param req - HTTP request
    */
   private getCDACookieDomain(
-    req: express.Request | http.IncomingMessage
+    req: express.Request | http.IncomingMessage,
   ): string {
     const host = req.headers.host;
     if (!host) {

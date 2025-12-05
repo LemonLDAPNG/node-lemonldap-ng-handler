@@ -24,32 +24,29 @@ describe("@lemonldap-ng/message-broker-redis", () => {
       const broker = new RedisBroker({}, mockLogger);
       expect(broker).toBeDefined();
       expect(mockLogger.debug).toHaveBeenCalledWith(
-        expect.stringContaining("RedisBroker initialized")
+        expect.stringContaining("RedisBroker initialized"),
       );
       expect(mockLogger.debug).toHaveBeenCalledWith(
-        expect.stringContaining("localhost:6379")
+        expect.stringContaining("localhost:6379"),
       );
     });
 
     it("should accept redis:// URL format", () => {
       const broker = new RedisBroker(
         { server: "redis://custom:6380" },
-        mockLogger
+        mockLogger,
       );
       expect(broker).toBeDefined();
       expect(mockLogger.debug).toHaveBeenCalledWith(
-        expect.stringContaining("custom:6380")
+        expect.stringContaining("custom:6380"),
       );
     });
 
     it("should accept Perl-style host:port format", () => {
-      const broker = new RedisBroker(
-        { server: "localhost:63379" },
-        mockLogger
-      );
+      const broker = new RedisBroker({ server: "localhost:63379" }, mockLogger);
       expect(broker).toBeDefined();
       expect(mockLogger.debug).toHaveBeenCalledWith(
-        expect.stringContaining("localhost:63379")
+        expect.stringContaining("localhost:63379"),
       );
     });
 
@@ -59,17 +56,17 @@ describe("@lemonldap-ng/message-broker-redis", () => {
           sentinels: ["sentinel1:26379", "sentinel2:26379"],
           service: "mymaster",
         },
-        mockLogger
+        mockLogger,
       );
       expect(broker).toBeDefined();
       expect(mockLogger.debug).toHaveBeenCalledWith(
-        expect.stringContaining("sentinel:")
+        expect.stringContaining("sentinel:"),
       );
       expect(mockLogger.debug).toHaveBeenCalledWith(
-        expect.stringContaining("sentinel1:26379")
+        expect.stringContaining("sentinel1:26379"),
       );
       expect(mockLogger.debug).toHaveBeenCalledWith(
-        expect.stringContaining("mymaster")
+        expect.stringContaining("mymaster"),
       );
     });
 
@@ -82,11 +79,11 @@ describe("@lemonldap-ng/message-broker-redis", () => {
           ],
           name: "mymaster",
         },
-        mockLogger
+        mockLogger,
       );
       expect(broker).toBeDefined();
       expect(mockLogger.debug).toHaveBeenCalledWith(
-        expect.stringContaining("sentinel:")
+        expect.stringContaining("sentinel:"),
       );
     });
 
@@ -96,11 +93,11 @@ describe("@lemonldap-ng/message-broker-redis", () => {
           sentinels: ["sentinel1:26379"],
           service: "llng-master",
         },
-        mockLogger
+        mockLogger,
       );
       expect(broker).toBeDefined();
       expect(mockLogger.debug).toHaveBeenCalledWith(
-        expect.stringContaining("llng-master")
+        expect.stringContaining("llng-master"),
       );
     });
   });

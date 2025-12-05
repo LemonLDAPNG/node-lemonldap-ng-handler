@@ -86,8 +86,8 @@ class LemonldapNGHandler extends HandlerInit {
               this.setError(res, "/", 503, "Service Unavailable");
             });
         })
-        // eslint-disable-next-line no-unused-vars
-        .catch((e) => {
+
+        .catch((_e) => {
           /* Expired session */
           this.goToPortal(res, this.selfUri(<string>vhost, <string>uri));
         });
@@ -156,8 +156,8 @@ class LemonldapNGHandler extends HandlerInit {
 
   resolveAlias(req: express.Request | http.IncomingMessage) {
     // @ts-ignore: req.headers.host has already been tested
-    const vhost = req.headers.host?.split(':')[0];
-    return vhost ? (this.tsv.vhostAlias[vhost] || vhost): 'undef';
+    const vhost = req.headers.host?.split(":")[0];
+    return vhost ? this.tsv.vhostAlias[vhost] || vhost : "undef";
   }
 
   fetchId(req: express.Request | http.IncomingMessage) {

@@ -21,37 +21,44 @@ class LemonldapNGHandlerOAuth2 extends LemonldapNGHandler {
    */
   init() {
     return new Promise<boolean>((resolve, reject) => {
-      super.init().then(() => {
-        // Initialize OIDC session storage if configured
-        if (this.tsv.oidcStorageModule) {
-          try {
-            this.oidcSessionAcc = new Session({
-              storageModule: this.tsv.oidcStorageModule,
-              storageModuleOptions: this.tsv.oidcStorageOptions || {},
-            });
-            this.oidcSessionAcc.ready
-              .then(() => {
-                this.userLogger.debug("OAuth2 OIDC session storage initialized");
-                resolve(true);
-              })
-              .catch((e) => {
-                this.userLogger.error(
-                  `Failed to initialize OIDC session storage: ${e}`
-                );
-                reject(e);
+      super
+        .init()
+        .then(() => {
+          // Initialize OIDC session storage if configured
+          if (this.tsv.oidcStorageModule) {
+            try {
+              this.oidcSessionAcc = new Session({
+                storageModule: this.tsv.oidcStorageModule,
+                storageModuleOptions: this.tsv.oidcStorageOptions || {},
               });
-          } catch (e) {
-            this.userLogger.error(`Failed to create OIDC session accessor: ${e}`);
-            reject(e);
+              this.oidcSessionAcc.ready
+                .then(() => {
+                  this.userLogger.debug(
+                    "OAuth2 OIDC session storage initialized",
+                  );
+                  resolve(true);
+                })
+                .catch((e) => {
+                  this.userLogger.error(
+                    `Failed to initialize OIDC session storage: ${e}`,
+                  );
+                  reject(e);
+                });
+            } catch (e) {
+              this.userLogger.error(
+                `Failed to create OIDC session accessor: ${e}`,
+              );
+              reject(e);
+            }
+          } else {
+            // Use default session storage for OIDC tokens
+            this.userLogger.debug(
+              "OAuth2 handler using default session storage for OIDC",
+            );
+            resolve(true);
           }
-        } else {
-          // Use default session storage for OIDC tokens
-          this.userLogger.debug(
-            "OAuth2 handler using default session storage for OIDC"
-          );
-          resolve(true);
-        }
-      }).catch(reject);
+        })
+        .catch(reject);
     });
   }
 
@@ -74,7 +81,9 @@ class LemonldapNGHandlerOAuth2 extends LemonldapNGHandler {
           this.userLogger.debug(`OAuth2: extracted session ID from token`);
           return sessionId;
         } else {
-          this.userLogger.warn("OAuth2: could not extract session ID from token");
+          this.userLogger.warn(
+            "OAuth2: could not extract session ID from token",
+          );
           return "";
         }
       }
@@ -111,7 +120,7 @@ class LemonldapNGHandlerOAuth2 extends LemonldapNGHandler {
               resolve(session);
             }
           })
-          .catch((e: string) => {
+          .catch((_e: string) => {
             // If not found in OIDC storage, try main storage
             super.retrieveSession(id).then(resolve).catch(reject);
           });

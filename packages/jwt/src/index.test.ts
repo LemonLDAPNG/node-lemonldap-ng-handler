@@ -81,7 +81,7 @@ describe("JWT utilities", () => {
     test("should return header.payload", () => {
       const signedData = jwt.getJWTSignedData(sampleJWT);
       expect(signedData).toBe(
-        "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJ0ZXN0LXNlc3Npb24taWQtMTIzIiwic3ViIjoidXNlckBleGFtcGxlLmNvbSIsImlhdCI6MTIzNDU2Nzg5MH0"
+        "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJ0ZXN0LXNlc3Npb24taWQtMTIzIiwic3ViIjoidXNlckBleGFtcGxlLmNvbSIsImlhdCI6MTIzNDU2Nzg5MH0",
       );
     });
 

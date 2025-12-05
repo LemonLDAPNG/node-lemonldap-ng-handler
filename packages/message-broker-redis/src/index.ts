@@ -36,7 +36,7 @@ export default class RedisBroker implements MessageBroker {
     this.logger = logger;
     this.redisOptions = this.buildRedisOptions(conf);
     this.logger.debug(
-      `RedisBroker initialized with config: ${this.describeConfig()}`
+      `RedisBroker initialized with config: ${this.describeConfig()}`,
     );
   }
 
@@ -117,7 +117,7 @@ export default class RedisBroker implements MessageBroker {
    * Parse sentinels from Perl or ioredis format
    */
   private parseSentinels(
-    sentinels: unknown
+    sentinels: unknown,
   ): Array<{ host: string; port: number }> {
     if (!Array.isArray(sentinels)) {
       return [];
@@ -127,7 +127,10 @@ export default class RedisBroker implements MessageBroker {
       if (typeof s === "string") {
         // Perl format: "host:port"
         const [host, portStr] = s.split(":");
-        return { host: host || "localhost", port: parseInt(portStr, 10) || 26379 };
+        return {
+          host: host || "localhost",
+          port: parseInt(portStr, 10) || 26379,
+        };
       } else if (typeof s === "object" && s !== null) {
         // ioredis format: { host, port }
         const sentinel = s as { host?: string; port?: number };
@@ -188,9 +191,7 @@ export default class RedisBroker implements MessageBroker {
       }
       this.messageQueue.get(channel)!.push(msg);
 
-      this.logger.debug(
-        `Redis: received message on ${channel}: ${msg.action}`
-      );
+      this.logger.debug(`Redis: received message on ${channel}: ${msg.action}`);
     } catch (e) {
       this.logger.error(`Redis: failed to parse message: ${e}`);
     }
@@ -238,7 +239,7 @@ export default class RedisBroker implements MessageBroker {
    */
   async getNextMessage(
     channel: string,
-    _delay?: number
+    _delay?: number,
   ): Promise<BrokerMessage | undefined> {
     const queue = this.messageQueue.get(channel);
     if (queue && queue.length > 0) {
