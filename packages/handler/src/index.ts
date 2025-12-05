@@ -60,6 +60,14 @@ export const nginxServer = (args: FastCGI_Opts) => {
 };
 
 /**
+ * Returns the portal URL from LemonLDAP::NG configuration
+ * @returns Portal URL string
+ */
+export const portal = (): string => {
+  return currentHandler.portal();
+};
+
+/**
  * Shutdown the handler (stops event loop and cleanup)
  * Call this in tests' afterAll to prevent Jest from hanging
  */

@@ -547,6 +547,14 @@ abstract class HandlerInit implements MsgActionHandler {
       this.userLogger.error(`Failed to publish event ${action}: ${e}`);
     }
   }
+
+  /**
+   * Returns the portal URL from configuration
+   * @returns Portal URL string
+   */
+  portal(): string {
+    return this.tsv.portal();
+  }
 }
 
 export default HandlerInit;
