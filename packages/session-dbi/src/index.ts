@@ -34,9 +34,17 @@ abstract class DBISession implements Session_Accessor {
         .from(this.table)
         .where("id", "=", id)
         .then((results: Apache_Session[]) => {
-          results.length === 0
-            ? reject("Session doesn't exist")
-            : resolve(JSON.parse(results[0].a_session) as LLNG_Session);
+          if (results.length === 0) {
+            reject("Session doesn't exist");
+          } else {
+            const session = results[0].a_session;
+            // Handle both JSONB (already parsed) and TEXT (needs parsing)
+            resolve(
+              (typeof session === "string"
+                ? JSON.parse(session)
+                : session) as LLNG_Session
+            );
+          }
         });
     });
   }
