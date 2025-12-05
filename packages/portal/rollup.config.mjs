@@ -3,24 +3,35 @@ import { nodeResolve } from "@rollup/plugin-node-resolve";
 import typescript from "@rollup/plugin-typescript";
 import terser from "@rollup/plugin-terser";
 import cleaner from "rollup-plugin-cleaner";
+import { cpSync, mkdirSync } from "fs";
 
 const alwaysExt = [
   "@lemonldap-ng/conf",
-  "@lemonldap-ng/jwt",
+  "@lemonldap-ng/crypto",
   "@lemonldap-ng/logger",
-  "@lemonldap-ng/message-broker-nobroker",
   "@lemonldap-ng/session",
-  "@lemonldap-ng/safelib",
+  "@lemonldap-ng/types",
+  "express",
+  "cookie-parser",
+  "nunjucks",
   "crypto",
-  "vm",
-  "re2",
-  "url",
-  "http",
+  "path",
 ];
 
-const commonPlugins = [typescript(), commonjs()];
+// Copy template files
+function copyTemplates() {
+  return {
+    name: "copy-templates",
+    buildEnd() {
+      mkdirSync("lib/templates/views", { recursive: true });
+      cpSync("src/templates/views", "lib/templates/views", { recursive: true });
+    },
+  };
+}
 
-function configure(esm, external) {
+const commonPlugins = [typescript(), commonjs(), copyTemplates()];
+
+function configure(esm) {
   return {
     input: "src/index.ts",
     output: esm
@@ -33,20 +44,20 @@ function configure(esm, external) {
       : {
           format: "cjs",
           dir: "lib",
-          entryFileNames: "[name].js",
+          entryFileNames: "[name].cjs",
           sourcemap: true,
           exports: "auto",
         },
-    // normalize-url is a pure ES module
-    external: esm ? [...alwaysExt, "normalize-url"] : alwaysExt,
+    external: alwaysExt,
     plugins: esm
       ? commonPlugins
       : [
           cleaner({ targets: ["./lib"] }),
           ...commonPlugins,
-          nodeResolve({ preferBuiltins: true }),
+          nodeResolve(),
           terser(),
         ],
   };
 }
+
 export default [configure(false), configure(true)];

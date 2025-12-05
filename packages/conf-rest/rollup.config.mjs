@@ -47,7 +47,7 @@ function configure(esm, external) {
             exclude: ["**/__tests__", "**/*.test.ts"],
           }),
           commonjs(),
-          nodeResolve(),
+          nodeResolve({ preferBuiltins: true }),
         ],
   };
 }
