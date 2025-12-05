@@ -1,0 +1,36 @@
+{% extends "base.njk" %}
+
+{% block title %}Portal - LemonLDAP::NG{% endblock %}
+
+{% block content %}
+<div class="logo">
+  <h1>LemonLDAP::NG</h1>
+  <p>Single Sign-On Portal</p>
+</div>
+
+<div class="user-info">
+  <div class="name">{{ session.cn | default(session.uid) | default('User') }}</div>
+  <div class="uid">{{ session.mail | default(session.uid) }}</div>
+</div>
+
+<div class="alert alert-success">
+  You are authenticated
+</div>
+
+<ul class="menu-list">
+  <li><a href="{{ PORTAL }}logout">Logout</a></li>
+</ul>
+
+{% if session %}
+<details style="margin-top: 20px;">
+  <summary style="cursor: pointer; color: #666; font-size: 14px;">Session details</summary>
+  <pre style="background: #f5f5f5; padding: 10px; margin-top: 10px; border-radius: 4px; font-size: 12px; overflow: auto;">
+{%- for key, value in session -%}
+{%- if key | first != '_' %}
+{{ key }}: {{ value }}
+{% endif -%}
+{%- endfor -%}
+  </pre>
+</details>
+{% endif %}
+{% endblock %}
