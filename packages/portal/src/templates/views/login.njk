@@ -1,0 +1,36 @@
+{% extends "base.njk" %}
+
+{% block title %}Login - LemonLDAP::NG{% endblock %}
+
+{% block content %}
+<div class="logo">
+  <h1>LemonLDAP::NG</h1>
+  <p>Single Sign-On Portal</p>
+</div>
+
+{% if AUTH_ERROR %}
+<div class="alert alert-error">
+  {{ AUTH_ERROR }}
+</div>
+{% endif %}
+
+<form method="post" action="{{ PORTAL | default('/') }}">
+  {% if URLDC %}
+  <input type="hidden" name="url" value="{{ URLDC | attrEscape }}">
+  {% endif %}
+
+  <div class="form-group">
+    <label for="user">Username</label>
+    <input type="text" id="user" name="user" value="{{ LOGIN | default('') }}"
+           autocomplete="username" autofocus required>
+  </div>
+
+  <div class="form-group">
+    <label for="password">Password</label>
+    <input type="password" id="password" name="password"
+           autocomplete="current-password" required>
+  </div>
+
+  <button type="submit">Sign in</button>
+</form>
+{% endblock %}
