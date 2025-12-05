@@ -6,9 +6,12 @@ import cleaner from "rollup-plugin-cleaner";
 
 const alwaysExt = [
   "@lemonldap-ng/conf",
+  "@lemonldap-ng/jwt",
   "@lemonldap-ng/logger",
+  "@lemonldap-ng/message-broker-nobroker",
   "@lemonldap-ng/session",
   "@lemonldap-ng/safelib",
+  "crypto",
   "vm",
   "re2",
   "url",
@@ -41,7 +44,7 @@ function configure(esm, external) {
       : [
           cleaner({ targets: ["./lib"] }),
           ...commonPlugins,
-          nodeResolve(),
+          nodeResolve({ preferBuiltins: true }),
           terser(),
         ],
   };
