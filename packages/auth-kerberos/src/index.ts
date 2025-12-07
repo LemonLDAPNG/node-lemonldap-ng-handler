@@ -135,7 +135,7 @@ export class KerberosAuth {
     // Try to load kerberos module (optional dependency)
     try {
       // Dynamic import with type assertion to handle optional dependency
-       
+
       this.kerberos = require("kerberos") as KerberosModule;
       logger.info("Kerberos auth initialized with GSSAPI support");
     } catch {

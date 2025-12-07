@@ -1,0 +1,38 @@
+{
+  "name": "@lemonldap-ng/auth-oidc",
+  "version": "0.8.0",
+  "description": "OIDC Authentication module (Relying Party) for LemonLDAP::NG",
+  "main": "lib/index.cjs",
+  "module": "lib/index.mjs",
+  "types": "lib/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./lib/index.mjs",
+      "require": "./lib/index.cjs",
+      "types": "./lib/index.d.ts"
+    }
+  },
+  "files": [
+    "lib/**/*"
+  ],
+  "scripts": {
+    "build": "rollup -c",
+    "test": "tsc --noEmit && jest"
+  },
+  "keywords": [
+    "lemonldap",
+    "oidc",
+    "openid-connect",
+    "authentication",
+    "relying-party"
+  ],
+  "author": "LemonLDAP::NG Team",
+  "license": "GPL-2.0-only",
+  "dependencies": {},
+  "peerDependencies": {
+    "express": "^4.18.2 || ^5.0.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5"
+  }
+}

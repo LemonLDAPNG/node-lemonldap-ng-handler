@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "strict": false,
+    "module": "commonjs",
+    "target": "es2020",
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "lib": ["es2020"],
+    "sourceMap": true,
+    "outDir": "./build",
+    "rootDir": ".",
+    "declaration": false,
+    "noImplicitAny": false,
+    "skipLibCheck": true
+  },
+  "include": ["./**/*.ts"],
+  "exclude": ["node_modules", "build"]
+}
