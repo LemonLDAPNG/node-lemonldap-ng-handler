@@ -1572,7 +1572,7 @@ export class OIDCProvider {
     const result = await this.handleUserInfoRequest(accessToken);
 
     if ("error" in result) {
-      return result;
+      return result as TokenErrorResponse;
     }
 
     // Get access token data to find client
