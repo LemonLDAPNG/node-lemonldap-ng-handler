@@ -1,0 +1,56 @@
+{
+  "name": "@lemonldap-ng/auth-kerberos",
+  "version": "0.8.0",
+  "description": "Kerberos/GSSAPI authentication module for LemonLDAP::NG",
+  "main": "lib/index.cjs",
+  "module": "lib/index.mjs",
+  "types": "lib/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./lib/index.cjs",
+      "import": "./lib/index.mjs",
+      "types": "./lib/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "rollup -c",
+    "test": "tsc --noEmit && jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LemonLDAPNG/lemonldap-ng.js.git"
+  },
+  "license": "GPL-2.0-or-later",
+  "maintainers": [
+    {
+      "name": "Xavier Guimard",
+      "email": "yadd@debian.org"
+    }
+  ],
+  "dependencies": {},
+  "optionalDependencies": {
+    "kerberos": "^2.0.0"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^28.0.3",
+    "@rollup/plugin-node-resolve": "^16.0.1",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^12.1.2",
+    "@types/jest": "^29.5.14",
+    "@types/node": "^22.15.21",
+    "jest": "^29.7.0",
+    "rollup": "^4.40.2",
+    "rollup-plugin-cleaner": "^1.0.0",
+    "ts-jest": "^29.3.4",
+    "typescript": "^5.8.3"
+  },
+  "keywords": [
+    "Lemonldap::NG",
+    "SSO",
+    "authentication",
+    "Kerberos",
+    "GSSAPI",
+    "SPNEGO",
+    "Negotiate"
+  ]
+}

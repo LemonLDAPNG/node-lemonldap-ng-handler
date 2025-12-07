@@ -16,7 +16,7 @@
     "build:2": "npm run build --workspace=packages/conf-cdbi --workspace=packages/conf-rdbi --workspace=packages/session-mysql --workspace=packages/session-postgres --workspace=packages/session-sqlite --workspace=packages/session-oracle --workspace=packages/message-broker-redis --workspace=packages/message-broker-pg --workspace=packages/message-broker-web --workspace=packages/message-broker-nobroker",
     "build:3": "npm run build --workspace=packages/session --workspace=packages/conf",
     "build:4": "npm run build --workspace=packages/portal",
-    "build:5": "npm run build --workspace=packages/auth-ldap --workspace=packages/userdb-ldap --workspace=packages/password-ldap --workspace=packages/auth-dbi --workspace=packages/userdb-dbi --workspace=packages/password-dbi",
+    "build:5": "npm run build --workspace=packages/auth-ldap --workspace=packages/userdb-ldap --workspace=packages/password-ldap --workspace=packages/auth-dbi --workspace=packages/userdb-dbi --workspace=packages/password-dbi --workspace=packages/auth-ssl --workspace=packages/auth-kerberos",
     "build": "npm run build:0 && npm run build:1 && npm run build:2 && npm run build:3 && npm run build:4 && npm run build:5 && npm run build --workspaces",
     "format:check": "prettier --check .",
     "format:check-diff": "prettier --check $(git diff $(git rev-parse --abbrev-ref --symbolic-full-name @{u}) --name-status|grep -E '^M|A'|cut -f2)",
