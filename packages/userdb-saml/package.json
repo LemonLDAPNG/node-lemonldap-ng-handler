@@ -1,0 +1,35 @@
+{
+  "name": "@lemonldap-ng/userdb-saml",
+  "version": "0.8.0",
+  "description": "SAML User Database module for LemonLDAP::NG",
+  "main": "lib/index.cjs",
+  "module": "lib/index.mjs",
+  "types": "lib/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./lib/index.mjs",
+      "require": "./lib/index.cjs",
+      "types": "./lib/index.d.ts"
+    }
+  },
+  "files": [
+    "lib/**/*"
+  ],
+  "scripts": {
+    "build": "rollup -c",
+    "test": "tsc --noEmit && jest"
+  },
+  "keywords": [
+    "lemonldap",
+    "saml",
+    "saml2",
+    "userdb",
+    "user-database",
+    "attributes"
+  ],
+  "author": "LemonLDAP::NG Team",
+  "license": "GPL-2.0-only",
+  "dependencies": {
+    "@lemonldap-ng/lib-saml": "^0.8.0"
+  }
+}

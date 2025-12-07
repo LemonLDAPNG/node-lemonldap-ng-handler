@@ -74,8 +74,8 @@ jobs:
 
       - run: npm --version
 
-      - name: Install ldap-utils and PostgreSQL client
-        run: sudo apt-get update && sudo apt-get install -y ldap-utils postgresql-client
+      - name: Install ldap-utils, PostgreSQL client and liblasso
+        run: sudo apt-get update && sudo apt-get install -y ldap-utils postgresql-client liblasso3-dev libxml2-dev libxmlsec1-dev libglib2.0-dev
 
       - name: Wait for LDAP to be ready
         run: |

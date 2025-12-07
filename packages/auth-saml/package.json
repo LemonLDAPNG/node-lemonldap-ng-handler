@@ -1,0 +1,37 @@
+{
+  "name": "@lemonldap-ng/auth-saml",
+  "version": "0.8.0",
+  "description": "SAML SP Authentication module for LemonLDAP::NG",
+  "main": "lib/index.cjs",
+  "module": "lib/index.mjs",
+  "types": "lib/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./lib/index.mjs",
+      "require": "./lib/index.cjs",
+      "types": "./lib/index.d.ts"
+    }
+  },
+  "files": [
+    "lib/**/*"
+  ],
+  "scripts": {
+    "build": "rollup -c",
+    "test": "tsc --noEmit && jest"
+  },
+  "keywords": [
+    "lemonldap",
+    "saml",
+    "saml2",
+    "sp",
+    "service-provider",
+    "authentication",
+    "sso",
+    "federation"
+  ],
+  "author": "LemonLDAP::NG Team",
+  "license": "GPL-2.0-only",
+  "dependencies": {
+    "@lemonldap-ng/lib-saml": "^0.8.0"
+  }
+}
