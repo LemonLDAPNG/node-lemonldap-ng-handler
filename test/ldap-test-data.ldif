@@ -1,0 +1,112 @@
+# LemonLDAP::NG test LDAP data
+# Used by GitHub Actions CI with osixia/openldap container
+# Character set: UTF-8
+
+# Organizational Units
+dn: ou=users,dc=example,dc=com
+objectClass: organizationalUnit
+ou: users
+
+dn: ou=groups,dc=example,dc=com
+objectClass: organizationalUnit
+ou: groups
+
+# Test Users
+dn: uid=dwho,ou=users,dc=example,dc=com
+objectClass: inetOrgPerson
+objectClass: top
+uid: dwho
+cn: Doctor Who
+sn: Who
+givenName: Doctor
+mail: dwho@example.com
+userPassword: dwho
+
+dn: uid=rtyler,ou=users,dc=example,dc=com
+objectClass: inetOrgPerson
+objectClass: top
+uid: rtyler
+cn: Rose Tyler
+sn: Tyler
+givenName: Rose
+mail: rtyler@example.com
+userPassword: rtyler
+
+dn: uid=msmith,ou=users,dc=example,dc=com
+objectClass: inetOrgPerson
+objectClass: top
+uid: msmith
+cn: Mickey Smith
+sn: Smith
+givenName: Mickey
+mail: msmith@example.com
+userPassword: msmith
+
+# User with UTF-8 accented characters (French)
+dn: uid=french,ou=users,dc=example,dc=com
+objectClass: inetOrgPerson
+objectClass: top
+uid: french
+cn: Français Café
+sn: Café
+givenName: Français
+mail: french@example.com
+description: Test avec accents: é è à ù ô î ç
+userPassword: french
+
+# User with UTF-8 non-Latin characters (Japanese)
+dn: uid=japanese,ou=users,dc=example,dc=com
+objectClass: inetOrgPerson
+objectClass: top
+uid: japanese
+cn: 山田太郎
+sn: 山田
+givenName: 太郎
+mail: japanese@example.com
+description: Nihongo test: 日本語テスト
+userPassword: japanese
+
+# User with UTF-8 emojis and special chars
+dn: uid=unicode,ou=users,dc=example,dc=com
+objectClass: inetOrgPerson
+objectClass: top
+uid: unicode
+cn: Unicode Test
+sn: Test
+givenName: Unicode
+mail: unicode@example.com
+description: Special: « » ™ © ® € £ ¥ — …
+userPassword: unicode
+
+# Test Groups
+dn: cn=admins,ou=groups,dc=example,dc=com
+objectClass: groupOfNames
+objectClass: top
+cn: admins
+member: uid=dwho,ou=users,dc=example,dc=com
+
+dn: cn=users,ou=groups,dc=example,dc=com
+objectClass: groupOfNames
+objectClass: top
+cn: users
+member: uid=dwho,ou=users,dc=example,dc=com
+member: uid=rtyler,ou=users,dc=example,dc=com
+member: uid=msmith,ou=users,dc=example,dc=com
+member: uid=french,ou=users,dc=example,dc=com
+member: uid=japanese,ou=users,dc=example,dc=com
+member: uid=unicode,ou=users,dc=example,dc=com
+
+dn: cn=companions,ou=groups,dc=example,dc=com
+objectClass: groupOfNames
+objectClass: top
+cn: companions
+member: uid=rtyler,ou=users,dc=example,dc=com
+member: uid=msmith,ou=users,dc=example,dc=com
+
+# Group with UTF-8 name
+dn: cn=développeurs,ou=groups,dc=example,dc=com
+objectClass: groupOfNames
+objectClass: top
+cn: développeurs
+description: Groupe de développeurs
+member: uid=french,ou=users,dc=example,dc=com
