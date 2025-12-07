@@ -8,6 +8,25 @@ on:
   workflow_dispatch:
 
 jobs:
+  lint:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Use Node.js 22.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22.x
+
+      - name: Install dependencies
+        run: npm ci || npm i
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Format check
+        run: npm run format:check
+
   build-and-test:
     runs-on: ubuntu-22.04
     strategy:
@@ -82,12 +101,6 @@ jobs:
 
       - name: Build
         run: npm run build
-
-      - name: Lint
-        run: npm run lint
-
-      - name: Format check
-        run: npm run format:check
 
       - name: Test
         run: npm run test
