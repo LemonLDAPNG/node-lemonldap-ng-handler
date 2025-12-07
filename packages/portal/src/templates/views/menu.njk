@@ -18,6 +18,9 @@
 </div>
 
 <ul class="menu-list">
+  {% if HAS_PASSWORD_MODULE %}
+  <li><a href="{{ PORTAL }}password">Change Password</a></li>
+  {% endif %}
   <li><a href="{{ PORTAL }}logout">Logout</a></li>
 </ul>
 

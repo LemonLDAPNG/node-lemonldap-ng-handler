@@ -11,12 +11,13 @@
   ],
   "scripts": {
     "clean": "rimraf packages/*/lib",
-    "build:0": "npm run build --workspace=packages/types --workspace=packages/constants --workspace=packages/crypto --workspace=packages/jwt --workspace=packages/safelib --workspace=packages/perl-dbi --workspace=packages/conf-file --workspace=packages/conf-ldap --workspace=packages/conf-mongodb --workspace=packages/conf-rest --workspace=packages/logger --workspace=packages/logger-syslog --workspace=packages/session-file --workspace=packages/session-ldap --workspace=packages/session-redis --workspace=packages/session-rest",
+    "build:0": "npm run build --workspace=packages/types --workspace=packages/constants --workspace=packages/crypto --workspace=packages/jwt --workspace=packages/safelib --workspace=packages/perl-dbi --workspace=packages/conf-file --workspace=packages/conf-ldap --workspace=packages/conf-mongodb --workspace=packages/conf-rest --workspace=packages/logger --workspace=packages/logger-syslog --workspace=packages/session-file --workspace=packages/session-ldap --workspace=packages/session-redis --workspace=packages/session-rest --workspace=packages/lib-ldap",
     "build:1": "npm run build --workspace=packages/conf-dbi --workspace=packages/session-dbi --workspace=packages/conf-yaml --workspace=packages/message-broker",
     "build:2": "npm run build --workspace=packages/conf-cdbi --workspace=packages/conf-rdbi --workspace=packages/session-mysql --workspace=packages/session-postgres --workspace=packages/session-sqlite --workspace=packages/session-oracle --workspace=packages/message-broker-redis --workspace=packages/message-broker-pg --workspace=packages/message-broker-web --workspace=packages/message-broker-nobroker",
     "build:3": "npm run build --workspace=packages/session --workspace=packages/conf",
     "build:4": "npm run build --workspace=packages/portal",
-    "build": "npm run build:0 && npm run build:1 && npm run build:2 && npm run build:3 && npm run build:4 && npm run build --workspaces",
+    "build:5": "npm run build --workspace=packages/auth-ldap --workspace=packages/userdb-ldap --workspace=packages/password-ldap",
+    "build": "npm run build:0 && npm run build:1 && npm run build:2 && npm run build:3 && npm run build:4 && npm run build:5 && npm run build --workspaces",
     "format:check": "prettier --check .",
     "format:check-diff": "prettier --check $(git diff $(git rev-parse --abbrev-ref --symbolic-full-name @{u}) --name-status|grep -E '^M|A'|cut -f2)",
     "format:fix": "prettier --write .",
@@ -55,6 +56,7 @@
     "Xavier Guimard <yadd@debian.org>"
   ],
   "devDependencies": {
+    "@types/ldapjs": "^3.0.6",
     "@rollup/plugin-commonjs": "^28.0.3",
     "@rollup/plugin-node-resolve": "^16.0.1",
     "@rollup/plugin-terser": "^0.4.4",

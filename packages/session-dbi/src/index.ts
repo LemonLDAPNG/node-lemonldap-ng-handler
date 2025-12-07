@@ -42,7 +42,7 @@ abstract class DBISession implements Session_Accessor {
             resolve(
               (typeof session === "string"
                 ? JSON.parse(session)
-                : session) as LLNG_Session
+                : session) as LLNG_Session,
             );
           }
         });

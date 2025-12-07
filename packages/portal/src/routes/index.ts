@@ -20,6 +20,7 @@ export function createRoutes(portal: Portal): Router {
       const html = portal.render("menu", {
         session: req.llngSession,
         URLDC: req.llngUrldc,
+        HAS_PASSWORD_MODULE: portal.hasPasswordModule(),
       });
       return res.send(html);
     }
@@ -43,6 +44,7 @@ export function createRoutes(portal: Portal): Router {
       }
       const html = portal.render("menu", {
         session: req.llngSession,
+        HAS_PASSWORD_MODULE: portal.hasPasswordModule(),
       });
       return res.send(html);
     }
@@ -115,6 +117,7 @@ export function createRoutes(portal: Portal): Router {
 
     const html = portal.render("menu", {
       session,
+      HAS_PASSWORD_MODULE: portal.hasPasswordModule(),
     });
     res.send(html);
   });
@@ -138,6 +141,106 @@ export function createRoutes(portal: Portal): Router {
     const html = portal.render("login", {});
     res.send(html);
   });
+
+  // Password change routes (only if password module is configured)
+  if (portal.hasPasswordModule()) {
+    /**
+     * GET /password - Show password change form
+     */
+    router.get("/password", async (req: PortalRequest, res: Response) => {
+      // Must be authenticated
+      if (!req.llngSession) {
+        return res.redirect(conf.portal || "/");
+      }
+
+      const html = portal.render("password", {
+        session: req.llngSession,
+      });
+      res.send(html);
+    });
+
+    /**
+     * POST /password - Process password change
+     */
+    router.post("/password", async (req: PortalRequest, res: Response) => {
+      // Must be authenticated
+      if (!req.llngSession) {
+        return res.redirect(conf.portal || "/");
+      }
+
+      const { oldPassword, newPassword, confirmPassword } = req.body;
+
+      // Validate form data
+      if (!newPassword) {
+        const html = portal.render("password", {
+          session: req.llngSession,
+          PASSWORD_ERROR: "New password is required",
+          PASSWORD_ERROR_CODE: "PE_PASSWORD_MISSING",
+        });
+        return res.send(html);
+      }
+
+      if (newPassword !== confirmPassword) {
+        const html = portal.render("password", {
+          session: req.llngSession,
+          PASSWORD_ERROR: "Passwords do not match",
+          PASSWORD_ERROR_CODE: "PE_PASSWORD_MISMATCH",
+        });
+        return res.send(html);
+      }
+
+      // Get user DN from session
+      const userDn = req.llngSession._dn as string | undefined;
+      if (!userDn) {
+        logger.error("Password change: No DN in session");
+        const html = portal.render("password", {
+          session: req.llngSession,
+          PASSWORD_ERROR: "Unable to change password: user DN not found",
+          PASSWORD_ERROR_CODE: "PE_ERROR",
+        });
+        return res.send(html);
+      }
+
+      // Check if we're in password reset mode (ppolicy mustChange)
+      const passwordReset = req.llngSession._pwdMustChange === true;
+
+      // Call password module
+      const passwordModule = portal.getPasswordModule()!;
+      const result = await passwordModule.modifyPassword(userDn, newPassword, {
+        oldPassword,
+        passwordReset,
+      });
+
+      if (!result.success) {
+        logger.warn(
+          `Password change failed for ${userDn}: ${result.error} (${result.errorCode})`,
+        );
+        const html = portal.render("password", {
+          session: req.llngSession,
+          PASSWORD_ERROR: result.error || "Password change failed",
+          PASSWORD_ERROR_CODE: result.errorCode,
+        });
+        return res.send(html);
+      }
+
+      // Password changed successfully
+      logger.info(`Password changed for ${userDn}`);
+
+      // Clear mustChange flag in session
+      if (req.llngSession._pwdMustChange) {
+        delete req.llngSession._pwdMustChange;
+        await portal.updateSession(req.llngSession);
+      }
+
+      // Show success message
+      const html = portal.render("password", {
+        session: req.llngSession,
+        PASSWORD_SUCCESS: true,
+        PASSWORD_MESSAGE: "Password changed successfully",
+      });
+      res.send(html);
+    });
+  }
 
   return router;
 }

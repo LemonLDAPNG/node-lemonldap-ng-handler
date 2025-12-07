@@ -3,7 +3,12 @@ import Session from "@lemonldap-ng/session";
 import Logger from "@lemonldap-ng/logger";
 import crypto from "crypto";
 import type { LLNG_Conf, LLNG_Session, LLNG_Logger } from "@lemonldap-ng/types";
-import type { PortalOptions, AuthModule, UserDBModule } from "./types";
+import type {
+  PortalOptions,
+  AuthModule,
+  UserDBModule,
+  PasswordModule,
+} from "./types";
 import { TemplateEngine } from "./templates/engine";
 
 /**
@@ -17,6 +22,7 @@ export class Portal {
   private logger: LLNG_Logger | null = null;
   private authModule: AuthModule | null = null;
   private userDBModule: UserDBModule | null = null;
+  private passwordModule: PasswordModule | null = null;
   private templateEngine: TemplateEngine | null = null;
   private options: PortalOptions;
 
@@ -58,9 +64,19 @@ export class Portal {
     const userDBType = (this.conf.userDB || "Demo").toLowerCase();
     await this.loadUserDBModule(userDBType);
 
-    logger.info(
-      `Portal initialized with auth=${authType}, userDB=${userDBType}`,
-    );
+    // Load password module (if configured)
+    const passwordDBType = this.conf.passwordDB as string | undefined;
+    if (passwordDBType) {
+      await this.loadPasswordModule(passwordDBType.toLowerCase());
+      logger.info(
+        `Portal initialized with auth=${authType}, userDB=${userDBType}, passwordDB=${passwordDBType}`,
+      );
+    } else {
+      logger.info(
+        `Portal initialized with auth=${authType}, userDB=${userDBType}`,
+      );
+    }
+
     return true;
   }
 
@@ -87,6 +103,19 @@ export class Portal {
       this.logger!.debug(`UserDB module ${type} loaded`);
     } catch (e) {
       throw new Error(`Failed to load userDB module ${moduleName}: ${e}`);
+    }
+  }
+
+  private async loadPasswordModule(type: string): Promise<void> {
+    const moduleName = `@lemonldap-ng/password-${type}`;
+    try {
+      const mod = await import(moduleName);
+      const PasswordClass = mod.default;
+      this.passwordModule = new PasswordClass();
+      await this.passwordModule!.init(this.conf!, this.logger!);
+      this.logger!.debug(`Password module ${type} loaded`);
+    } catch (e) {
+      throw new Error(`Failed to load password module ${moduleName}: ${e}`);
     }
   }
 
@@ -128,6 +157,20 @@ export class Portal {
   getUserDBModule(): UserDBModule {
     if (!this.userDBModule) throw new Error("UserDB module not loaded");
     return this.userDBModule;
+  }
+
+  /**
+   * Get password module (may be null if not configured)
+   */
+  getPasswordModule(): PasswordModule | null {
+    return this.passwordModule;
+  }
+
+  /**
+   * Check if password module is available
+   */
+  hasPasswordModule(): boolean {
+    return this.passwordModule !== null;
   }
 
   /**
@@ -224,6 +267,9 @@ export class Portal {
     }
     if (this.userDBModule?.close) {
       await this.userDBModule.close();
+    }
+    if (this.passwordModule?.close) {
+      await this.passwordModule.close();
     }
     if (this.sessionAcc) {
       await this.sessionAcc.close();

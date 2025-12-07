@@ -10,6 +10,15 @@ export interface Credentials {
 }
 
 /**
+ * Authentication result info (for PPolicy warnings etc.)
+ */
+export interface AuthResultInfo {
+  type: string; // "ppolicyGrace" | "ppolicyExpire" | etc.
+  value: number;
+  message: string;
+}
+
+/**
  * Authentication result
  */
 export interface AuthResult {
@@ -17,6 +26,8 @@ export interface AuthResult {
   user?: string;
   error?: string;
   errorCode?: string;
+  /** Additional info (e.g., PPolicy warnings) */
+  info?: AuthResultInfo;
 }
 
 /**
@@ -69,6 +80,62 @@ export interface UserDBModule {
 }
 
 /**
+ * Password change result
+ */
+export interface PasswordChangeResult {
+  success: boolean;
+  error?: string;
+  errorCode?: string;
+  message?: string;
+}
+
+/**
+ * Password change options
+ */
+export interface PasswordChangeOptions {
+  /** Old password for verification */
+  oldPassword?: string;
+  /** Skip old password verification (for admin reset) */
+  passwordReset?: boolean;
+  /** Set force reset flag after change */
+  forceReset?: boolean;
+}
+
+/**
+ * Password module interface
+ * Handles password verification and modification
+ */
+export interface PasswordModule {
+  /** Module name */
+  readonly name: string;
+
+  /** Initialize module with configuration */
+  init(_conf: LLNG_Conf, _logger: LLNG_Logger): Promise<void>;
+
+  /**
+   * Confirm/verify old password is correct
+   * @param userDn - User's DN (from session._dn)
+   * @param password - Password to verify
+   */
+  confirm(_userDn: string, _password: string): Promise<boolean>;
+
+  /**
+   * Change user password
+   * @param userDn - User's DN (from session._dn)
+   * @param newPassword - New password
+   * @param options - Optional parameters
+   */
+  modifyPassword(
+    _userDn: string,
+    _newPassword: string,
+    _options?: PasswordChangeOptions,
+  ): Promise<PasswordChangeResult>;
+
+  /** Optional: cleanup */
+  close?(): Promise<void>;
+}
+
+/**
  * Extended Express Request with portal data
  */
 export interface PortalRequest extends Request {
@@ -86,6 +153,8 @@ export interface PortalRequest extends Request {
   llngPortal?: string;
   /** URL to redirect after login */
   llngUrldc?: string;
+  /** Password change result */
+  llngPasswordResult?: PasswordChangeResult;
 }
 
 /**
