@@ -31,6 +31,20 @@ jobs:
           --health-timeout 5s
           --health-retries 10
 
+      postgres:
+        image: postgres:16
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: llng
+          POSTGRES_PASSWORD: llng
+          POSTGRES_DB: llng_test
+        options: >-
+          --health-cmd "pg_isready -U llng"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
       - uses: actions/checkout@v3
 
@@ -41,8 +55,8 @@ jobs:
 
       - run: npm --version
 
-      - name: Install ldap-utils
-        run: sudo apt-get update && sudo apt-get install -y ldap-utils
+      - name: Install ldap-utils and PostgreSQL client
+        run: sudo apt-get update && sudo apt-get install -y ldap-utils postgresql-client
 
       - name: Wait for LDAP to be ready
         run: |
@@ -58,6 +72,10 @@ jobs:
       - name: Setup LDAP test data
         run: |
           ldapadd -x -H ldap://localhost:3890 -D "cn=admin,dc=example,dc=com" -w admin -f test/ldap-test-data.ldif || true
+
+      - name: Setup PostgreSQL test data
+        run: |
+          PGPASSWORD=llng psql -h localhost -U llng -d llng_test -f test/postgres-test-data.sql || true
 
       - name: Install dependencies
         run: npm ci || npm i
@@ -78,6 +96,11 @@ jobs:
           LDAP_TEST_BASE: dc=example,dc=com
           LDAP_TEST_ADMIN_DN: cn=admin,dc=example,dc=com
           LDAP_TEST_ADMIN_PASSWORD: admin
+          POSTGRES_TEST_HOST: localhost
+          POSTGRES_TEST_PORT: 5432
+          POSTGRES_TEST_USER: llng
+          POSTGRES_TEST_PASSWORD: llng
+          POSTGRES_TEST_DATABASE: llng_test
 
   audit:
     runs-on: ubuntu-22.04

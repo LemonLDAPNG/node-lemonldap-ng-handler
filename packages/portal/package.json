@@ -17,6 +17,7 @@
     "start": "node scripts/start-demo.js",
     "start:demo": "node scripts/start-demo.js",
     "start:ldap": "node scripts/start-ldap.js",
+    "start:dbi": "node scripts/start-dbi.js",
     "test": "tsc --noEmit && jest"
   },
   "repository": {
@@ -47,9 +48,14 @@
     "authentication"
   ],
   "devDependencies": {
+    "@lemonldap-ng/auth-dbi": "^0.8.0",
     "@lemonldap-ng/auth-ldap": "^0.8.0",
+    "@lemonldap-ng/password-dbi": "^0.8.0",
     "@lemonldap-ng/password-ldap": "^0.8.0",
+    "@lemonldap-ng/userdb-dbi": "^0.8.0",
     "@lemonldap-ng/userdb-ldap": "^0.8.0",
+    "better-sqlite3": "^11.0.0",
+    "perl-dbi": "^0.8.0",
     "@rollup/plugin-commonjs": "^28.0.3",
     "@rollup/plugin-node-resolve": "^16.0.1",
     "@rollup/plugin-terser": "^0.4.4",
