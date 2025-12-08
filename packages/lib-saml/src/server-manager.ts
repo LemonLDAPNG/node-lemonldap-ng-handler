@@ -205,15 +205,16 @@ export class ServerManager {
   }
 
   /**
-   * Shutdown the Lasso library
+   * Shutdown this ServerManager instance
+   * Note: Does NOT call lassoShutdown() to allow reuse of the lasso library
+   * by other ServerManager instances in the same process (e.g., tests)
    */
   shutdown(): void {
-    if (lassoIsInitialized()) {
-      lassoShutdown();
-      this.logger.info("SAML ServerManager: Lasso library shutdown");
-    }
+    // Just clear our server reference - don't shut down the global lasso library
+    // This allows other ServerManager instances to continue using lasso
     this.server = null;
     this.initialized = false;
+    this.logger.info("SAML ServerManager: Instance shutdown");
   }
 
   /**

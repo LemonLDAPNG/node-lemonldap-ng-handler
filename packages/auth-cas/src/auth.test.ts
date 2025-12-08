@@ -3,12 +3,7 @@
  */
 
 import { CASAuth } from "./auth";
-import type {
-  CASAuthConfig,
-  HttpClient,
-  HttpResponse,
-  CASSrvConfig,
-} from "./types";
+import type { HttpClient, HttpResponse, CASSrvConfig } from "./types";
 import {
   buildServiceValidateSuccess,
   buildServiceValidateError,
@@ -28,7 +23,7 @@ function createMockHttpClient(
       }
       return { status: 404, body: "Not found" };
     },
-    async post(url: string, body: string): Promise<HttpResponse> {
+    async post(url: string, _body: string): Promise<HttpResponse> {
       for (const [pattern, response] of Object.entries(responses)) {
         if (url.includes(pattern)) {
           return response;

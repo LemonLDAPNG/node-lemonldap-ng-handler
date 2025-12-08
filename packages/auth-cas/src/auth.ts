@@ -11,7 +11,6 @@ import {
   normalizeCasServerUrl,
   parseServiceValidateResponse,
   parseSamlValidateResponse,
-  parseValidateResponse,
   getTicketType,
 } from "@lemonldap-ng/lib-cas";
 
@@ -21,7 +20,6 @@ import type {
   CASExtractedCredentials,
   CASAuthResult,
   CASServerInfo,
-  CASSrvConfig,
 } from "./types";
 
 const CAS_SERVER_COOKIE = "lemonldapcassrv";

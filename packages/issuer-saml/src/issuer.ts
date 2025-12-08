@@ -131,7 +131,16 @@ export class SAMLIssuer {
     const login = new Login(server);
 
     // Process the AuthnRequest
-    login.processAuthnRequestMsg(message, method);
+    // For REDIRECT binding, lasso expects the full query string format
+    let processMessage = message;
+    if (method === HttpMethod.REDIRECT) {
+      // Build query string format that lasso expects
+      processMessage = `SAMLRequest=${encodeURIComponent(message)}`;
+      if (relayState) {
+        processMessage += `&RelayState=${encodeURIComponent(relayState)}`;
+      }
+    }
+    login.processAuthnRequestMsg(processMessage, method);
     login.validateRequestMsg();
 
     const spEntityId = login.remoteProviderId;

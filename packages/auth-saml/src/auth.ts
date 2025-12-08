@@ -213,6 +213,7 @@ export class SAMLAuth {
     const result = login.buildAuthnRequestMsg();
 
     this.logger.info(`SAML Auth: Built AuthnRequest for ${idpEntityId}`);
+    this.logger.debug(`SAML Auth: httpMethod=${result.httpMethod}, responseUrl=${result.responseUrl}`);
 
     if (result.httpMethod === HttpMethod.POST) {
       return {
@@ -225,6 +226,32 @@ export class SAMLAuth {
       };
     }
 
+    // For HTTP-Redirect binding, construct URL with SAMLRequest as query parameter
+    // Lasso returns the SAMLRequest in responseBody (already base64 encoded)
+    // We need to deflate it and add to URL
+    if (result.httpMethod === HttpMethod.REDIRECT && result.responseBody) {
+      const zlib = require("zlib");
+      // The responseBody from lasso is already a proper AuthnRequest XML (base64 encoded)
+      // For HTTP-Redirect, we need to deflate and base64 encode it
+      const xmlRequest = Buffer.from(result.responseBody, "base64").toString(
+        "utf-8",
+      );
+      const deflated = zlib.deflateRawSync(xmlRequest);
+      const encoded = deflated.toString("base64");
+
+      const url = new URL(result.responseUrl);
+      url.searchParams.set("SAMLRequest", encoded);
+      if (stateId) {
+        url.searchParams.set("RelayState", stateId);
+      }
+
+      return {
+        url: url.toString(),
+        method: "GET",
+      };
+    }
+
+    // Fallback: just return the URL (shouldn't happen normally)
     return {
       url: result.responseUrl,
       method: "GET",
