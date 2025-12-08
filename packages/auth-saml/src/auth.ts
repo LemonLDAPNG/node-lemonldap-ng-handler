@@ -213,7 +213,9 @@ export class SAMLAuth {
     const result = login.buildAuthnRequestMsg();
 
     this.logger.info(`SAML Auth: Built AuthnRequest for ${idpEntityId}`);
-    this.logger.debug(`SAML Auth: httpMethod=${result.httpMethod}, responseUrl=${result.responseUrl}`);
+    this.logger.debug(
+      `SAML Auth: httpMethod=${result.httpMethod}, responseUrl=${result.responseUrl}`,
+    );
 
     if (result.httpMethod === HttpMethod.POST) {
       return {

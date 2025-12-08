@@ -246,9 +246,7 @@ async function main() {
   app.use(express.json());
 
   // Load configuration from PostgreSQL
-  const confRow = await db("lmconfig")
-    .orderBy("cfgnum", "desc")
-    .first();
+  const confRow = await db("lmconfig").orderBy("cfgnum", "desc").first();
   const conf = JSON.parse(confRow.data);
   console.log(`[CONF] Loaded configuration #${conf.cfgNum}`);
 
