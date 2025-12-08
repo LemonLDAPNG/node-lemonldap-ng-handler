@@ -1,104 +1,234 @@
 #!/usr/bin/env node
 
 /**
- * Demo server for LemonLDAP::NG Portal with DBI (SQL) authentication
- * Uses SQLite for embedded database - no external dependencies
+ * Demo server for LemonLDAP::NG Portal with PostgreSQL backend
+ *
+ * Requirements:
+ *   docker-compose up -d    # Start PostgreSQL (yadd/lemonldap-ng-pg-database)
+ *
+ * PostgreSQL provides:
+ *   - Configuration storage (lmConfig table)
+ *   - Session storage (sessions table)
+ *   - Authentication (users table - created by this script)
  */
 
 const path = require("path");
-const fs = require("fs");
-const os = require("os");
 const crypto = require("crypto");
 
 const PORT = process.env.PORT || 19876;
 
-// Create temp database path
-const dbPath = path.join(os.tmpdir(), `llng-demo-${Date.now()}.db`);
+// PostgreSQL connection settings (matches docker-compose.yml)
+const PG_HOST = process.env.PG_HOST || "localhost";
+const PG_PORT = process.env.PG_PORT || "5432";
+const PG_DATABASE = process.env.PG_DATABASE || "lemonldapng";
+const PG_USER = process.env.PG_USER || "lemonldap";
+const PG_PASSWORD = process.env.PG_PASSWORD || "lemonldap";
+
+// DBI connection string for perl-dbi
+const DBI_CHAIN = `dbi:Pg:dbname=${PG_DATABASE};host=${PG_HOST};port=${PG_PORT}`;
 
 async function main() {
-  console.log("Starting LemonLDAP::NG Portal with DBI backend...\n");
+  console.log("Starting LemonLDAP::NG Portal with PostgreSQL backend...\n");
 
   // Import Knex for database setup
   const PerlDBI = require("perl-dbi").default;
 
-  // Create and setup database
-  console.log(`[DB] Creating SQLite database at ${dbPath}...`);
+  // Connect to PostgreSQL
+  console.log(`[DB] Connecting to PostgreSQL at ${PG_HOST}:${PG_PORT}...`);
   const db = PerlDBI({
-    dbiChain: `dbi:SQLite:dbname=${dbPath}`,
+    dbiChain: DBI_CHAIN,
+    dbiUser: PG_USER,
+    dbiPassword: PG_PASSWORD,
   });
 
-  // Create users table
-  await db.schema.createTable("users", (table) => {
-    table.string("user_id").primary();
-    table.string("password");
-    table.string("name");
-    table.string("mail");
-    table.string("department");
-    table.string("phone");
-  });
+  // Check connection
+  try {
+    await db.raw("SELECT 1");
+    console.log("[DB] Connected to PostgreSQL");
+  } catch (err) {
+    console.error("[DB] Failed to connect to PostgreSQL:", err.message);
+    console.error("\nMake sure PostgreSQL is running:");
+    console.error("  docker-compose up -d");
+    process.exit(1);
+  }
 
-  // Insert test users with different password formats
-  await db("users").insert([
-    {
-      user_id: "dwho",
-      password: "dwho",
-      name: "Doctor Who",
-      mail: "dwho@example.com",
-      department: "Time Lords",
-      phone: "+44123456",
-    },
-    {
-      user_id: "rtyler",
-      password: "rtyler",
-      name: "Rose Tyler",
-      mail: "rtyler@example.com",
-      department: "Companions",
-      phone: "+44987654",
-    },
-    {
-      user_id: "msmith",
-      password: "msmith",
-      name: "Mickey Smith",
-      mail: "msmith@example.com",
-      department: "Companions",
-      phone: "+44111222",
-    },
-    // User with SHA256 hashed password
-    {
-      user_id: "hashed",
-      password: `{SHA256}${crypto.createHash("sha256").update("secret").digest("base64")}`,
-      name: "Hashed User",
-      mail: "hashed@example.com",
-      department: "Security",
-      phone: "+44333444",
-    },
-    // UTF-8 users
-    {
-      user_id: "french",
-      password: "french",
-      name: "Frédéric Accents",
-      mail: "french@example.com",
-      department: "Département Français",
-      phone: "+33123456",
-    },
-    {
-      user_id: "russian",
-      password: "russian",
-      name: "Русский Пользователь",
-      mail: "russian@example.com",
-      department: "Отдел",
-      phone: "+7123456",
-    },
-  ]);
+  // Create users table if it doesn't exist
+  // Note: lemonldap user doesn't have CREATE privilege, use postgres superuser
+  const hasUsersTable = await db.schema.hasTable("users");
+  if (!hasUsersTable) {
+    console.log("[DB] Creating users table (using postgres superuser)...");
 
-  console.log("[DB] Test users created");
+    // Connect with superuser to create the table
+    const adminDb = PerlDBI({
+      dbiChain: DBI_CHAIN,
+      dbiUser: "postgres",
+      dbiPassword: process.env.POSTGRES_PASSWORD || "postgres",
+    });
+
+    try {
+      await adminDb.schema.createTable("users", (table) => {
+        table.string("user_id").primary();
+        table.string("password");
+        table.string("name");
+        table.string("mail");
+        table.string("department");
+        table.string("phone");
+      });
+
+      // Grant permissions to lemonldap user
+      await adminDb.raw("GRANT ALL PRIVILEGES ON TABLE users TO lemonldap");
+
+      // Insert test users
+      await adminDb("users").insert([
+        {
+          user_id: "dwho",
+          password: "dwho",
+          name: "Doctor Who",
+          mail: "dwho@example.com",
+          department: "Time Lords",
+          phone: "+44123456",
+        },
+        {
+          user_id: "rtyler",
+          password: "rtyler",
+          name: "Rose Tyler",
+          mail: "rtyler@example.com",
+          department: "Companions",
+          phone: "+44987654",
+        },
+        {
+          user_id: "msmith",
+          password: "msmith",
+          name: "Mickey Smith",
+          mail: "msmith@example.com",
+          department: "Companions",
+          phone: "+44111222",
+        },
+        // User with SHA256 hashed password
+        {
+          user_id: "hashed",
+          password: `{SHA256}${crypto.createHash("sha256").update("secret").digest("base64")}`,
+          name: "Hashed User",
+          mail: "hashed@example.com",
+          department: "Security",
+          phone: "+44333444",
+        },
+        // UTF-8 users
+        {
+          user_id: "french",
+          password: "french",
+          name: "Frederic Accents",
+          mail: "french@example.com",
+          department: "Departement Francais",
+          phone: "+33123456",
+        },
+      ]);
+
+      await adminDb.destroy();
+      console.log("[DB] Test users created");
+    } catch (err) {
+      await adminDb.destroy();
+      throw err;
+    }
+  } else {
+    console.log("[DB] Users table already exists");
+  }
+
+  // Check if configuration exists, if not create initial config
+  // Note: PostgreSQL table name is lowercase
+  const configExists = await db("lmconfig").count("cfgnum as count").first();
+  if (!configExists || configExists.count === "0") {
+    console.log("[DB] Creating initial configuration...");
+
+    const initialConfig = {
+      cfgNum: 1,
+      cfgAuthor: "start-dbi.js",
+      cfgDate: Math.floor(Date.now() / 1000),
+      cfgVersion: "0.1.0",
+
+      // Portal settings
+      portal: `http://localhost:${PORT}`,
+      domain: "localhost",
+
+      // Authentication: DBI
+      authentication: "DBI",
+      userDB: "DBI",
+      passwordDB: "DBI",
+
+      // DBI settings
+      dbiAuthChain: DBI_CHAIN,
+      dbiAuthUser: PG_USER,
+      dbiAuthPassword: PG_PASSWORD,
+      dbiAuthTable: "users",
+      dbiAuthLoginCol: "user_id",
+      dbiAuthPasswordCol: "password",
+
+      // UserDB DBI settings
+      dbiUserChain: DBI_CHAIN,
+      dbiUserUser: PG_USER,
+      dbiUserPassword: PG_PASSWORD,
+      dbiUserTable: "users",
+      dbiUserLoginCol: "user_id",
+
+      // Password settings
+      dbiDynamicHashEnabled: 1,
+      dbiDynamicHashNewPasswordScheme: "SHA256",
+      portalRequireOldPassword: 1,
+
+      // Exported variables
+      dbiExportedVars: {
+        uid: "user_id",
+        cn: "name",
+        mail: "mail",
+        department: "department",
+        phone: "phone",
+      },
+      exportedVars: {
+        uid: "user_id",
+        cn: "name",
+        mail: "mail",
+      },
+
+      // Session storage: PostgreSQL
+      globalStorage: "Apache::Session::Browseable::PgJSON",
+      globalStorageOptions: {
+        DataSource: DBI_CHAIN,
+        UserName: PG_USER,
+        Password: PG_PASSWORD,
+        TableName: "sessions",
+        Commit: 1,
+      },
+
+      // Security
+      key: crypto.randomBytes(16).toString("hex"),
+      cookieName: "lemonldap",
+      securedCookie: 0, // Allow HTTP for local dev
+      httpOnly: 1,
+      timeout: 72000,
+      timeoutActivity: 0,
+      timeoutActivityInterval: 60,
+
+      // Logging
+      whatToTrace: "_whatToTrace",
+      hiddenAttributes: "password",
+    };
+
+    await db("lmconfig").insert({
+      cfgnum: 1,
+      data: JSON.stringify(initialConfig),
+    });
+    console.log("[DB] Initial configuration created");
+  } else {
+    console.log("[DB] Configuration already exists");
+  }
 
   // Import portal components
   const express = require("express");
   const cookieParser = require("cookie-parser");
   const nunjucks = require("nunjucks");
+  const Session = require("@lemonldap-ng/session");
 
-  // Import DBI modules (handle both ESM and CJS exports)
+  // Import DBI modules
   const authDbiModule = require("@lemonldap-ng/auth-dbi");
   const userdbDbiModule = require("@lemonldap-ng/userdb-dbi");
   const passwordDbiModule = require("@lemonldap-ng/password-dbi");
@@ -115,8 +245,21 @@ async function main() {
   app.use(express.urlencoded({ extended: true }));
   app.use(express.json());
 
-  // Session store (in-memory for demo)
-  const sessions = new Map();
+  // Load configuration from PostgreSQL
+  const confRow = await db("lmconfig")
+    .orderBy("cfgnum", "desc")
+    .first();
+  const conf = JSON.parse(confRow.data);
+  console.log(`[CONF] Loaded configuration #${conf.cfgNum}`);
+
+  // Initialize session storage (PostgreSQL)
+  console.log("[SESSION] Initializing PostgreSQL session storage...");
+  const sessionAcc = new Session({
+    storageModule: conf.globalStorage,
+    storageModuleOptions: conf.globalStorageOptions,
+  });
+  await sessionAcc.ready;
+  console.log("[SESSION] Session storage ready");
 
   // Simple Nunjucks setup
   const viewsPath = path.join(__dirname, "../lib/templates/views");
@@ -124,28 +267,6 @@ async function main() {
     autoescape: true,
     express: app,
   });
-
-  // DBI configuration
-  const dbiConf = {
-    dbiAuthChain: `dbi:SQLite:dbname=${dbPath}`,
-    dbiAuthTable: "users",
-    dbiAuthLoginCol: "user_id",
-    dbiAuthPasswordCol: "password",
-    dbiUserTable: "users",
-    dbiUserLoginCol: "user_id",
-    dbiUserMailCol: "mail",
-    dbiDynamicHashEnabled: true,
-    dbiDynamicHashNewPasswordScheme: "SHA256",
-    dbiExportedVars: {
-      uid: "user_id",
-      cn: "name",
-      mail: "mail",
-      department: "department",
-      phone: "phone",
-    },
-    portalRequireOldPassword: true,
-    portal: "/",
-  };
 
   // Logger
   const logger = {
@@ -160,23 +281,28 @@ async function main() {
 
   // Initialize DBI modules
   const authModule = new DBIAuth();
-  await authModule.init(dbiConf, logger);
-  console.log("[AUTH] DBI Auth module initialized");
+  await authModule.init(conf, logger);
+  console.log("[AUTH] DBI Auth module initialized (PostgreSQL)");
 
   const userDBModule = new DBIUserDB();
-  await userDBModule.init(dbiConf, logger);
-  console.log("[USERDB] DBI UserDB module initialized");
+  await userDBModule.init(conf, logger);
+  console.log("[USERDB] DBI UserDB module initialized (PostgreSQL)");
 
   const passwordModule = new DBIPassword();
-  await passwordModule.init(dbiConf, logger);
-  console.log("[PASSWORD] DBI Password module initialized");
+  await passwordModule.init(conf, logger);
+  console.log("[PASSWORD] DBI Password module initialized (PostgreSQL)");
 
-  // Session middleware
-  app.use((req, res, next) => {
+  // Session middleware - read from PostgreSQL
+  app.use(async (req, res, next) => {
     const sessionId = req.cookies?.lemonldap;
-    if (sessionId && sessions.has(sessionId)) {
-      req.session = sessions.get(sessionId);
-      req.sessionId = sessionId;
+    if (sessionId) {
+      try {
+        const session = await sessionAcc.get(sessionId);
+        req.session = session;
+        req.sessionId = sessionId;
+      } catch {
+        // Session not found or expired
+      }
     }
     next();
   });
@@ -212,7 +338,7 @@ async function main() {
       });
     }
 
-    // Authenticate with DBI
+    // Authenticate with DBI (PostgreSQL)
     const authResult = await authModule.authenticate(credentials);
 
     if (!authResult.success) {
@@ -224,7 +350,7 @@ async function main() {
       });
     }
 
-    // Get user data from DBI
+    // Get user data from DBI (PostgreSQL)
     const userData = await userDBModule.getUser(credentials.user);
 
     if (!userData) {
@@ -236,7 +362,7 @@ async function main() {
       });
     }
 
-    // Create session
+    // Create session in PostgreSQL
     const sessionId = crypto.randomBytes(32).toString("hex");
     const now = Math.floor(Date.now() / 1000);
 
@@ -245,12 +371,17 @@ async function main() {
       _utime: now,
       _lastSeen: now,
       _user: credentials.user,
-      _userId: credentials.user, // Store user ID for password changes
+      _userId: credentials.user,
     };
 
     // Set session info from user data
     userDBModule.setSessionInfo(session, userData);
-    sessions.set(sessionId, session);
+
+    // Store session in PostgreSQL
+    await db("sessions").insert({
+      id: sessionId,
+      a_session: JSON.stringify(session),
+    });
 
     res.cookie("lemonldap", sessionId, {
       httpOnly: true,
@@ -258,7 +389,7 @@ async function main() {
     });
 
     console.log(
-      `[${new Date().toISOString()}] Login: ${credentials.user} -> session ${sessionId.substring(0, 8)}...`,
+      `[${new Date().toISOString()}] Login: ${credentials.user} -> session ${sessionId.substring(0, 8)}... (PostgreSQL)`,
     );
 
     // Check for redirect URL
@@ -290,7 +421,6 @@ async function main() {
 
     const { oldPassword, newPassword, confirmPassword } = req.body;
 
-    // Validate form data
     if (!newPassword) {
       return res.render("password.njk", {
         PORTAL: "/",
@@ -309,7 +439,6 @@ async function main() {
       });
     }
 
-    // Get user ID from session
     const userId = req.session._userId || req.session.uid;
     if (!userId) {
       return res.render("password.njk", {
@@ -320,7 +449,6 @@ async function main() {
       });
     }
 
-    // Call password module
     const result = await passwordModule.modifyPassword(userId, newPassword, {
       oldPassword,
     });
@@ -338,10 +466,9 @@ async function main() {
     }
 
     console.log(
-      `[${new Date().toISOString()}] Password changed for ${req.session.uid} (${userId})`,
+      `[${new Date().toISOString()}] Password changed for ${req.session.uid} (${userId}) in PostgreSQL`,
     );
 
-    // Show success message
     res.render("password.njk", {
       PORTAL: "/",
       session: req.session,
@@ -351,12 +478,13 @@ async function main() {
   });
 
   // GET /logout - Logout
-  app.get("/logout", (req, res) => {
+  app.get("/logout", async (req, res) => {
     if (req.sessionId) {
-      const session = sessions.get(req.sessionId);
-      sessions.delete(req.sessionId);
+      const session = req.session;
+      // Delete session from PostgreSQL
+      await db("sessions").where("id", req.sessionId).del();
       console.log(
-        `[${new Date().toISOString()}] Logout: ${session?.uid || "unknown"} (session ${req.sessionId.substring(0, 8)}...)`,
+        `[${new Date().toISOString()}] Logout: ${session?.uid || "unknown"} (session ${req.sessionId.substring(0, 8)}... deleted from PostgreSQL)`,
       );
     }
 
@@ -370,14 +498,9 @@ async function main() {
     await authModule.close?.();
     await userDBModule.close?.();
     await passwordModule.close?.();
+    await sessionAcc.close?.();
     await db.destroy();
-    // Clean up temp database
-    try {
-      fs.unlinkSync(dbPath);
-      console.log("[DB] Temporary database removed");
-    } catch (e) {
-      // Ignore
-    }
+    console.log("[DB] PostgreSQL connections closed");
     console.log("Goodbye!");
     process.exit(0);
   });
@@ -385,28 +508,33 @@ async function main() {
   // Start server
   app.listen(PORT, () => {
     console.log(`
-╔════════════════════════════════════════════════════════════╗
-║      LemonLDAP::NG Portal - DBI Demo Server                ║
-╠════════════════════════════════════════════════════════════╣
-║  Portal running at: http://localhost:${PORT.toString().padEnd(5)}                ║
-║  Database: SQLite (embedded, temp file)                    ║
-║                                                            ║
-║  Test accounts (DBI/SQL):                                  ║
-║    - dwho / dwho         (Doctor Who)                      ║
-║    - rtyler / rtyler     (Rose Tyler)                      ║
-║    - msmith / msmith     (Mickey Smith)                    ║
-║    - hashed / secret     (SHA256 password)                 ║
-║    - french / french     (UTF-8: Frédéric)                 ║
-║    - russian / russian   (UTF-8: Cyrillic)                 ║
-║                                                            ║
-║  Features:                                                 ║
-║    - SQL Authentication (plaintext + dynamic hash)         ║
-║    - SQL User Database                                     ║
-║    - Password Change (stored as {SHA256}base64)            ║
-║                                                            ║
-║  Set DEBUG=1 for verbose logging                           ║
-║  Press Ctrl+C to stop                                      ║
-╚════════════════════════════════════════════════════════════╝
++============================================================+
+|      LemonLDAP::NG Portal - PostgreSQL Backend             |
++============================================================+
+|  Portal running at: http://localhost:${PORT.toString().padEnd(5)}                |
+|                                                            |
+|  PostgreSQL: ${PG_HOST}:${PG_PORT}/${PG_DATABASE.padEnd(25)}|
+|    - Configuration: lmConfig table                         |
+|    - Sessions: sessions table                              |
+|    - Users: users table                                    |
+|                                                            |
+|  Test accounts (DBI/PostgreSQL):                           |
+|    - dwho / dwho         (Doctor Who)                      |
+|    - rtyler / rtyler     (Rose Tyler)                      |
+|    - msmith / msmith     (Mickey Smith)                    |
+|    - hashed / secret     (SHA256 password)                 |
+|    - french / french     (UTF-8 test)                      |
+|                                                            |
+|  Features:                                                 |
+|    - SQL Authentication (plaintext + dynamic hash)         |
+|    - SQL User Database                                     |
+|    - SQL Session Storage (JSONB)                           |
+|    - SQL Configuration Storage                             |
+|    - Password Change (stored as {SHA256}base64)            |
+|                                                            |
+|  Set DEBUG=1 for verbose logging                           |
+|  Press Ctrl+C to stop                                      |
++============================================================+
 `);
   });
 }

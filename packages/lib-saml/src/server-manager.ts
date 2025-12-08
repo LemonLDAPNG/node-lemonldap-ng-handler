@@ -7,7 +7,7 @@
 
 import {
   init as lassoInit,
-  shutdown as lassoShutdown,
+  shutdown as _lassoShutdown,
   isInitialized as lassoIsInitialized,
   Server,
   type ProviderInfo,

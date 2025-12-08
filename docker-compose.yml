@@ -1,0 +1,35 @@
+# Docker Compose for LemonLDAP::NG development with PostgreSQL
+#
+# Usage:
+#   docker-compose up -d       # Start PostgreSQL
+#   npm run start:dbi -w @lemonldap-ng/portal    # Start portal with PostgreSQL backend
+#   docker-compose down -v     # Stop and remove data
+#
+# The yadd/lemonldap-ng-pg-database image creates:
+#   - Database: lemonldapng
+#   - User: lemonldap / Password: lemonldap
+#   - Tables: lmconfig, sessions, psessions, samlsessions, oidcsessions, cassessions
+#
+# The users table for DBI authentication is created by start-dbi.js on first run.
+
+services:
+  postgres:
+    image: yadd/lemonldap-ng-pg-database:latest
+    container_name: llng-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: postgres
+      PG_DATABASE: lemonldapng
+      PG_USER: lemonldap
+      PG_PASSWORD: lemonldap
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  pgdata:
