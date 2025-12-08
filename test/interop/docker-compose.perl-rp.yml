@@ -1,0 +1,27 @@
+# Docker Compose for OIDC Interop Test: JS as OP, Perl as RP
+#
+# Usage:
+#   docker-compose -f test/interop/docker-compose.perl-rp.yml up -d
+#   npm test -- test/interop/oidc-perl-rp.test.ts
+#   docker-compose -f test/interop/docker-compose.perl-rp.yml down
+
+services:
+  perl-rp:
+    image: yadd/lemonldap-ng-portal:latest
+    container_name: llng-perl-rp
+    ports:
+      - "19081:80"
+    environment:
+      - LOGGER=stderr
+      - USERLOGGER=stderr
+      - LOGLEVEL=debug
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ./docker-configs/perl-rp/lmConf-1.json:/var/lib/lemonldap-ng/conf/lmConf-1.json:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80/"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s

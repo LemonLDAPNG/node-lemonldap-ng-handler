@@ -1,0 +1,31 @@
+# Docker Compose for OIDC Interop Test: Perl as OP, JS as RP
+#
+# Usage:
+#   docker-compose -f test/interop/docker-compose.perl-op.yml up -d
+#   npm test -- test/interop/oidc-perl-op.test.ts
+#   docker-compose -f test/interop/docker-compose.perl-op.yml down
+
+services:
+  perl-op:
+    image: yadd/lemonldap-ng-portal:latest
+    container_name: llng-perl-op
+    ports:
+      - "19080:80"
+    environment:
+      - LOGGER=stderr
+      - USERLOGGER=stderr
+      - LOGLEVEL=debug
+    volumes:
+      - ./docker-configs/perl-op/lmConf-1.json:/var/lib/lemonldap-ng/conf/lmConf-1.json:ro
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "curl",
+          "-f",
+          "http://localhost:80/.well-known/openid-configuration",
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
